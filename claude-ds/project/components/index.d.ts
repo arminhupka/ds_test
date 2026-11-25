@@ -1,6 +1,22 @@
 import * as React from 'react';
 
 /**
+ * Avatar — from @mini-ui/base@0.0.0 (./packages/base/src/components/avatar/Avatar.stories.tsx).
+ */
+export interface AvatarProps {
+  ref?: React.Ref;
+  id?: string;
+  /** The person's full name: announced to screen readers and turned into initials. */
+  name: string;
+  /** The person's picture; the initials show while it is missing, loading or failed. */
+  src?: string;
+  /** The person's status, shown as a dot on the circle. `none` shows no dot. */
+  status?: "none" | "active" | "inactive";
+}
+
+export declare const Avatar: React.ComponentType<AvatarProps>;
+
+/**
  * Button — from @mini-ui/base@0.0.0 (./packages/base/src/components/button/Button.stories.tsx).
  * @replaces button
  */
@@ -47,10 +63,10 @@ export interface InputProps {
   /** The default value of the input. Use when uncontrolled. */
   defaultValue?: string | number | readonly string[];
   ref?: React.Ref;
-  /** The value of the input. Use when controlled. */
-  value?: string | number | readonly string[];
   id?: string;
   children?: React.ReactNode;
+  /** The value of the input. Use when controlled. */
+  value?: string | number | readonly string[];
 }
 
 export declare const Input: React.ComponentType<InputProps>;

@@ -1,4 +1,4 @@
-/* @ds-bundle: {"format":4,"namespace":"MiniUiBase","components":[{"name":"Button"},{"name":"Checkbox"},{"name":"Input"}]} */
+/* @ds-bundle: {"format":4,"namespace":"MiniUiBase","components":[{"name":"Avatar"},{"name":"Button"},{"name":"Checkbox"},{"name":"Input"}]} */
 "use strict";
 var MiniUiBase = (() => {
   var __create = Object.create;
@@ -58,23 +58,23 @@ var MiniUiBase = (() => {
       init_define_import_meta_env();
       var R = window.React;
       function np(p2, k) {
-        var o4 = {};
-        for (var x in p2) if (x !== "children") o4[x] = p2[x];
-        if (k !== void 0) o4.key = k;
-        return o4;
+        var o5 = {};
+        for (var x in p2) if (x !== "children") o5[x] = p2[x];
+        if (k !== void 0) o5.key = k;
+        return o5;
       }
-      function jsx(t5, p2, k) {
-        var c5 = p2 && p2.children;
-        return c5 === void 0 ? R.createElement(t5, np(p2, k)) : R.createElement(t5, np(p2, k), c5);
+      function jsx(t6, p2, k) {
+        var c6 = p2 && p2.children;
+        return c6 === void 0 ? R.createElement(t6, np(p2, k)) : R.createElement(t6, np(p2, k), c6);
       }
-      function jsxs(t5, p2, k) {
-        return R.createElement.apply(R, [t5, np(p2, k)].concat(p2.children));
+      function jsxs(t6, p2, k) {
+        return R.createElement.apply(R, [t6, np(p2, k)].concat(p2.children));
       }
       module.exports = R;
       module.exports.jsx = jsx;
       module.exports.jsxs = jsxs;
-      module.exports.jsxDEV = function(t5, p2, k, s4) {
-        return (s4 ? jsxs : jsx)(t5, p2, k);
+      module.exports.jsxDEV = function(t6, p2, k, s5) {
+        return (s5 ? jsxs : jsx)(t6, p2, k);
       };
       module.exports.Fragment = R.Fragment;
     }
@@ -85,45 +85,78 @@ var MiniUiBase = (() => {
     "shim:react-dom-shim"(exports, module) {
       init_define_import_meta_env();
       var D = window.ReactDOM;
-      var n5 = function() {
+      var n6 = function() {
       };
-      module.exports = Object.assign({ preload: n5, preinit: n5, preconnect: n5, prefetchDNS: n5, preloadModule: n5, preinitModule: n5 }, D);
+      module.exports = Object.assign({ preload: n6, preinit: n6, preconnect: n6, prefetchDNS: n6, preloadModule: n6, preinitModule: n6 }, D);
     }
   });
 
   // .design-sync/.cache/shadow/@mini-ui/base/dist/index.js
   var index_exports = {};
   __export(index_exports, {
+    Avatar: () => d,
     Button: () => f,
     Checkbox: () => h,
-    Input: () => l3,
-    TranslationsContext: () => c4,
-    useTranslate: () => u3
+    Input: () => l5,
+    TranslationsContext: () => c,
+    useTranslate: () => u
   });
   init_define_import_meta_env();
 
-  // .design-sync/.cache/shadow/@mini-ui/base/dist/button.js
+  // .design-sync/.cache/shadow/@mini-ui/base/dist/avatar.js
   init_define_import_meta_env();
-  var import_react2 = __toESM(require_react_shim(), 1);
+
+  // .design-sync/.cache/shadow/@mini-ui/base/dist/translations-context-DJOJaVQT.js
+  init_define_import_meta_env();
+  var import_react = __toESM(require_react_shim(), 1);
   var import_jsx_runtime = __toESM(require_react_shim(), 1);
+  var a = "___@mini-ui/base";
+  var o = "___@mini-ui/components";
+  var s = ((t6, n6, r7) => {
+    let i3 = r7?.legacy ? o : a, s5 = window, c6 = s5[i3] ?? /* @__PURE__ */ new Map();
+    return s5[i3] = c6, c6.has(t6) || c6.set(t6, (0, import_react.createContext)(n6)), c6.get(t6);
+  })("translations", {});
+  var c = ({ translations: e5, children: t6 }) => {
+    let a3 = (0, import_react.useContext)(s), o5 = (0, import_react.useMemo)(() => ({
+      ...a3,
+      ...e5
+    }), [a3, e5]);
+    return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(s.Provider, {
+      value: o5,
+      children: t6
+    });
+  };
+  c.displayName = "TranslationsContext";
+  var l = /\{\{\s*(\w+)\s*\}\}/g;
+  var u = () => {
+    let e5 = (0, import_react.useContext)(s);
+    return (0, import_react.useCallback)((t6, n6) => {
+      let r7 = e5[t6] ?? t6;
+      return n6 === void 0 ? r7 : r7.replaceAll(l, (e6, t7) => String(n6[t7] ?? e6));
+    }, [e5]);
+  };
+
+  // .design-sync/.cache/shadow/@mini-ui/base/dist/avatar.js
+  var import_react3 = __toESM(require_react_shim(), 1);
+  var import_jsx_runtime3 = __toESM(require_react_shim(), 1);
 
   // node_modules/class-variance-authority/dist/index.mjs
   init_define_import_meta_env();
 
   // node_modules/clsx/dist/clsx.mjs
   init_define_import_meta_env();
-  function r(e5) {
-    var t5, f3, n5 = "";
-    if ("string" == typeof e5 || "number" == typeof e5) n5 += e5;
+  function r2(e5) {
+    var t6, f3, n6 = "";
+    if ("string" == typeof e5 || "number" == typeof e5) n6 += e5;
     else if ("object" == typeof e5) if (Array.isArray(e5)) {
-      var o4 = e5.length;
-      for (t5 = 0; t5 < o4; t5++) e5[t5] && (f3 = r(e5[t5])) && (n5 && (n5 += " "), n5 += f3);
-    } else for (f3 in e5) e5[f3] && (n5 && (n5 += " "), n5 += f3);
-    return n5;
+      var o5 = e5.length;
+      for (t6 = 0; t6 < o5; t6++) e5[t6] && (f3 = r2(e5[t6])) && (n6 && (n6 += " "), n6 += f3);
+    } else for (f3 in e5) e5[f3] && (n6 && (n6 += " "), n6 += f3);
+    return n6;
   }
   function clsx() {
-    for (var e5, t5, f3 = 0, n5 = "", o4 = arguments.length; f3 < o4; f3++) (e5 = arguments[f3]) && (t5 = r(e5)) && (n5 && (n5 += " "), n5 += t5);
-    return n5;
+    for (var e5, t6, f3 = 0, n6 = "", o5 = arguments.length; f3 < o5; f3++) (e5 = arguments[f3]) && (t6 = r2(e5)) && (n6 && (n6 += " "), n6 += t6);
+    return n6;
   }
 
   // node_modules/class-variance-authority/dist/index.mjs
@@ -168,89 +201,171 @@ var MiniUiBase = (() => {
     return cx(base, getVariantClassNames, getCompoundVariantClassNames, props === null || props === void 0 ? void 0 : props.class, props === null || props === void 0 ? void 0 : props.className);
   };
 
-  // node_modules/@base-ui/react/button/index.mjs
+  // node_modules/@base-ui/react/avatar/index.mjs
   init_define_import_meta_env();
 
-  // node_modules/@base-ui/react/button/Button.mjs
+  // node_modules/@base-ui/react/avatar/index.parts.mjs
+  var index_parts_exports = {};
+  __export(index_parts_exports, {
+    Fallback: () => AvatarFallback,
+    Image: () => AvatarImage,
+    Root: () => AvatarRoot
+  });
   init_define_import_meta_env();
-  var React10 = __toESM(require_react_shim(), 1);
 
-  // node_modules/@base-ui/react/internals/use-button/useButton.mjs
+  // node_modules/@base-ui/react/avatar/root/AvatarRoot.mjs
   init_define_import_meta_env();
   var React6 = __toESM(require_react_shim(), 1);
 
-  // node_modules/@floating-ui/utils/dist/floating-ui.utils.dom.mjs
+  // node_modules/@base-ui/react/internals/useRenderElement.mjs
   init_define_import_meta_env();
-  function hasWindow() {
-    return typeof window !== "undefined";
-  }
-  function getWindow(node) {
-    var _node$ownerDocument;
-    return (node == null || (_node$ownerDocument = node.ownerDocument) == null ? void 0 : _node$ownerDocument.defaultView) || window;
-  }
-  function isHTMLElement(value) {
-    if (!hasWindow()) {
-      return false;
-    }
-    return value instanceof HTMLElement || value instanceof getWindow(value).HTMLElement;
-  }
+  var React4 = __toESM(require_react_shim(), 1);
 
-  // node_modules/@base-ui/utils/useStableCallback.mjs
+  // node_modules/@base-ui/utils/useMergedRefs.mjs
   init_define_import_meta_env();
-
-  // node_modules/@base-ui/utils/safeReact.mjs
-  init_define_import_meta_env();
-  var React = __toESM(require_react_shim(), 1);
-  var SafeReact = {
-    ...React
-  };
 
   // node_modules/@base-ui/utils/useRefWithInit.mjs
   init_define_import_meta_env();
-  var React2 = __toESM(require_react_shim(), 1);
+  var React = __toESM(require_react_shim(), 1);
   var UNINITIALIZED = {};
   function useRefWithInit(init, initArg) {
-    const ref = React2.useRef(UNINITIALIZED);
+    const ref = React.useRef(UNINITIALIZED);
     if (ref.current === UNINITIALIZED) {
       ref.current = init(initArg);
     }
     return ref;
   }
 
-  // node_modules/@base-ui/utils/useStableCallback.mjs
-  var useInsertionEffect = SafeReact.useInsertionEffect;
-  var useSafeInsertionEffect = (
-    // React 17 doesn't have useInsertionEffect.
-    useInsertionEffect && // Preact replaces useInsertionEffect with useLayoutEffect and fires too late.
-    useInsertionEffect !== SafeReact.useLayoutEffect ? useInsertionEffect : (fn) => fn()
-  );
-  function useStableCallback(callback) {
-    const stable = useRefWithInit(createStableCallback).current;
-    stable.next = callback;
-    useSafeInsertionEffect(stable.effect);
-    return stable.trampoline;
+  // node_modules/@base-ui/utils/useMergedRefs.mjs
+  function useMergedRefs(a3, b, c6, d4) {
+    const forkRef = useRefWithInit(createForkRef).current;
+    if (didChange(forkRef, a3, b, c6, d4)) {
+      update(forkRef, [a3, b, c6, d4]);
+    }
+    return forkRef.callback;
   }
-  function createStableCallback() {
-    const stable = {
-      next: void 0,
-      callback: assertNotCalled,
-      trampoline: (...args) => stable.callback?.(...args),
-      effect: () => {
-        stable.callback = stable.next;
+  function useMergedRefsN(refs) {
+    const forkRef = useRefWithInit(createForkRef).current;
+    if (didChangeN(forkRef, refs)) {
+      update(forkRef, refs);
+    }
+    return forkRef.callback;
+  }
+  function createForkRef() {
+    return {
+      callback: null,
+      cleanup: null,
+      refs: []
+    };
+  }
+  function didChange(forkRef, a3, b, c6, d4) {
+    return forkRef.refs[0] !== a3 || forkRef.refs[1] !== b || forkRef.refs[2] !== c6 || forkRef.refs[3] !== d4;
+  }
+  function didChangeN(forkRef, newRefs) {
+    return forkRef.refs.length !== newRefs.length || forkRef.refs.some((ref, index) => ref !== newRefs[index]);
+  }
+  function update(forkRef, refs) {
+    forkRef.refs = refs;
+    if (refs.every((ref) => ref == null)) {
+      forkRef.callback = null;
+      return;
+    }
+    forkRef.callback = (instance) => {
+      if (forkRef.cleanup) {
+        forkRef.cleanup();
+        forkRef.cleanup = null;
+      }
+      if (instance != null) {
+        const cleanupCallbacks = Array(refs.length).fill(null);
+        for (let i3 = 0; i3 < refs.length; i3 += 1) {
+          const ref = refs[i3];
+          if (ref == null) {
+            continue;
+          }
+          switch (typeof ref) {
+            case "function": {
+              const refCleanup = ref(instance);
+              if (typeof refCleanup === "function") {
+                cleanupCallbacks[i3] = refCleanup;
+              }
+              break;
+            }
+            case "object": {
+              ref.current = instance;
+              break;
+            }
+            default:
+          }
+        }
+        forkRef.cleanup = () => {
+          for (let i3 = 0; i3 < refs.length; i3 += 1) {
+            const ref = refs[i3];
+            if (ref == null) {
+              continue;
+            }
+            switch (typeof ref) {
+              case "function": {
+                const cleanupCallback = cleanupCallbacks[i3];
+                if (typeof cleanupCallback === "function") {
+                  cleanupCallback();
+                } else {
+                  void ref(null);
+                }
+                break;
+              }
+              case "object": {
+                ref.current = null;
+                break;
+              }
+              default:
+            }
+          }
+        };
       }
     };
-    return stable;
-  }
-  function assertNotCalled() {
-    if (true) {
-      throw (
-        /* minify-error-disabled */
-        new Error("Base UI: Cannot call an event handler while rendering.")
-      );
-    }
   }
 
-  // node_modules/@base-ui/utils/error.mjs
+  // node_modules/@base-ui/utils/getReactElementRef.mjs
+  init_define_import_meta_env();
+  var React3 = __toESM(require_react_shim(), 1);
+
+  // node_modules/@base-ui/utils/reactVersion.mjs
+  init_define_import_meta_env();
+  var React2 = __toESM(require_react_shim(), 1);
+  var majorVersion = parseInt(React2.version, 10);
+  function isReactVersionAtLeast(reactVersionToCheck) {
+    return majorVersion >= reactVersionToCheck;
+  }
+
+  // node_modules/@base-ui/utils/getReactElementRef.mjs
+  function getReactElementRef(element) {
+    if (!/* @__PURE__ */ React3.isValidElement(element)) {
+      return null;
+    }
+    const reactElement = element;
+    const propsWithRef = reactElement.props;
+    return (isReactVersionAtLeast(19) ? propsWithRef?.ref : reactElement.ref) ?? null;
+  }
+
+  // node_modules/@base-ui/utils/mergeObjects.mjs
+  init_define_import_meta_env();
+  function mergeObjects(a3, b) {
+    if (a3 && !b) {
+      return a3;
+    }
+    if (!a3 && b) {
+      return b;
+    }
+    if (a3 || b) {
+      return {
+        ...a3,
+        ...b
+      };
+    }
+    return void 0;
+  }
+
+  // node_modules/@base-ui/utils/warn.mjs
   init_define_import_meta_env();
 
   // node_modules/@base-ui/utils/createLogOnce.mjs
@@ -277,52 +392,66 @@ var MiniUiBase = (() => {
     };
   }
 
-  // node_modules/@base-ui/utils/error.mjs
-  var error = createLogOnce("error", "Base UI");
+  // node_modules/@base-ui/utils/warn.mjs
+  var warn = createLogOnce("warn", "Base UI");
 
-  // node_modules/@base-ui/utils/useIsoLayoutEffect.mjs
+  // node_modules/@base-ui/utils/empty.mjs
   init_define_import_meta_env();
-  var React3 = __toESM(require_react_shim(), 1);
-  var noop = () => {
-  };
-  var useIsoLayoutEffect = typeof document !== "undefined" ? React3.useLayoutEffect : noop;
+  function NOOP() {
+  }
+  var EMPTY_ARRAY = Object.freeze([]);
+  var EMPTY_OBJECT = Object.freeze({});
 
-  // node_modules/@base-ui/react/merge-props/mergeProps.mjs
+  // node_modules/@base-ui/react/internals/getStateAttributesProps.mjs
   init_define_import_meta_env();
+  function getStateAttributesProps(state, customMapping) {
+    const props = {};
+    for (const key in state) {
+      const value = state[key];
+      if (customMapping?.hasOwnProperty(key)) {
+        const customProps = customMapping[key](value);
+        if (customProps != null) {
+          Object.assign(props, customProps);
+        }
+        continue;
+      }
+      if (value === true) {
+        props[`data-${key.toLowerCase()}`] = "";
+      } else if (value) {
+        props[`data-${key.toLowerCase()}`] = value.toString();
+      }
+    }
+    return props;
+  }
 
-  // node_modules/@base-ui/utils/mergeObjects.mjs
+  // node_modules/@base-ui/react/utils/resolveClassName.mjs
   init_define_import_meta_env();
-  function mergeObjects(a3, b) {
-    if (a3 && !b) {
-      return a3;
-    }
-    if (!a3 && b) {
-      return b;
-    }
-    if (a3 || b) {
-      return {
-        ...a3,
-        ...b
-      };
-    }
-    return void 0;
+  function resolveClassName(className, state) {
+    return typeof className === "function" ? className(state) : className;
+  }
+
+  // node_modules/@base-ui/react/utils/resolveStyle.mjs
+  init_define_import_meta_env();
+  function resolveStyle(style, state) {
+    return typeof style === "function" ? style(state) : style;
   }
 
   // node_modules/@base-ui/react/merge-props/mergeProps.mjs
+  init_define_import_meta_env();
   var EMPTY_PROPS = {};
-  function mergeProps(a3, b, c5, d3, e5) {
-    if (!c5 && !d3 && !e5 && !a3) {
+  function mergeProps(a3, b, c6, d4, e5) {
+    if (!c6 && !d4 && !e5 && !a3) {
       return createInitialMergedProps(b);
     }
     let merged = createInitialMergedProps(a3);
     if (b) {
       merged = mergeInto(merged, b);
     }
-    if (c5) {
-      merged = mergeInto(merged, c5);
+    if (c6) {
+      merged = mergeInto(merged, c6);
     }
-    if (d3) {
-      merged = mergeInto(merged, d3);
+    if (d4) {
+      merged = mergeInto(merged, d4);
     }
     if (e5) {
       merged = mergeInto(merged, e5);
@@ -463,411 +592,8 @@ var MiniUiBase = (() => {
     return event != null && typeof event === "object" && "nativeEvent" in event;
   }
 
-  // node_modules/@base-ui/react/internals/composite/root/CompositeRootContext.mjs
-  init_define_import_meta_env();
-  var React4 = __toESM(require_react_shim(), 1);
-  var CompositeRootContext = /* @__PURE__ */ React4.createContext(void 0);
-  if (true) CompositeRootContext.displayName = "CompositeRootContext";
-  function useCompositeRootContext(optional = false) {
-    const context = React4.useContext(CompositeRootContext);
-    if (context === void 0 && !optional) {
-      throw new Error(true ? "Base UI: CompositeRootContext is missing. Composite parts must be placed within <Composite.Root>." : formatErrorMessage_default(16));
-    }
-    return context;
-  }
-
-  // node_modules/@base-ui/react/utils/useFocusableWhenDisabled.mjs
-  init_define_import_meta_env();
-  var React5 = __toESM(require_react_shim(), 1);
-  function useFocusableWhenDisabled(parameters) {
-    const {
-      focusableWhenDisabled,
-      disabled: disabled2,
-      composite = false,
-      tabIndex: tabIndexProp = 0,
-      isNativeButton
-    } = parameters;
-    const isFocusableComposite = composite && focusableWhenDisabled !== false;
-    const isNonFocusableComposite = composite && focusableWhenDisabled === false;
-    const props = React5.useMemo(() => {
-      const additionalProps = {
-        // allow Tabbing away from focusableWhenDisabled elements
-        onKeyDown(event) {
-          if (disabled2 && focusableWhenDisabled && event.key !== "Tab") {
-            event.preventDefault();
-          }
-        }
-      };
-      if (!composite) {
-        additionalProps.tabIndex = tabIndexProp;
-        if (!isNativeButton && disabled2) {
-          additionalProps.tabIndex = focusableWhenDisabled ? tabIndexProp : -1;
-        }
-      }
-      if (isNativeButton && (focusableWhenDisabled || isFocusableComposite) || !isNativeButton && disabled2) {
-        additionalProps["aria-disabled"] = disabled2;
-      }
-      if (isNativeButton && (!focusableWhenDisabled || isNonFocusableComposite)) {
-        additionalProps.disabled = disabled2;
-      }
-      return additionalProps;
-    }, [composite, disabled2, focusableWhenDisabled, isFocusableComposite, isNonFocusableComposite, isNativeButton, tabIndexProp]);
-    return {
-      props
-    };
-  }
-
-  // node_modules/@base-ui/react/utils/dispatchClickWithModifiers.mjs
-  init_define_import_meta_env();
-
-  // node_modules/@base-ui/utils/owner.mjs
-  init_define_import_meta_env();
-  function ownerDocument(node) {
-    return node?.ownerDocument || document;
-  }
-
-  // node_modules/@base-ui/react/utils/dispatchClickWithModifiers.mjs
-  function dispatchClickWithModifiers(target, sourceEvent, {
-    detail = 0
-  } = {}) {
-    target.dispatchEvent(new (getWindow(target)).PointerEvent("click", {
-      bubbles: true,
-      cancelable: true,
-      composed: true,
-      detail,
-      shiftKey: sourceEvent.shiftKey,
-      ctrlKey: sourceEvent.ctrlKey,
-      altKey: sourceEvent.altKey,
-      metaKey: sourceEvent.metaKey
-    }));
-  }
-
-  // node_modules/@base-ui/react/internals/use-button/useButton.mjs
-  function useButton(parameters = {}) {
-    const {
-      disabled: disabled2 = false,
-      focusableWhenDisabled,
-      tabIndex = 0,
-      native: isNativeButton = true,
-      composite: compositeProp
-    } = parameters;
-    const elementRef = React6.useRef(null);
-    const compositeRootContext = useCompositeRootContext(true);
-    const isCompositeItem = compositeProp ?? compositeRootContext !== void 0;
-    const {
-      props: focusableWhenDisabledProps
-    } = useFocusableWhenDisabled({
-      focusableWhenDisabled,
-      disabled: disabled2,
-      composite: isCompositeItem,
-      tabIndex,
-      isNativeButton
-    });
-    if (true) {
-      React6.useEffect(() => {
-        if (!elementRef.current) {
-          return;
-        }
-        const isButtonTag = isButtonElement(elementRef.current);
-        if (isNativeButton) {
-          if (!isButtonTag) {
-            const ownerStackMessage = SafeReact.captureOwnerStack?.() || "";
-            const message = "A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.";
-            error(`${message}${ownerStackMessage}`);
-          }
-        } else if (isButtonTag) {
-          const ownerStackMessage = SafeReact.captureOwnerStack?.() || "";
-          const message = "A component that acts as a button expected a non-<button> because the `nativeButton` prop is false. Rendering a <button> keeps native behavior while Base UI applies non-native attributes and handlers, which can add unintended extra attributes (such as `role` or `aria-disabled`). Use a non-<button> in the `render` prop, or set `nativeButton` to `true`.";
-          error(`${message}${ownerStackMessage}`);
-        }
-      }, [isNativeButton]);
-    }
-    const updateDisabled = React6.useCallback(() => {
-      const element = elementRef.current;
-      if (!isButtonElement(element)) {
-        return;
-      }
-      if (isCompositeItem && disabled2 && focusableWhenDisabledProps.disabled === void 0 && element.disabled) {
-        element.disabled = false;
-      }
-    }, [disabled2, focusableWhenDisabledProps.disabled, isCompositeItem]);
-    useIsoLayoutEffect(updateDisabled, [updateDisabled]);
-    const getButtonProps = React6.useCallback((externalProps = {}) => {
-      const {
-        onClick: externalOnClick,
-        onMouseDown: externalOnMouseDown,
-        onKeyUp: externalOnKeyUp,
-        onKeyDown: externalOnKeyDown,
-        onPointerDown: externalOnPointerDown,
-        ...otherExternalProps
-      } = externalProps;
-      return mergeProps({
-        onClick(event) {
-          if (disabled2) {
-            event.preventDefault();
-            return;
-          }
-          externalOnClick?.(event);
-        },
-        onMouseDown(event) {
-          if (!disabled2) {
-            externalOnMouseDown?.(event);
-          }
-        },
-        onKeyDown(event) {
-          if (disabled2) {
-            return;
-          }
-          makeEventPreventable(event);
-          externalOnKeyDown?.(event);
-          if (event.baseUIHandlerPrevented) {
-            return;
-          }
-          const isCurrentTarget = event.target === event.currentTarget;
-          const currentTarget = event.currentTarget;
-          const isButton = isButtonElement(currentTarget);
-          const isLink = !isNativeButton && isValidLinkElement(currentTarget);
-          const shouldClick = isCurrentTarget && (isNativeButton ? isButton : !isLink);
-          const isEnterKey = event.key === "Enter";
-          const isSpaceKey = event.key === " ";
-          const role = currentTarget.getAttribute("role");
-          const isTextNavigationRole = role?.startsWith("menuitem") || role === "option" || role === "gridcell";
-          if (isCurrentTarget && isCompositeItem && isSpaceKey) {
-            if (event.defaultPrevented && isTextNavigationRole) {
-              return;
-            }
-            event.preventDefault();
-            if (!isNativeButton || isButton) {
-              event.preventBaseUIHandler();
-              dispatchClickWithModifiers(currentTarget, event);
-            }
-            return;
-          }
-          if (!shouldClick || isNativeButton || !isSpaceKey && !isEnterKey) {
-            if (isCurrentTarget && isLink && isSpaceKey) {
-              event.preventDefault();
-            }
-            return;
-          }
-          if (event.defaultPrevented) {
-            return;
-          }
-          event.preventDefault();
-          if (isEnterKey) {
-            event.preventBaseUIHandler();
-            dispatchClickWithModifiers(currentTarget, event);
-          }
-        },
-        onKeyUp(event) {
-          if (disabled2) {
-            return;
-          }
-          makeEventPreventable(event);
-          externalOnKeyUp?.(event);
-          if (event.target === event.currentTarget && isNativeButton && isCompositeItem && isButtonElement(event.currentTarget) && event.key === " ") {
-            event.preventDefault();
-            return;
-          }
-          if (event.baseUIHandlerPrevented) {
-            return;
-          }
-          if (event.target === event.currentTarget && !isNativeButton && !isCompositeItem && !event.defaultPrevented && event.key === " ") {
-            event.preventBaseUIHandler();
-            dispatchClickWithModifiers(event.currentTarget, event);
-          }
-        },
-        onPointerDown(event) {
-          if (disabled2) {
-            event.preventDefault();
-            return;
-          }
-          externalOnPointerDown?.(event);
-        }
-      }, isNativeButton ? {
-        type: "button"
-      } : {
-        role: "button"
-      }, focusableWhenDisabledProps, otherExternalProps);
-    }, [disabled2, focusableWhenDisabledProps, isCompositeItem, isNativeButton]);
-    const buttonRef = useStableCallback((element) => {
-      elementRef.current = element;
-      updateDisabled();
-    });
-    return {
-      getButtonProps,
-      buttonRef
-    };
-  }
-  function isButtonElement(elem) {
-    return isHTMLElement(elem) && elem.tagName === "BUTTON";
-  }
-  function isValidLinkElement(elem) {
-    return isHTMLElement(elem) && elem.tagName === "A" && Boolean(elem.href);
-  }
-
   // node_modules/@base-ui/react/internals/useRenderElement.mjs
-  init_define_import_meta_env();
-  var React9 = __toESM(require_react_shim(), 1);
-
-  // node_modules/@base-ui/utils/useMergedRefs.mjs
-  init_define_import_meta_env();
-  function useMergedRefs(a3, b, c5, d3) {
-    const forkRef = useRefWithInit(createForkRef).current;
-    if (didChange(forkRef, a3, b, c5, d3)) {
-      update(forkRef, [a3, b, c5, d3]);
-    }
-    return forkRef.callback;
-  }
-  function useMergedRefsN(refs) {
-    const forkRef = useRefWithInit(createForkRef).current;
-    if (didChangeN(forkRef, refs)) {
-      update(forkRef, refs);
-    }
-    return forkRef.callback;
-  }
-  function createForkRef() {
-    return {
-      callback: null,
-      cleanup: null,
-      refs: []
-    };
-  }
-  function didChange(forkRef, a3, b, c5, d3) {
-    return forkRef.refs[0] !== a3 || forkRef.refs[1] !== b || forkRef.refs[2] !== c5 || forkRef.refs[3] !== d3;
-  }
-  function didChangeN(forkRef, newRefs) {
-    return forkRef.refs.length !== newRefs.length || forkRef.refs.some((ref, index) => ref !== newRefs[index]);
-  }
-  function update(forkRef, refs) {
-    forkRef.refs = refs;
-    if (refs.every((ref) => ref == null)) {
-      forkRef.callback = null;
-      return;
-    }
-    forkRef.callback = (instance) => {
-      if (forkRef.cleanup) {
-        forkRef.cleanup();
-        forkRef.cleanup = null;
-      }
-      if (instance != null) {
-        const cleanupCallbacks = Array(refs.length).fill(null);
-        for (let i3 = 0; i3 < refs.length; i3 += 1) {
-          const ref = refs[i3];
-          if (ref == null) {
-            continue;
-          }
-          switch (typeof ref) {
-            case "function": {
-              const refCleanup = ref(instance);
-              if (typeof refCleanup === "function") {
-                cleanupCallbacks[i3] = refCleanup;
-              }
-              break;
-            }
-            case "object": {
-              ref.current = instance;
-              break;
-            }
-            default:
-          }
-        }
-        forkRef.cleanup = () => {
-          for (let i3 = 0; i3 < refs.length; i3 += 1) {
-            const ref = refs[i3];
-            if (ref == null) {
-              continue;
-            }
-            switch (typeof ref) {
-              case "function": {
-                const cleanupCallback = cleanupCallbacks[i3];
-                if (typeof cleanupCallback === "function") {
-                  cleanupCallback();
-                } else {
-                  void ref(null);
-                }
-                break;
-              }
-              case "object": {
-                ref.current = null;
-                break;
-              }
-              default:
-            }
-          }
-        };
-      }
-    };
-  }
-
-  // node_modules/@base-ui/utils/getReactElementRef.mjs
-  init_define_import_meta_env();
-  var React8 = __toESM(require_react_shim(), 1);
-
-  // node_modules/@base-ui/utils/reactVersion.mjs
-  init_define_import_meta_env();
-  var React7 = __toESM(require_react_shim(), 1);
-  var majorVersion = parseInt(React7.version, 10);
-  function isReactVersionAtLeast(reactVersionToCheck) {
-    return majorVersion >= reactVersionToCheck;
-  }
-
-  // node_modules/@base-ui/utils/getReactElementRef.mjs
-  function getReactElementRef(element) {
-    if (!/* @__PURE__ */ React8.isValidElement(element)) {
-      return null;
-    }
-    const reactElement = element;
-    const propsWithRef = reactElement.props;
-    return (isReactVersionAtLeast(19) ? propsWithRef?.ref : reactElement.ref) ?? null;
-  }
-
-  // node_modules/@base-ui/utils/warn.mjs
-  init_define_import_meta_env();
-  var warn = createLogOnce("warn", "Base UI");
-
-  // node_modules/@base-ui/utils/empty.mjs
-  init_define_import_meta_env();
-  function NOOP() {
-  }
-  var EMPTY_ARRAY = Object.freeze([]);
-  var EMPTY_OBJECT = Object.freeze({});
-
-  // node_modules/@base-ui/react/internals/getStateAttributesProps.mjs
-  init_define_import_meta_env();
-  function getStateAttributesProps(state, customMapping) {
-    const props = {};
-    for (const key in state) {
-      const value = state[key];
-      if (customMapping?.hasOwnProperty(key)) {
-        const customProps = customMapping[key](value);
-        if (customProps != null) {
-          Object.assign(props, customProps);
-        }
-        continue;
-      }
-      if (value === true) {
-        props[`data-${key.toLowerCase()}`] = "";
-      } else if (value) {
-        props[`data-${key.toLowerCase()}`] = value.toString();
-      }
-    }
-    return props;
-  }
-
-  // node_modules/@base-ui/react/utils/resolveClassName.mjs
-  init_define_import_meta_env();
-  function resolveClassName(className, state) {
-    return typeof className === "function" ? className(state) : className;
-  }
-
-  // node_modules/@base-ui/react/utils/resolveStyle.mjs
-  init_define_import_meta_env();
-  function resolveStyle(style, state) {
-    return typeof style === "function" ? style(state) : style;
-  }
-
-  // node_modules/@base-ui/react/internals/useRenderElement.mjs
-  var import_react = __toESM(require_react_shim(), 1);
+  var import_react2 = __toESM(require_react_shim(), 1);
   function useRenderElement(element, componentProps, params = {}) {
     let renderProp = componentProps.render;
     if (params.enabled !== false) {
@@ -889,12 +615,12 @@ var MiniUiBase = (() => {
       state = EMPTY_OBJECT,
       ref,
       props,
-      stateAttributesMapping: stateAttributesMapping2,
+      stateAttributesMapping: stateAttributesMapping3,
       enabled = true
     } = params;
     const className = enabled ? resolveClassName(classNameProp, state) : void 0;
     const style = enabled ? resolveStyle(styleProp, state) : void 0;
-    const stateProps = enabled ? getStateAttributesProps(state, stateAttributesMapping2) : EMPTY_OBJECT;
+    const stateProps = enabled ? getStateAttributesProps(state, stateAttributesMapping3) : EMPTY_OBJECT;
     const resolvedProps = enabled && props ? resolveRenderFunctionProps(props) : void 0;
     const outProps = enabled ? mergeObjects(stateProps, resolvedProps) ?? {} : EMPTY_OBJECT;
     if (typeof document !== "undefined") {
@@ -930,8 +656,8 @@ var MiniUiBase = (() => {
     if (render?.$$typeof !== REACT_LAZY_TYPE) {
       return render;
     }
-    const unwrapped = React9.Children.toArray(render)[0];
-    return /* @__PURE__ */ React9.isValidElement(unwrapped) ? unwrapped : render;
+    const unwrapped = React4.Children.toArray(render)[0];
+    return /* @__PURE__ */ React4.isValidElement(unwrapped) ? unwrapped : render;
   }
   function evaluateRenderProp(element, render, props, state) {
     if (render) {
@@ -944,11 +670,11 @@ var MiniUiBase = (() => {
       const mergedProps = mergeProps(props, render.props);
       mergedProps.ref = props.ref;
       if (true) {
-        if (!/* @__PURE__ */ React9.isValidElement(render)) {
+        if (!/* @__PURE__ */ React4.isValidElement(render)) {
           throw new Error(["Base UI: The `render` prop was provided an invalid React element as `React.isValidElement(render)` is `false`.", "A valid React element must be provided to the `render` prop because it is cloned with props to replace the default element.", "https://base-ui.com/r/invalid-render-prop"].join("\n"));
         }
       }
-      return /* @__PURE__ */ React9.cloneElement(render, mergedProps);
+      return /* @__PURE__ */ React4.cloneElement(render, mergedProps);
     }
     if (element) {
       if (typeof element === "string") {
@@ -972,1089 +698,128 @@ var MiniUiBase = (() => {
   }
   function renderTag(Tag, props) {
     if (Tag === "button") {
-      return /* @__PURE__ */ (0, import_react.createElement)("button", {
+      return /* @__PURE__ */ (0, import_react2.createElement)("button", {
         type: "button",
         ...props,
         key: props.key
       });
     }
     if (Tag === "img") {
-      return /* @__PURE__ */ (0, import_react.createElement)("img", {
+      return /* @__PURE__ */ (0, import_react2.createElement)("img", {
         alt: "",
         ...props,
         key: props.key
       });
     }
-    return /* @__PURE__ */ React9.createElement(Tag, props);
+    return /* @__PURE__ */ React4.createElement(Tag, props);
   }
 
-  // node_modules/@base-ui/react/button/Button.mjs
-  var Button = /* @__PURE__ */ React10.forwardRef(function Button2(componentProps, forwardedRef) {
+  // node_modules/@base-ui/react/avatar/root/AvatarRootContext.mjs
+  init_define_import_meta_env();
+  var React5 = __toESM(require_react_shim(), 1);
+  var AvatarRootContext = /* @__PURE__ */ React5.createContext(void 0);
+  if (true) AvatarRootContext.displayName = "AvatarRootContext";
+  function useAvatarRootContext() {
+    const context = React5.useContext(AvatarRootContext);
+    if (context === void 0) {
+      throw new Error(true ? "Base UI: AvatarRootContext is missing. Avatar parts must be placed within <Avatar.Root>." : formatErrorMessage_default(13));
+    }
+    return context;
+  }
+
+  // node_modules/@base-ui/react/avatar/root/stateAttributesMapping.mjs
+  init_define_import_meta_env();
+  var avatarStateAttributesMapping = {
+    imageLoadingStatus: () => null
+  };
+
+  // node_modules/@base-ui/react/avatar/root/AvatarRoot.mjs
+  var import_jsx_runtime2 = __toESM(require_react_shim(), 1);
+  var AvatarRoot = /* @__PURE__ */ React6.forwardRef(function AvatarRoot2(componentProps, forwardedRef) {
     const {
-      render,
       className,
-      disabled: disabled2 = false,
-      focusableWhenDisabled = false,
-      nativeButton = true,
+      render,
       style,
       ...elementProps
     } = componentProps;
-    const {
-      getButtonProps,
-      buttonRef
-    } = useButton({
-      disabled: disabled2,
-      focusableWhenDisabled,
-      native: nativeButton
-    });
+    const [imageLoadingStatus, setImageLoadingStatus] = React6.useState("idle");
     const state = {
-      disabled: disabled2
+      imageLoadingStatus
     };
-    return useRenderElement("button", componentProps, {
+    const contextValue = React6.useMemo(() => ({
+      imageLoadingStatus,
+      setImageLoadingStatus
+    }), [imageLoadingStatus, setImageLoadingStatus]);
+    const element = useRenderElement("span", componentProps, {
       state,
-      ref: [forwardedRef, buttonRef],
-      props: [elementProps, getButtonProps]
+      ref: forwardedRef,
+      props: elementProps,
+      stateAttributesMapping: avatarStateAttributesMapping
+    });
+    return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(AvatarRootContext.Provider, {
+      value: contextValue,
+      children: element
     });
   });
-  if (true) Button.displayName = "Button";
+  if (true) AvatarRoot.displayName = "AvatarRoot";
 
-  // .design-sync/.cache/shadow/@mini-ui/base/dist/button.js
-  var c = (0, import_react2.createContext)(null);
-  var l = {
-    root: "cCR7RV7b8",
-    sm: "c5cEDp7cI",
-    md: "cH9hYZici",
-    full: "ck8WyplTX",
-    positive: "c1KZLCItE",
-    danger: "cub676zv2",
-    automation: "cgtmURIaQ",
-    neutral: "cTsqGa6eu",
-    primary: "cFH1stVMW",
-    secondary: "cwbwtnj2n",
-    tertiary: "cbVXVI4tp",
-    grouped: "crTlI9bBW",
-    spinner: "ckdoDUfTw",
-    letter: "cMXj7lhsF",
-    "spinner-letter": "cVwqPIwn5",
-    sweepLeft: "c2fg5ZWnu",
-    sweepRight: "cMjI5DoDP",
-    "spinner-sweep-left": "cdE3gg4aU",
-    "spinner-sweep-right": "cryxDFUEB"
-  };
-  var u = () => {
-    let e5 = (0, import_react2.useId)().replace(/:/g, "");
-    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", {
-      "aria-hidden": "true",
-      className: l.spinner,
-      fill: "currentColor",
-      focusable: "false",
-      viewBox: "0 0 38 24",
-      children: [
-        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("defs", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("mask", {
-          id: `${e5}-left`,
-          maskUnits: "userSpaceOnUse",
-          x: -10,
-          y: -10,
-          width: 58,
-          height: 44,
-          children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
-            className: l.sweepLeft,
-            x: 19,
-            y: -40,
-            width: 60,
-            height: 104,
-            fill: "white"
-          })
-        }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("mask", {
-          id: `${e5}-right`,
-          maskUnits: "userSpaceOnUse",
-          x: -10,
-          y: -10,
-          width: 58,
-          height: 44,
-          children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
-            className: l.sweepRight,
-            x: -41,
-            y: -40,
-            width: 60,
-            height: 104,
-            fill: "white"
-          })
-        })] }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
-          className: l.letter,
-          d: "M13.05 8.52h4.4v9.4h3.4v-9.4h4.4v-2.7h-12.2z"
-        }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
-          mask: `url(#${e5}-left)`,
-          d: "M15.09 22.52c.55.08 1.12.15 1.69.19-.57-.05-1.15-.1-1.69-.19M4.75 14a7 7 0 0 1 3.3-5.6V3.12c-4.2 2-6.9 5.1-6.9 8.7C1.15 17 7.08 21.36 15 22.51 9 21.4 4.75 18 4.75 14"
-        }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
-          mask: `url(#${e5}-right)`,
-          d: "M23.06 1.29l.63.1-.34-.07ZM23.69 1.39c5.72 1.07 9.86 4.41 9.86 8.33 0 .53 0 3.23-3.37 5.73v5.3c6.8-3.18 7-7.75 7-8.73-.03-5.13-5.78-9.4-13.49-10.63"
-        })
-      ]
-    });
-  };
-  var d = cva(l.root, {
-    variants: {
-      variant: {
-        primary: l.primary,
-        secondary: l.secondary,
-        tertiary: l.tertiary
-      },
-      intent: {
-        positive: l.positive,
-        danger: l.danger,
-        neutral: l.neutral,
-        automation: l.automation
-      },
-      size: {
-        sm: l.sm,
-        md: l.md
-      },
-      width: {
-        auto: null,
-        full: l.full
-      },
-      grouped: {
-        true: l.grouped,
-        false: null
-      }
-    },
-    defaultVariants: {
-      variant: "primary",
-      intent: "positive",
-      size: "md",
-      width: "auto"
-    }
-  });
-  var f = (0, import_react2.forwardRef)(({ variant: e5, intent: t5, size: r6, width: o4, loading: l5 = false, children: f3, onClick: p2, ...m2 }, h2) => {
-    let g = (0, import_react2.useContext)(c) !== null;
-    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-      className: d({
-        variant: e5,
-        intent: t5,
-        size: r6,
-        width: o4,
-        grouped: g
-      }),
-      ...m2,
-      "aria-busy": l5 || void 0,
-      "data-loading": l5 ? "" : void 0,
-      onClick: (e6) => {
-        l5 || p2?.(e6);
-      },
-      ref: h2,
-      children: [f3, l5 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(u, {})]
-    });
-  });
-  f.displayName = "Button";
-
-  // .design-sync/.cache/shadow/@mini-ui/base/dist/checkbox.js
-  init_define_import_meta_env();
-  var import_react3 = __toESM(require_react_shim(), 1);
-  var import_jsx_runtime3 = __toESM(require_react_shim(), 1);
-
-  // node_modules/@base-ui/react/checkbox/index.mjs
-  init_define_import_meta_env();
-
-  // node_modules/@base-ui/react/checkbox/index.parts.mjs
-  var index_parts_exports = {};
-  __export(index_parts_exports, {
-    Indicator: () => CheckboxIndicator,
-    Root: () => CheckboxRoot
-  });
-  init_define_import_meta_env();
-
-  // node_modules/@base-ui/react/checkbox/root/CheckboxRoot.mjs
-  init_define_import_meta_env();
-  var React22 = __toESM(require_react_shim(), 1);
-
-  // node_modules/@base-ui/utils/useControlled.mjs
-  init_define_import_meta_env();
-  var React11 = __toESM(require_react_shim(), 1);
-  function useControlled({
-    controlled,
-    default: defaultProp,
-    name,
-    state = "value"
-  }) {
-    const {
-      current: isControlled
-    } = React11.useRef(controlled !== void 0);
-    const [valueState, setValue] = React11.useState(defaultProp);
-    const value = isControlled && controlled !== void 0 ? controlled : valueState;
-    if (true) {
-      React11.useEffect(() => {
-        if (isControlled !== (controlled !== void 0)) {
-          error([`A component is changing the ${isControlled ? "" : "un"}controlled ${state} state of ${name} to be ${isControlled ? "un" : ""}controlled.`, "Elements should not switch from uncontrolled to controlled (or vice versa).", `Decide between using a controlled or uncontrolled ${name} element for the lifetime of the component.`, "The nature of the state is determined during the first render. It's considered controlled if the value is not `undefined`.", "More info: https://fb.me/react-controlled-components"].join("\n"));
-        }
-      }, [state, name, controlled]);
-      const {
-        current: defaultValue
-      } = React11.useRef(defaultProp);
-      React11.useEffect(() => {
-        if (!isControlled && serializeToDevModeString(defaultValue) !== serializeToDevModeString(defaultProp)) {
-          error([`A component is changing the default ${state} state of an uncontrolled ${name} after being initialized. To suppress this warning opt to use a controlled ${name}.`].join("\n"));
-        }
-      }, [defaultProp]);
-    }
-    const setValueIfUncontrolled = React11.useCallback((newValue) => {
-      if (!isControlled) {
-        setValue(newValue);
-      }
-    }, []);
-    return [value, setValueIfUncontrolled];
-  }
-  function serializeToDevModeString(input) {
-    let nextId = 0;
-    const seen = /* @__PURE__ */ new WeakMap();
-    try {
-      const result = JSON.stringify(input, function replacer(key, value) {
-        if (key === "_owner" && this != null && typeof this === "object" && "$$typeof" in this) {
-          return void 0;
-        }
-        if (typeof value === "bigint") {
-          return `__bigint__:${value}`;
-        }
-        if (value !== null && typeof value === "object") {
-          const id = seen.get(value);
-          if (id !== void 0) {
-            return `__object__:${id}`;
-          }
-          seen.set(value, nextId);
-          nextId += 1;
-        }
-        return value;
-      });
-      return result ?? `__top__:${typeof input}`;
-    } catch {
-      return "__unserializable__";
-    }
-  }
-
-  // node_modules/@base-ui/utils/visuallyHidden.mjs
-  init_define_import_meta_env();
-  var visuallyHiddenBase = {
-    clipPath: "inset(50%)",
-    overflow: "hidden",
-    whiteSpace: "nowrap",
-    border: 0,
-    padding: 0,
-    width: 1,
-    height: 1,
-    margin: -1
-  };
-  var visuallyHidden = {
-    ...visuallyHiddenBase,
-    position: "fixed",
-    top: 0,
-    left: 0
-  };
-  var visuallyHiddenInput = {
-    ...visuallyHiddenBase,
-    position: "absolute"
-  };
-
-  // node_modules/@base-ui/utils/getDefaultFormSubmitter.mjs
-  init_define_import_meta_env();
-  function getDefaultFormSubmitter(form) {
-    if (!form) {
-      return null;
-    }
-    for (const candidate of form.elements) {
-      const tagName = candidate.tagName;
-      if (tagName === "BUTTON" || tagName === "INPUT") {
-        const button = candidate;
-        if (button.type === "submit") {
-          return button;
-        }
-      }
-    }
-    return null;
-  }
-
-  // node_modules/@base-ui/react/checkbox/utils/getCheckboxStateAttributesMapping.mjs
-  init_define_import_meta_env();
-
-  // node_modules/@base-ui/react/internals/field-constants/constants.mjs
-  init_define_import_meta_env();
-
-  // node_modules/@base-ui/react/field/control/FieldControlDataAttributes.mjs
-  init_define_import_meta_env();
-  var valid = "data-valid";
-  var invalid = "data-invalid";
-
-  // node_modules/@base-ui/react/internals/field-constants/constants.mjs
-  var DEFAULT_VALIDITY_STATE = {
-    badInput: false,
-    customError: false,
-    patternMismatch: false,
-    rangeOverflow: false,
-    rangeUnderflow: false,
-    stepMismatch: false,
-    tooLong: false,
-    tooShort: false,
-    typeMismatch: false,
-    valid: null,
-    valueMissing: false
-  };
-  var DEFAULT_FIELD_STATE_ATTRIBUTES = {
-    valid: null,
-    touched: false,
-    dirty: false,
-    filled: false,
-    focused: false
-  };
-  var DEFAULT_FIELD_ROOT_STATE = {
-    disabled: false,
-    ...DEFAULT_FIELD_STATE_ATTRIBUTES
-  };
-  var fieldValidityMapping = {
-    valid(value) {
-      if (value === null) {
-        return null;
-      }
-      if (value) {
-        return {
-          [valid]: ""
-        };
-      }
-      return {
-        [invalid]: ""
-      };
-    }
-  };
-
-  // node_modules/@base-ui/react/checkbox/root/CheckboxRootDataAttributes.mjs
-  init_define_import_meta_env();
-  var checked = "data-checked";
-  var unchecked = "data-unchecked";
-
-  // node_modules/@base-ui/react/checkbox/utils/getCheckboxStateAttributesMapping.mjs
-  function getCheckboxStateAttributesMapping(state) {
-    return {
-      checked(value) {
-        if (state.indeterminate) {
-          return {};
-        }
-        if (value) {
-          return {
-            [checked]: ""
-          };
-        }
-        return {
-          [unchecked]: ""
-        };
-      },
-      ...fieldValidityMapping
-    };
-  }
-
-  // node_modules/@base-ui/react/internals/useBaseUiId.mjs
-  init_define_import_meta_env();
-
-  // node_modules/@base-ui/utils/useId.mjs
-  init_define_import_meta_env();
-  var React12 = __toESM(require_react_shim(), 1);
-  var globalId = 0;
-  function useGlobalId(idOverride, prefix = "mui") {
-    const [defaultId, setDefaultId] = React12.useState(idOverride);
-    const id = idOverride || defaultId;
-    React12.useEffect(() => {
-      if (defaultId == null) {
-        globalId += 1;
-        setDefaultId(`${prefix}-${globalId}`);
-      }
-    }, [defaultId, prefix]);
-    return id;
-  }
-  var maybeReactUseId = SafeReact.useId;
-  function useId(idOverride, prefix) {
-    if (maybeReactUseId !== void 0) {
-      const reactId = maybeReactUseId();
-      return idOverride ?? (prefix ? `${prefix}-${reactId}` : reactId);
-    }
-    return useGlobalId(idOverride, prefix);
-  }
-
-  // node_modules/@base-ui/react/internals/useBaseUiId.mjs
-  function useBaseUiId(idOverride) {
-    return useId(idOverride, "base-ui");
-  }
-
-  // node_modules/@base-ui/react/internals/field-root-context/FieldRootContext.mjs
+  // node_modules/@base-ui/react/avatar/image/AvatarImage.mjs
   init_define_import_meta_env();
   var React13 = __toESM(require_react_shim(), 1);
 
-  // node_modules/@base-ui/react/internals/noop.mjs
+  // node_modules/@base-ui/utils/useStableCallback.mjs
   init_define_import_meta_env();
 
-  // node_modules/@base-ui/react/internals/field-root-context/FieldRootContext.mjs
-  var DEFAULT_FIELD_ROOT_CONTEXT = {
-    invalid: void 0,
-    name: void 0,
-    validityData: {
-      state: DEFAULT_VALIDITY_STATE,
-      errors: [],
-      error: "",
-      value: "",
-      initialValue: null
-    },
-    setValidityData: NOOP,
-    disabled: void 0,
-    setTouched: NOOP,
-    setDirty: NOOP,
-    setFilled: NOOP,
-    setFocused: NOOP,
-    validationMode: "onSubmit",
-    shouldValidateOnChange: () => false,
-    state: DEFAULT_FIELD_ROOT_STATE,
-    registerFieldControl: NOOP,
-    validation: {
-      getValidationProps: (_disabled, props = EMPTY_OBJECT) => props,
-      inputRef: {
-        current: null
-      },
-      registeredInputs: /* @__PURE__ */ new Map(),
-      registerInput: NOOP,
-      getInputControl: () => null,
-      commit: async () => {
-      },
-      change: NOOP
-    }
+  // node_modules/@base-ui/utils/safeReact.mjs
+  init_define_import_meta_env();
+  var React7 = __toESM(require_react_shim(), 1);
+  var SafeReact = {
+    ...React7
   };
-  var FieldRootContext = /* @__PURE__ */ React13.createContext(DEFAULT_FIELD_ROOT_CONTEXT);
-  if (true) FieldRootContext.displayName = "FieldRootContext";
-  function useFieldRootContext(optional = true) {
-    const context = React13.useContext(FieldRootContext);
-    if (context.setValidityData === NOOP && !optional) {
-      throw new Error(true ? "Base UI: FieldRootContext is missing. Field parts must be placed within <Field.Root>." : formatErrorMessage_default(28));
-    }
-    return context;
-  }
 
-  // node_modules/@base-ui/react/internals/field-register-control/useRegisterFieldControl.mjs
-  init_define_import_meta_env();
-  function useRegisterFieldControl(controlRef, id, value, getFormValueOverride, enabled = true, name) {
-    const {
-      registerFieldControl
-    } = useFieldRootContext();
-    const sourceRef = useRefWithInit(() => /* @__PURE__ */ Symbol());
-    useIsoLayoutEffect(() => {
-      const source = sourceRef.current;
-      if (!enabled) {
-        registerFieldControl(source, void 0);
-        return;
+  // node_modules/@base-ui/utils/useStableCallback.mjs
+  var useInsertionEffect = SafeReact.useInsertionEffect;
+  var useSafeInsertionEffect = (
+    // React 17 doesn't have useInsertionEffect.
+    useInsertionEffect && // Preact replaces useInsertionEffect with useLayoutEffect and fires too late.
+    useInsertionEffect !== SafeReact.useLayoutEffect ? useInsertionEffect : (fn) => fn()
+  );
+  function useStableCallback(callback) {
+    const stable = useRefWithInit(createStableCallback).current;
+    stable.next = callback;
+    useSafeInsertionEffect(stable.effect);
+    return stable.trampoline;
+  }
+  function createStableCallback() {
+    const stable = {
+      next: void 0,
+      callback: assertNotCalled,
+      trampoline: (...args) => stable.callback?.(...args),
+      effect: () => {
+        stable.callback = stable.next;
       }
-      const registration = {
-        controlRef,
-        getValue: getFormValueOverride,
-        id,
-        name,
-        value
-      };
-      registerFieldControl(source, registration);
-    }, [controlRef, enabled, getFormValueOverride, id, name, registerFieldControl, sourceRef, value]);
-    useIsoLayoutEffect(() => {
-      const source = sourceRef.current;
-      return () => {
-        registerFieldControl(source, void 0);
-      };
-    }, [registerFieldControl, sourceRef]);
-  }
-
-  // node_modules/@base-ui/react/field/item/FieldItemContext.mjs
-  init_define_import_meta_env();
-  var React14 = __toESM(require_react_shim(), 1);
-  var FieldItemContext = /* @__PURE__ */ React14.createContext({
-    disabled: false
-  });
-  if (true) FieldItemContext.displayName = "FieldItemContext";
-  function useFieldItemContext() {
-    const context = React14.useContext(FieldItemContext);
-    return context;
-  }
-
-  // node_modules/@base-ui/react/internals/form-context/FormContext.mjs
-  init_define_import_meta_env();
-  var React15 = __toESM(require_react_shim(), 1);
-  var FormContext = /* @__PURE__ */ React15.createContext({
-    elementRef: {
-      current: null
-    },
-    formRef: {
-      current: {
-        fields: /* @__PURE__ */ new Map()
-      }
-    },
-    errors: {},
-    clearErrors: NOOP,
-    validationMode: "onSubmit",
-    submitCountRef: {
-      current: 0
-    }
-  });
-  if (true) FormContext.displayName = "FormContext";
-  function useFormContext() {
-    return React15.useContext(FormContext);
-  }
-
-  // node_modules/@base-ui/react/internals/labelable-provider/LabelableContext.mjs
-  init_define_import_meta_env();
-  var React16 = __toESM(require_react_shim(), 1);
-  var LabelableContext = /* @__PURE__ */ React16.createContext({
-    controlId: void 0,
-    registerControlId: NOOP,
-    resetControlId: NOOP,
-    labelId: void 0,
-    setLabelId: NOOP,
-    messageIds: [],
-    setMessageIds: NOOP,
-    getDescriptionProps: (externalProps) => externalProps
-  });
-  if (true) LabelableContext.displayName = "LabelableContext";
-  function useLabelableContext() {
-    return React16.useContext(LabelableContext);
-  }
-
-  // node_modules/@base-ui/react/internals/labelable-provider/useAriaLabelledBy.mjs
-  init_define_import_meta_env();
-  var React17 = __toESM(require_react_shim(), 1);
-  function useAriaLabelledBy(explicitAriaLabelledBy, labelId, labelSourceRef, enableFallback = true, labelSourceId) {
-    const [fallbackAriaLabelledBy, setFallbackAriaLabelledBy] = React17.useState();
-    const generatedLabelId = useBaseUiId(labelSourceId ? `${labelSourceId}-label` : void 0);
-    const ariaLabelledBy = explicitAriaLabelledBy ?? labelId ?? fallbackAriaLabelledBy;
-    useIsoLayoutEffect(() => {
-      const nextAriaLabelledBy = explicitAriaLabelledBy || labelId || !enableFallback ? void 0 : getAriaLabelledBy(labelSourceRef.current, generatedLabelId);
-      if (fallbackAriaLabelledBy !== nextAriaLabelledBy) {
-        setFallbackAriaLabelledBy(nextAriaLabelledBy);
-      }
-    });
-    return ariaLabelledBy;
-  }
-  function getAriaLabelledBy(labelSource, generatedLabelId) {
-    const label = findAssociatedLabel(labelSource);
-    if (!label) {
-      return void 0;
-    }
-    if (!label.id && generatedLabelId) {
-      label.id = generatedLabelId;
-    }
-    return label.id || void 0;
-  }
-  function findAssociatedLabel(labelSource) {
-    if (!labelSource) {
-      return void 0;
-    }
-    const parent = labelSource.parentElement;
-    if (parent && parent.tagName === "LABEL") {
-      return parent;
-    }
-    const controlId = labelSource.id;
-    if (controlId) {
-      const nextSibling = labelSource.nextElementSibling;
-      if (nextSibling && nextSibling.htmlFor === controlId) {
-        return nextSibling;
-      }
-    }
-    const labels = labelSource.labels;
-    return labels && labels[0];
-  }
-
-  // node_modules/@base-ui/react/internals/labelable-provider/useLabelableId.mjs
-  init_define_import_meta_env();
-  var React18 = __toESM(require_react_shim(), 1);
-  function useLabelableId(params = {}) {
-    const {
-      id,
-      enabled = true
-    } = params;
-    const {
-      controlId,
-      registerControlId,
-      resetControlId
-    } = useLabelableContext();
-    const defaultId = useBaseUiId();
-    const controlSourceRef = useRefWithInit(() => /* @__PURE__ */ Symbol());
-    const hasRegisteredRef = React18.useRef(false);
-    const hadExplicitIdRef = React18.useRef(false);
-    const unregisterControlId = useStableCallback(() => {
-      if (!hasRegisteredRef.current || registerControlId === NOOP) {
-        return;
-      }
-      hasRegisteredRef.current = false;
-      registerControlId(controlSourceRef.current, void 0);
-    });
-    useIsoLayoutEffect(() => {
-      if (!enabled || registerControlId === NOOP) {
-        unregisterControlId();
-        return void 0;
-      }
-      let nextId;
-      if (id !== void 0) {
-        hadExplicitIdRef.current = true;
-        nextId = id;
-      } else if (hadExplicitIdRef.current) {
-        nextId = defaultId;
-      } else {
-        resetControlId();
-        return void 0;
-      }
-      if (nextId === void 0) {
-        unregisterControlId();
-        return void 0;
-      }
-      hasRegisteredRef.current = true;
-      registerControlId(controlSourceRef.current, nextId);
-      return void 0;
-    }, [id, enabled, registerControlId, resetControlId, defaultId, controlSourceRef, unregisterControlId]);
-    useIsoLayoutEffect(() => {
-      return unregisterControlId;
-    }, [unregisterControlId]);
-    return (enabled ? controlId : void 0) ?? id ?? defaultId;
-  }
-
-  // node_modules/@base-ui/react/checkbox-group/CheckboxGroupContext.mjs
-  init_define_import_meta_env();
-  var React19 = __toESM(require_react_shim(), 1);
-  var CheckboxGroupContext = /* @__PURE__ */ React19.createContext(void 0);
-  if (true) CheckboxGroupContext.displayName = "CheckboxGroupContext";
-  function useCheckboxGroupContext() {
-    return React19.useContext(CheckboxGroupContext);
-  }
-
-  // node_modules/@base-ui/react/checkbox/root/CheckboxRootContext.mjs
-  init_define_import_meta_env();
-  var React20 = __toESM(require_react_shim(), 1);
-  var CheckboxRootContext = /* @__PURE__ */ React20.createContext(void 0);
-  if (true) CheckboxRootContext.displayName = "CheckboxRootContext";
-  function useCheckboxRootContext() {
-    const context = React20.useContext(CheckboxRootContext);
-    if (context === void 0) {
-      throw new Error(true ? "Base UI: CheckboxRootContext is missing. Checkbox parts must be placed within <Checkbox.Root>." : formatErrorMessage_default(14));
-    }
-    return context;
-  }
-
-  // node_modules/@base-ui/react/internals/createBaseUIEventDetails.mjs
-  init_define_import_meta_env();
-
-  // node_modules/@base-ui/react/internals/reasons.mjs
-  init_define_import_meta_env();
-
-  // node_modules/@base-ui/react/internals/reason-parts.mjs
-  var reason_parts_exports = {};
-  __export(reason_parts_exports, {
-    cancelOpen: () => cancelOpen,
-    chipRemovePress: () => chipRemovePress,
-    clearPress: () => clearPress,
-    closePress: () => closePress,
-    closeWatcher: () => closeWatcher,
-    decrementPress: () => decrementPress,
-    disabled: () => disabled,
-    drag: () => drag,
-    escapeKey: () => escapeKey,
-    focusOut: () => focusOut,
-    imperativeAction: () => imperativeAction,
-    incrementPress: () => incrementPress,
-    initial: () => initial,
-    inputBlur: () => inputBlur,
-    inputChange: () => inputChange,
-    inputClear: () => inputClear,
-    inputPaste: () => inputPaste,
-    inputPress: () => inputPress,
-    itemPress: () => itemPress,
-    keyboard: () => keyboard,
-    linkPress: () => linkPress,
-    listNavigation: () => listNavigation,
-    missing: () => missing,
-    none: () => none,
-    outsidePress: () => outsidePress,
-    pointer: () => pointer,
-    scrub: () => scrub,
-    siblingOpen: () => siblingOpen,
-    swipe: () => swipe,
-    trackPress: () => trackPress,
-    triggerFocus: () => triggerFocus,
-    triggerHover: () => triggerHover,
-    triggerPress: () => triggerPress,
-    wheel: () => wheel,
-    windowResize: () => windowResize
-  });
-  init_define_import_meta_env();
-  var none = "none";
-  var triggerPress = "trigger-press";
-  var triggerHover = "trigger-hover";
-  var triggerFocus = "trigger-focus";
-  var outsidePress = "outside-press";
-  var itemPress = "item-press";
-  var closePress = "close-press";
-  var linkPress = "link-press";
-  var clearPress = "clear-press";
-  var chipRemovePress = "chip-remove-press";
-  var trackPress = "track-press";
-  var incrementPress = "increment-press";
-  var decrementPress = "decrement-press";
-  var inputChange = "input-change";
-  var inputClear = "input-clear";
-  var inputBlur = "input-blur";
-  var inputPaste = "input-paste";
-  var inputPress = "input-press";
-  var focusOut = "focus-out";
-  var escapeKey = "escape-key";
-  var closeWatcher = "close-watcher";
-  var listNavigation = "list-navigation";
-  var keyboard = "keyboard";
-  var pointer = "pointer";
-  var drag = "drag";
-  var wheel = "wheel";
-  var scrub = "scrub";
-  var cancelOpen = "cancel-open";
-  var siblingOpen = "sibling-open";
-  var disabled = "disabled";
-  var missing = "missing";
-  var initial = "initial";
-  var imperativeAction = "imperative-action";
-  var swipe = "swipe";
-  var windowResize = "window-resize";
-
-  // node_modules/@base-ui/react/internals/createBaseUIEventDetails.mjs
-  function createChangeEventDetails(reason, event, trigger, customProperties) {
-    let canceled = false;
-    let allowPropagation = false;
-    const custom = customProperties ?? EMPTY_OBJECT;
-    const details = {
-      reason,
-      event: event ?? new Event("base-ui"),
-      cancel() {
-        canceled = true;
-      },
-      allowPropagation() {
-        allowPropagation = true;
-      },
-      get isCanceled() {
-        return canceled;
-      },
-      get isPropagationAllowed() {
-        return allowPropagation;
-      },
-      trigger,
-      ...custom
     };
-    return details;
+    return stable;
   }
-
-  // node_modules/@base-ui/react/internals/useValueChanged.mjs
-  init_define_import_meta_env();
-  var React21 = __toESM(require_react_shim(), 1);
-  function useValueChanged(value, onChange) {
-    const valueRef = React21.useRef(value);
-    const onChangeCallback = useStableCallback(onChange);
-    useIsoLayoutEffect(() => {
-      if (valueRef.current !== value) {
-        onChangeCallback(valueRef.current);
-      }
-      valueRef.current = value;
-    }, [value, onChangeCallback]);
-  }
-
-  // node_modules/@base-ui/react/checkbox/root/CheckboxRoot.mjs
-  var import_jsx_runtime2 = __toESM(require_react_shim(), 1);
-  var PARENT_CHECKBOX = "data-parent";
-  var CheckboxRoot = /* @__PURE__ */ React22.forwardRef(function CheckboxRoot2(componentProps, forwardedRef) {
-    const {
-      checked: checkedProp,
-      className,
-      defaultChecked = false,
-      "aria-labelledby": ariaLabelledByProp,
-      disabled: disabledProp = false,
-      form,
-      id: idProp,
-      indeterminate = false,
-      inputRef: inputRefProp,
-      name: nameProp,
-      onCheckedChange,
-      parent = false,
-      readOnly = false,
-      render,
-      required = false,
-      uncheckedValue,
-      value: valueProp,
-      nativeButton = false,
-      style,
-      ...elementProps
-    } = componentProps;
-    const {
-      clearErrors
-    } = useFormContext();
-    const {
-      disabled: rootDisabled,
-      name: fieldName,
-      setDirty,
-      setFilled,
-      setFocused,
-      setTouched,
-      state: fieldState,
-      validationMode,
-      validityData,
-      validation: localValidation
-    } = useFieldRootContext();
-    const fieldItemContext = useFieldItemContext();
-    const {
-      labelId,
-      registerControlId,
-      getDescriptionProps
-    } = useLabelableContext();
-    const groupContext = useCheckboxGroupContext();
-    const parentContext = groupContext?.allValues === void 0 ? void 0 : groupContext.parent;
-    const isGroupedWithParent = parentContext !== void 0;
-    const disabled2 = rootDisabled || fieldItemContext.disabled || groupContext?.disabled || disabledProp;
-    const name = fieldName ?? nameProp;
-    const value = valueProp ?? name;
-    const id = useBaseUiId();
-    const ownsControlId = groupContext?.registerControlId !== registerControlId;
-    const controlId = useLabelableId({
-      id: idProp || void 0,
-      enabled: ownsControlId
-    });
-    const rootId = nativeButton ? controlId : id;
-    let groupProps = {};
-    if (isGroupedWithParent) {
-      if (parent) {
-        groupProps = parentContext.getParentProps();
-      } else if (value !== void 0) {
-        groupProps = parentContext.getChildProps(value);
-      }
+  function assertNotCalled() {
+    if (true) {
+      throw (
+        /* minify-error-disabled */
+        new Error("Base UI: Cannot call an event handler while rendering.")
+      );
     }
-    const {
-      checked: groupChecked = checkedProp,
-      indeterminate: groupIndeterminate = indeterminate,
-      onCheckedChange: groupOnChange,
-      ...otherGroupProps
-    } = groupProps;
-    const groupValue = groupContext?.value;
-    const controlRef = React22.useRef(null);
-    const {
-      getButtonProps,
-      buttonRef
-    } = useButton({
-      disabled: disabled2,
-      native: nativeButton
-    });
-    const validation = groupContext?.validation ?? localValidation;
-    const [checked2, setCheckedState] = useControlled({
-      controlled: value !== void 0 && groupValue !== void 0 && !parent ? groupValue.includes(value) : groupChecked,
-      default: defaultChecked,
-      name: "Checkbox",
-      state: "checked"
-    });
-    const computedChecked = isGroupedWithParent ? Boolean(groupChecked) : checked2;
-    const computedIndeterminate = isGroupedWithParent ? groupIndeterminate || indeterminate : indeterminate;
-    useRegisterFieldControl(controlRef, id, checked2, void 0, !groupContext && !disabled2, nameProp);
-    const registerChildId = parentContext?.registerChildId;
-    const inputRef = React22.useRef(null);
-    const registerFieldInput = validation.registerInput;
-    const registeredInputValue = groupContext ? value : void 0;
-    const registerInput = React22.useCallback((element2) => registerFieldInput(element2, {
-      controlRef,
-      value: registeredInputValue
-    }), [registerFieldInput, registeredInputValue]);
-    const mergedInputRef = useMergedRefs(inputRefProp, inputRef, parent ? void 0 : registerInput);
-    const ariaLabelledBy = useAriaLabelledBy(ariaLabelledByProp, labelId, inputRef, !nativeButton, controlId);
-    useIsoLayoutEffect(() => {
-      if (inputRef.current) {
-        inputRef.current.indeterminate = computedIndeterminate;
-      }
-      if (!groupContext) {
-        setFilled(checked2);
-      }
-    }, [checked2, computedIndeterminate, groupContext, setFilled]);
-    useValueChanged(checked2, () => {
-      if (groupContext) {
-        return;
-      }
-      clearErrors(name);
-      setDirty(checked2 !== validityData.initialValue);
-      validation.change(checked2);
-    });
-    const inputProps = mergeProps(
-      {
-        checked: checked2,
-        disabled: disabled2,
-        form,
-        // parent checkboxes unset `name` to be excluded from form submission
-        name: parent ? void 0 : name,
-        // Set `id` to stop Chrome warning about an unassociated input.
-        // When using a native button, the `id` is applied to the button instead.
-        id: nativeButton ? void 0 : controlId,
-        required,
-        ref: mergedInputRef,
-        style: name ? visuallyHiddenInput : visuallyHidden,
-        tabIndex: -1,
-        type: "checkbox",
-        "aria-hidden": true,
-        onChange(event) {
-          if (event.nativeEvent.defaultPrevented) {
-            return;
-          }
-          if (readOnly) {
-            event.preventDefault();
-            return;
-          }
-          const nextChecked = event.currentTarget.checked;
-          const details = createChangeEventDetails(reason_parts_exports.none, event.nativeEvent);
-          onCheckedChange?.(nextChecked, details);
-          if (details.isCanceled) {
-            return;
-          }
-          groupOnChange?.(nextChecked, details);
-          if (details.isCanceled) {
-            return;
-          }
-          setCheckedState(nextChecked);
-          if (value !== void 0 && groupContext !== void 0 && !parent && !isGroupedWithParent) {
-            const nextGroupValue = nextChecked ? [...groupContext.value, value] : groupContext.value.filter((item) => item !== value);
-            groupContext.setValue(nextGroupValue, details);
-          }
-        },
-        onClick(event) {
-          event.stopPropagation();
-        },
-        onFocus() {
-          controlRef.current?.focus();
-        }
-      },
-      // React <19 sets an empty value if `undefined` is passed explicitly
-      // To avoid this, we only set the value if it's defined
-      valueProp !== void 0 ? {
-        value: (groupContext ? checked2 && valueProp : valueProp) || ""
-      } : EMPTY_OBJECT,
-      getDescriptionProps,
-      (props) => validation.getValidationProps(disabled2, props)
-    );
-    React22.useEffect(() => {
-      if (!parentContext || value === void 0) {
-        return void 0;
-      }
-      const disabledStates = parentContext.disabledStatesRef.current;
-      disabledStates.set(value, disabled2);
-      return () => {
-        disabledStates.delete(value);
-      };
-    }, [parentContext, disabled2, value]);
-    const state = React22.useMemo(() => ({
-      ...fieldState,
-      checked: computedChecked,
-      disabled: disabled2,
-      readOnly,
-      required,
-      indeterminate: computedIndeterminate
-    }), [fieldState, computedChecked, disabled2, readOnly, required, computedIndeterminate]);
-    const stateAttributesMapping2 = getCheckboxStateAttributesMapping(state);
-    const element = useRenderElement("span", componentProps, {
-      state,
-      ref: [buttonRef, controlRef, forwardedRef],
-      props: [{
-        id: rootId,
-        role: "checkbox",
-        "aria-checked": computedIndeterminate ? "mixed" : computedChecked,
-        "aria-readonly": readOnly || void 0,
-        "aria-required": required || void 0,
-        "aria-labelledby": ariaLabelledBy,
-        [PARENT_CHECKBOX]: parent ? "" : void 0,
-        onFocus() {
-          if (!disabled2) {
-            setFocused(true);
-          }
-        },
-        onBlur() {
-          const inputEl = inputRef.current;
-          if (!inputEl) {
-            return;
-          }
-          setTouched(true);
-          setFocused(false);
-          if (validationMode === "onBlur") {
-            validation.commit(groupContext ? groupValue : inputEl.checked);
-          }
-        },
-        onKeyDown(event) {
-          if (event.key !== "Enter") {
-            return;
-          }
-          event.preventBaseUIHandler();
-          if (event.defaultPrevented) {
-            return;
-          }
-          const formToSubmit = inputRef.current?.form ?? null;
-          const currentTarget = event.currentTarget;
-          const nativeEvent = event.nativeEvent;
-          const originalPreventDefault = event.preventDefault;
-          const originalNativePreventDefault = nativeEvent.preventDefault;
-          let preventDefaultCalledAfterPropagation = false;
-          event.preventDefault = () => {
-            preventDefaultCalledAfterPropagation = true;
-            originalPreventDefault.call(event);
-          };
-          nativeEvent.preventDefault = () => {
-            preventDefaultCalledAfterPropagation = true;
-            originalNativePreventDefault.call(nativeEvent);
-          };
-          originalNativePreventDefault.call(nativeEvent);
-          getWindow(currentTarget).queueMicrotask(() => {
-            event.preventDefault = originalPreventDefault;
-            nativeEvent.preventDefault = originalNativePreventDefault;
-            if (!preventDefaultCalledAfterPropagation) {
-              getDefaultFormSubmitter(formToSubmit)?.click();
-            }
-          });
-        },
-        onClick(event) {
-          if (readOnly || disabled2) {
-            return;
-          }
-          event.preventDefault();
-          const input = inputRef.current;
-          if (!input) {
-            return;
-          }
-          dispatchClickWithModifiers(input, event);
-        }
-      }, elementProps, otherGroupProps, getButtonProps, getDescriptionProps, (props) => validation.getValidationProps(disabled2, props)],
-      stateAttributesMapping: stateAttributesMapping2
-    });
-    const renderedId = element.props.id;
-    useIsoLayoutEffect(() => {
-      if (!registerChildId || parent || value === void 0 || renderedId === void 0) {
-        return void 0;
-      }
-      return registerChildId(value, renderedId);
-    }, [registerChildId, parent, value, renderedId]);
-    return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(CheckboxRootContext.Provider, {
-      value: state,
-      children: [element, !checked2 && !groupContext && name && !parent && uncheckedValue !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("input", {
-        type: "hidden",
-        form,
-        name,
-        value: uncheckedValue,
-        disabled: disabled2
-      }), /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("input", {
-        ...inputProps,
-        suppressHydrationWarning: true
-      })]
-    });
-  });
-  if (true) CheckboxRoot.displayName = "CheckboxRoot";
+  }
 
-  // node_modules/@base-ui/react/checkbox/indicator/CheckboxIndicator.mjs
+  // node_modules/@base-ui/utils/useIsoLayoutEffect.mjs
   init_define_import_meta_env();
-  var React26 = __toESM(require_react_shim(), 1);
+  var React8 = __toESM(require_react_shim(), 1);
+  var noop = () => {
+  };
+  var useIsoLayoutEffect = typeof document !== "undefined" ? React8.useLayoutEffect : noop;
 
   // node_modules/@base-ui/react/internals/useOpenChangeComplete.mjs
   init_define_import_meta_env();
-  var React24 = __toESM(require_react_shim(), 1);
+  var React10 = __toESM(require_react_shim(), 1);
 
   // node_modules/@base-ui/react/internals/useAnimationsFinished.mjs
   init_define_import_meta_env();
@@ -2065,9 +830,9 @@ var MiniUiBase = (() => {
 
   // node_modules/@base-ui/utils/useOnMount.mjs
   init_define_import_meta_env();
-  var React23 = __toESM(require_react_shim(), 1);
+  var React9 = __toESM(require_react_shim(), 1);
   function useOnMount(fn) {
-    React23.useEffect(fn, EMPTY_ARRAY);
+    React9.useEffect(fn, EMPTY_ARRAY);
   }
 
   // node_modules/@base-ui/utils/useAnimationFrame.mjs
@@ -2273,7 +1038,7 @@ var MiniUiBase = (() => {
     } = parameters;
     const onComplete = useStableCallback(onCompleteParam);
     const runOnceAnimationsFinish = useAnimationsFinished(ref, open, batch);
-    React24.useEffect(() => {
+    React10.useEffect(() => {
       if (!enabled) {
         return void 0;
       }
@@ -2285,12 +1050,32 @@ var MiniUiBase = (() => {
     }, [enabled, open, onComplete, runOnceAnimationsFinish]);
   }
 
+  // node_modules/@base-ui/react/internals/stateAttributesMapping.mjs
+  init_define_import_meta_env();
+  var STARTING_HOOK = {
+    [startingStyle]: ""
+  };
+  var ENDING_HOOK = {
+    [endingStyle]: ""
+  };
+  var transitionStatusMapping = {
+    transitionStatus(value) {
+      if (value === "starting") {
+        return STARTING_HOOK;
+      }
+      if (value === "ending") {
+        return ENDING_HOOK;
+      }
+      return null;
+    }
+  };
+
   // node_modules/@base-ui/react/internals/useTransitionStatus.mjs
   init_define_import_meta_env();
-  var React25 = __toESM(require_react_shim(), 1);
+  var React11 = __toESM(require_react_shim(), 1);
   function useTransitionStatus(open, enableIdleState = false, deferEndingState = false, animateInitialOpen = false) {
-    const [transitionStatus, setTransitionStatus] = React25.useState(open && enableIdleState ? "idle" : void 0);
-    const [mounted, setMounted] = React25.useState(open && !animateInitialOpen);
+    const [transitionStatus, setTransitionStatus] = React11.useState(open && enableIdleState ? "idle" : void 0);
+    const [mounted, setMounted] = React11.useState(open && !animateInitialOpen);
     if (open && !mounted) {
       setMounted(true);
       setTransitionStatus("starting");
@@ -2344,28 +1129,1654 @@ var MiniUiBase = (() => {
     };
   }
 
-  // node_modules/@base-ui/react/internals/stateAttributesMapping.mjs
+  // node_modules/@base-ui/react/avatar/image/useImageLoadingStatus.mjs
   init_define_import_meta_env();
-  var STARTING_HOOK = {
-    [startingStyle]: ""
-  };
-  var ENDING_HOOK = {
-    [endingStyle]: ""
-  };
-  var transitionStatusMapping = {
-    transitionStatus(value) {
-      if (value === "starting") {
-        return STARTING_HOOK;
+  var React12 = __toESM(require_react_shim(), 1);
+
+  // node_modules/@base-ui/react/internals/noop.mjs
+  init_define_import_meta_env();
+
+  // node_modules/@base-ui/react/avatar/image/useImageLoadingStatus.mjs
+  function useImageLoadingStatus(src, {
+    referrerPolicy,
+    crossOrigin,
+    sizes,
+    srcSet
+  }, enabled) {
+    const state = React12.useState("idle");
+    const setLoadingStatus = state[1];
+    useIsoLayoutEffect(() => {
+      if (!enabled) {
+        return NOOP;
       }
-      if (value === "ending") {
-        return ENDING_HOOK;
+      if (!src && !srcSet) {
+        setLoadingStatus("error");
+        return NOOP;
       }
+      let isMounted = true;
+      const image = new window.Image();
+      const updateStatus = (status) => () => {
+        if (!isMounted) {
+          return;
+        }
+        setLoadingStatus(status);
+      };
+      setLoadingStatus("loading");
+      image.onload = updateStatus("loaded");
+      image.onerror = updateStatus("error");
+      if (referrerPolicy) {
+        image.referrerPolicy = referrerPolicy;
+      }
+      image.crossOrigin = crossOrigin ?? null;
+      if (sizes) {
+        image.sizes = sizes;
+      }
+      if (srcSet) {
+        image.srcset = srcSet;
+      }
+      if (src) {
+        image.src = src;
+      }
+      if (image.complete) {
+        setLoadingStatus(image.naturalWidth > 0 ? "loaded" : "error");
+      }
+      return () => {
+        isMounted = false;
+      };
+    }, [enabled, src, srcSet, sizes, crossOrigin, referrerPolicy, setLoadingStatus]);
+    return state;
+  }
+
+  // node_modules/@base-ui/react/avatar/image/AvatarImage.mjs
+  var stateAttributesMapping = {
+    ...avatarStateAttributesMapping,
+    ...transitionStatusMapping
+  };
+  var AvatarImage = /* @__PURE__ */ React13.forwardRef(function AvatarImage2(componentProps, forwardedRef) {
+    const {
+      className,
+      render,
+      onLoadingStatusChange: onLoadingStatusChangeProp,
+      keepMounted = false,
+      style,
+      // Split out so they can be applied after every other prop. React 17 and 18 set attributes in
+      // props order, and Safari and Firefox start fetching as soon as `src` lands, ignoring a
+      // `loading` or `srcSet` that arrives after it. React 19 orders these itself.
+      sizes,
+      srcSet,
+      src,
+      ...elementProps
+    } = componentProps;
+    const {
+      setImageLoadingStatus: setRootImageLoadingStatus
+    } = useAvatarRootContext();
+    const [imageLoadingStatus, setImageLoadingStatus] = useImageLoadingStatus(src, componentProps, !keepMounted);
+    const isVisible = imageLoadingStatus === "loaded";
+    const {
+      mounted,
+      transitionStatus,
+      setMounted
+    } = useTransitionStatus(isVisible);
+    const imageRef = React13.useRef(null);
+    const initialCommitRef = React13.useRef(true);
+    useIsoLayoutEffect(() => {
+      if (!keepMounted) {
+        return;
+      }
+      const isInitialCommit = initialCommitRef.current;
+      initialCommitRef.current = false;
+      const image = imageRef.current;
+      if (!image) {
+        return;
+      }
+      if (!image.complete) {
+        setImageLoadingStatus("loading");
+        return;
+      }
+      const status = image.naturalWidth > 0 ? "loaded" : "error";
+      setImageLoadingStatus(status);
+      if (status === "loaded" && isInitialCommit) {
+        setMounted(true);
+      }
+    }, [keepMounted, src, srcSet, sizes, elementProps.crossOrigin, elementProps.referrerPolicy, render, setImageLoadingStatus, setMounted]);
+    const renderedStatusProps = keepMounted ? {
+      // Presence no longer implies the image loaded, so the not-loaded states need their own
+      // styling hooks. Scoped to `keepMounted` so the default mode, where the element only
+      // exists once loaded, doesn't pick them up while it animates out.
+      "data-loading": imageLoadingStatus === "loading" ? "" : void 0,
+      "data-error": imageLoadingStatus === "error" ? "" : void 0,
+      // Until the image is displayable, the fallback owns the accessible name; without this
+      // both would be exposed to assistive technology at once (including in server HTML).
+      "aria-hidden": imageLoadingStatus !== "loaded" || void 0,
+      onLoad() {
+        setImageLoadingStatus("loaded");
+      },
+      onError() {
+        setImageLoadingStatus("error");
+      }
+    } : void 0;
+    const handleLoadingStatusChange = useStableCallback((status) => {
+      onLoadingStatusChangeProp?.(status);
+      setRootImageLoadingStatus(status);
+    });
+    useIsoLayoutEffect(() => {
+      if (imageLoadingStatus !== "idle") {
+        handleLoadingStatusChange(imageLoadingStatus);
+      }
+    }, [imageLoadingStatus, handleLoadingStatusChange]);
+    useIsoLayoutEffect(() => {
+      return () => setRootImageLoadingStatus("idle");
+    }, [setRootImageLoadingStatus]);
+    useOpenChangeComplete({
+      enabled: !isVisible,
+      open: isVisible,
+      ref: imageRef,
+      onComplete() {
+        if (!isVisible) {
+          setMounted(false);
+        }
+      }
+    });
+    const state = {
+      imageLoadingStatus,
+      // The element never unmounts with `keepMounted`, so an exit transition would play and then
+      // reverse itself once the status is cleared. `data-loading`/`data-error` cover that state.
+      transitionStatus: keepMounted && transitionStatus === "ending" ? void 0 : transitionStatus
+    };
+    const shouldRender = keepMounted || mounted;
+    const sourceProps = {};
+    if (sizes !== void 0) {
+      sourceProps.sizes = sizes;
+    }
+    if (srcSet !== void 0) {
+      sourceProps.srcSet = srcSet;
+    }
+    if (src !== void 0) {
+      sourceProps.src = src;
+    }
+    const element = useRenderElement("img", componentProps, {
+      state,
+      ref: [forwardedRef, imageRef],
+      props: [renderedStatusProps, elementProps, sourceProps],
+      stateAttributesMapping,
+      enabled: shouldRender
+    });
+    if (!shouldRender) {
       return null;
+    }
+    return element;
+  });
+  if (true) AvatarImage.displayName = "AvatarImage";
+
+  // node_modules/@base-ui/react/avatar/fallback/AvatarFallback.mjs
+  init_define_import_meta_env();
+  var React14 = __toESM(require_react_shim(), 1);
+
+  // node_modules/@base-ui/utils/useTimeout.mjs
+  init_define_import_meta_env();
+  var EMPTY2 = 0;
+  var Timeout = class _Timeout {
+    constructor() {
+      __publicField(this, "currentId", EMPTY2);
+      __publicField(this, "clear", () => {
+        if (this.currentId !== EMPTY2) {
+          clearTimeout(this.currentId);
+          this.currentId = EMPTY2;
+        }
+      });
+      __publicField(this, "disposeEffect", () => {
+        return this.clear;
+      });
+    }
+    static create() {
+      return new _Timeout();
+    }
+    /**
+     * Executes `fn` after `delay`, clearing any previously scheduled call.
+     */
+    start(delay, fn) {
+      this.clear();
+      this.currentId = setTimeout(() => {
+        this.currentId = EMPTY2;
+        fn();
+      }, delay);
+    }
+    isStarted() {
+      return this.currentId !== EMPTY2;
+    }
+  };
+  function useTimeout() {
+    const timeout = useRefWithInit(Timeout.create).current;
+    useOnMount(timeout.disposeEffect);
+    return timeout;
+  }
+
+  // node_modules/@base-ui/react/avatar/fallback/AvatarFallback.mjs
+  var AvatarFallback = /* @__PURE__ */ React14.forwardRef(function AvatarFallback2(componentProps, forwardedRef) {
+    const {
+      className,
+      render,
+      delay = 0,
+      style,
+      ...elementProps
+    } = componentProps;
+    const {
+      imageLoadingStatus
+    } = useAvatarRootContext();
+    const [delayPassed, setDelayPassed] = React14.useState(delay === 0);
+    const timeout = useTimeout();
+    React14.useEffect(() => {
+      if (delay > 0) {
+        timeout.start(delay, () => setDelayPassed(true));
+      } else {
+        setDelayPassed(true);
+      }
+      return timeout.clear;
+    }, [timeout, delay]);
+    const state = {
+      imageLoadingStatus
+    };
+    const element = useRenderElement("span", componentProps, {
+      state,
+      ref: forwardedRef,
+      props: elementProps,
+      stateAttributesMapping: avatarStateAttributesMapping,
+      enabled: imageLoadingStatus !== "loaded" && (delay === 0 || delayPassed)
+    });
+    return element;
+  });
+  if (true) AvatarFallback.displayName = "AvatarFallback";
+
+  // .design-sync/.cache/shadow/@mini-ui/base/dist/avatar.js
+  var o2 = {
+    root: "cjL2Cu5ew cBo57cSH2",
+    image: "c7YQoLYyq",
+    fallback: "cxq7Trpmg",
+    status: "czUrI8iEs",
+    active: "c5wCrZ8wu",
+    inactive: "cH1KskmLM"
+  };
+  var s2 = (e5) => {
+    let t6 = e5.trim().split(/\s+/u).filter(Boolean);
+    return `${t6.at(0)?.at(0) ?? ""}${t6.length > 1 ? t6.at(-1)?.at(0) ?? "" : ""}`.toLocaleUpperCase();
+  };
+  var c2 = {
+    userActive: "{{name}}, active",
+    userInactive: "{{name}}, inactive"
+  };
+  var l2 = cva(o2.status, { variants: { status: {
+    active: o2.active,
+    inactive: o2.inactive
+  } } });
+  var u2 = {
+    active: c2.userActive,
+    inactive: c2.userInactive
+  };
+  var d = (0, import_react3.forwardRef)(({ name: t6, src: i3, status: c6 = "none", ...d4 }, f3) => {
+    let p2 = u(), m2 = c6 === "none" ? t6 : p2(u2[c6], { name: t6 });
+    return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(index_parts_exports.Root, {
+      className: o2.root,
+      ...d4,
+      ref: f3,
+      "aria-label": m2,
+      role: "img",
+      children: [
+        i3 !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(index_parts_exports.Image, {
+          alt: "",
+          className: o2.image,
+          src: i3
+        }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(index_parts_exports.Fallback, {
+          "aria-hidden": true,
+          className: o2.fallback,
+          children: s2(t6)
+        }),
+        c6 !== "none" && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", {
+          "aria-hidden": true,
+          className: l2({ status: c6 })
+        })
+      ]
+    });
+  });
+  d.displayName = "Avatar";
+
+  // .design-sync/.cache/shadow/@mini-ui/base/dist/button.js
+  init_define_import_meta_env();
+  var import_react4 = __toESM(require_react_shim(), 1);
+  var import_jsx_runtime4 = __toESM(require_react_shim(), 1);
+
+  // node_modules/@base-ui/react/button/index.mjs
+  init_define_import_meta_env();
+
+  // node_modules/@base-ui/react/button/Button.mjs
+  init_define_import_meta_env();
+  var React18 = __toESM(require_react_shim(), 1);
+
+  // node_modules/@base-ui/react/internals/use-button/useButton.mjs
+  init_define_import_meta_env();
+  var React17 = __toESM(require_react_shim(), 1);
+
+  // node_modules/@floating-ui/utils/dist/floating-ui.utils.dom.mjs
+  init_define_import_meta_env();
+  function hasWindow() {
+    return typeof window !== "undefined";
+  }
+  function getWindow(node) {
+    var _node$ownerDocument;
+    return (node == null || (_node$ownerDocument = node.ownerDocument) == null ? void 0 : _node$ownerDocument.defaultView) || window;
+  }
+  function isHTMLElement(value) {
+    if (!hasWindow()) {
+      return false;
+    }
+    return value instanceof HTMLElement || value instanceof getWindow(value).HTMLElement;
+  }
+
+  // node_modules/@base-ui/utils/error.mjs
+  init_define_import_meta_env();
+  var error = createLogOnce("error", "Base UI");
+
+  // node_modules/@base-ui/react/internals/composite/root/CompositeRootContext.mjs
+  init_define_import_meta_env();
+  var React15 = __toESM(require_react_shim(), 1);
+  var CompositeRootContext = /* @__PURE__ */ React15.createContext(void 0);
+  if (true) CompositeRootContext.displayName = "CompositeRootContext";
+  function useCompositeRootContext(optional = false) {
+    const context = React15.useContext(CompositeRootContext);
+    if (context === void 0 && !optional) {
+      throw new Error(true ? "Base UI: CompositeRootContext is missing. Composite parts must be placed within <Composite.Root>." : formatErrorMessage_default(16));
+    }
+    return context;
+  }
+
+  // node_modules/@base-ui/react/utils/useFocusableWhenDisabled.mjs
+  init_define_import_meta_env();
+  var React16 = __toESM(require_react_shim(), 1);
+  function useFocusableWhenDisabled(parameters) {
+    const {
+      focusableWhenDisabled,
+      disabled: disabled2,
+      composite = false,
+      tabIndex: tabIndexProp = 0,
+      isNativeButton
+    } = parameters;
+    const isFocusableComposite = composite && focusableWhenDisabled !== false;
+    const isNonFocusableComposite = composite && focusableWhenDisabled === false;
+    const props = React16.useMemo(() => {
+      const additionalProps = {
+        // allow Tabbing away from focusableWhenDisabled elements
+        onKeyDown(event) {
+          if (disabled2 && focusableWhenDisabled && event.key !== "Tab") {
+            event.preventDefault();
+          }
+        }
+      };
+      if (!composite) {
+        additionalProps.tabIndex = tabIndexProp;
+        if (!isNativeButton && disabled2) {
+          additionalProps.tabIndex = focusableWhenDisabled ? tabIndexProp : -1;
+        }
+      }
+      if (isNativeButton && (focusableWhenDisabled || isFocusableComposite) || !isNativeButton && disabled2) {
+        additionalProps["aria-disabled"] = disabled2;
+      }
+      if (isNativeButton && (!focusableWhenDisabled || isNonFocusableComposite)) {
+        additionalProps.disabled = disabled2;
+      }
+      return additionalProps;
+    }, [composite, disabled2, focusableWhenDisabled, isFocusableComposite, isNonFocusableComposite, isNativeButton, tabIndexProp]);
+    return {
+      props
+    };
+  }
+
+  // node_modules/@base-ui/react/utils/dispatchClickWithModifiers.mjs
+  init_define_import_meta_env();
+
+  // node_modules/@base-ui/utils/owner.mjs
+  init_define_import_meta_env();
+  function ownerDocument(node) {
+    return node?.ownerDocument || document;
+  }
+
+  // node_modules/@base-ui/react/utils/dispatchClickWithModifiers.mjs
+  function dispatchClickWithModifiers(target, sourceEvent, {
+    detail = 0
+  } = {}) {
+    target.dispatchEvent(new (getWindow(target)).PointerEvent("click", {
+      bubbles: true,
+      cancelable: true,
+      composed: true,
+      detail,
+      shiftKey: sourceEvent.shiftKey,
+      ctrlKey: sourceEvent.ctrlKey,
+      altKey: sourceEvent.altKey,
+      metaKey: sourceEvent.metaKey
+    }));
+  }
+
+  // node_modules/@base-ui/react/internals/use-button/useButton.mjs
+  function useButton(parameters = {}) {
+    const {
+      disabled: disabled2 = false,
+      focusableWhenDisabled,
+      tabIndex = 0,
+      native: isNativeButton = true,
+      composite: compositeProp
+    } = parameters;
+    const elementRef = React17.useRef(null);
+    const compositeRootContext = useCompositeRootContext(true);
+    const isCompositeItem = compositeProp ?? compositeRootContext !== void 0;
+    const {
+      props: focusableWhenDisabledProps
+    } = useFocusableWhenDisabled({
+      focusableWhenDisabled,
+      disabled: disabled2,
+      composite: isCompositeItem,
+      tabIndex,
+      isNativeButton
+    });
+    if (true) {
+      React17.useEffect(() => {
+        if (!elementRef.current) {
+          return;
+        }
+        const isButtonTag = isButtonElement(elementRef.current);
+        if (isNativeButton) {
+          if (!isButtonTag) {
+            const ownerStackMessage = SafeReact.captureOwnerStack?.() || "";
+            const message = "A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.";
+            error(`${message}${ownerStackMessage}`);
+          }
+        } else if (isButtonTag) {
+          const ownerStackMessage = SafeReact.captureOwnerStack?.() || "";
+          const message = "A component that acts as a button expected a non-<button> because the `nativeButton` prop is false. Rendering a <button> keeps native behavior while Base UI applies non-native attributes and handlers, which can add unintended extra attributes (such as `role` or `aria-disabled`). Use a non-<button> in the `render` prop, or set `nativeButton` to `true`.";
+          error(`${message}${ownerStackMessage}`);
+        }
+      }, [isNativeButton]);
+    }
+    const updateDisabled = React17.useCallback(() => {
+      const element = elementRef.current;
+      if (!isButtonElement(element)) {
+        return;
+      }
+      if (isCompositeItem && disabled2 && focusableWhenDisabledProps.disabled === void 0 && element.disabled) {
+        element.disabled = false;
+      }
+    }, [disabled2, focusableWhenDisabledProps.disabled, isCompositeItem]);
+    useIsoLayoutEffect(updateDisabled, [updateDisabled]);
+    const getButtonProps = React17.useCallback((externalProps = {}) => {
+      const {
+        onClick: externalOnClick,
+        onMouseDown: externalOnMouseDown,
+        onKeyUp: externalOnKeyUp,
+        onKeyDown: externalOnKeyDown,
+        onPointerDown: externalOnPointerDown,
+        ...otherExternalProps
+      } = externalProps;
+      return mergeProps({
+        onClick(event) {
+          if (disabled2) {
+            event.preventDefault();
+            return;
+          }
+          externalOnClick?.(event);
+        },
+        onMouseDown(event) {
+          if (!disabled2) {
+            externalOnMouseDown?.(event);
+          }
+        },
+        onKeyDown(event) {
+          if (disabled2) {
+            return;
+          }
+          makeEventPreventable(event);
+          externalOnKeyDown?.(event);
+          if (event.baseUIHandlerPrevented) {
+            return;
+          }
+          const isCurrentTarget = event.target === event.currentTarget;
+          const currentTarget = event.currentTarget;
+          const isButton = isButtonElement(currentTarget);
+          const isLink = !isNativeButton && isValidLinkElement(currentTarget);
+          const shouldClick = isCurrentTarget && (isNativeButton ? isButton : !isLink);
+          const isEnterKey = event.key === "Enter";
+          const isSpaceKey = event.key === " ";
+          const role = currentTarget.getAttribute("role");
+          const isTextNavigationRole = role?.startsWith("menuitem") || role === "option" || role === "gridcell";
+          if (isCurrentTarget && isCompositeItem && isSpaceKey) {
+            if (event.defaultPrevented && isTextNavigationRole) {
+              return;
+            }
+            event.preventDefault();
+            if (!isNativeButton || isButton) {
+              event.preventBaseUIHandler();
+              dispatchClickWithModifiers(currentTarget, event);
+            }
+            return;
+          }
+          if (!shouldClick || isNativeButton || !isSpaceKey && !isEnterKey) {
+            if (isCurrentTarget && isLink && isSpaceKey) {
+              event.preventDefault();
+            }
+            return;
+          }
+          if (event.defaultPrevented) {
+            return;
+          }
+          event.preventDefault();
+          if (isEnterKey) {
+            event.preventBaseUIHandler();
+            dispatchClickWithModifiers(currentTarget, event);
+          }
+        },
+        onKeyUp(event) {
+          if (disabled2) {
+            return;
+          }
+          makeEventPreventable(event);
+          externalOnKeyUp?.(event);
+          if (event.target === event.currentTarget && isNativeButton && isCompositeItem && isButtonElement(event.currentTarget) && event.key === " ") {
+            event.preventDefault();
+            return;
+          }
+          if (event.baseUIHandlerPrevented) {
+            return;
+          }
+          if (event.target === event.currentTarget && !isNativeButton && !isCompositeItem && !event.defaultPrevented && event.key === " ") {
+            event.preventBaseUIHandler();
+            dispatchClickWithModifiers(event.currentTarget, event);
+          }
+        },
+        onPointerDown(event) {
+          if (disabled2) {
+            event.preventDefault();
+            return;
+          }
+          externalOnPointerDown?.(event);
+        }
+      }, isNativeButton ? {
+        type: "button"
+      } : {
+        role: "button"
+      }, focusableWhenDisabledProps, otherExternalProps);
+    }, [disabled2, focusableWhenDisabledProps, isCompositeItem, isNativeButton]);
+    const buttonRef = useStableCallback((element) => {
+      elementRef.current = element;
+      updateDisabled();
+    });
+    return {
+      getButtonProps,
+      buttonRef
+    };
+  }
+  function isButtonElement(elem) {
+    return isHTMLElement(elem) && elem.tagName === "BUTTON";
+  }
+  function isValidLinkElement(elem) {
+    return isHTMLElement(elem) && elem.tagName === "A" && Boolean(elem.href);
+  }
+
+  // node_modules/@base-ui/react/button/Button.mjs
+  var Button = /* @__PURE__ */ React18.forwardRef(function Button2(componentProps, forwardedRef) {
+    const {
+      render,
+      className,
+      disabled: disabled2 = false,
+      focusableWhenDisabled = false,
+      nativeButton = true,
+      style,
+      ...elementProps
+    } = componentProps;
+    const {
+      getButtonProps,
+      buttonRef
+    } = useButton({
+      disabled: disabled2,
+      focusableWhenDisabled,
+      native: nativeButton
+    });
+    const state = {
+      disabled: disabled2
+    };
+    return useRenderElement("button", componentProps, {
+      state,
+      ref: [forwardedRef, buttonRef],
+      props: [elementProps, getButtonProps]
+    });
+  });
+  if (true) Button.displayName = "Button";
+
+  // .design-sync/.cache/shadow/@mini-ui/base/dist/button.js
+  var c3 = (0, import_react4.createContext)(null);
+  var l3 = {
+    root: "cCR7RV7b8",
+    sm: "c5cEDp7cI",
+    md: "cH9hYZici",
+    full: "ck8WyplTX",
+    positive: "c1KZLCItE",
+    danger: "cub676zv2",
+    automation: "cgtmURIaQ",
+    neutral: "cTsqGa6eu",
+    primary: "cFH1stVMW",
+    secondary: "cwbwtnj2n",
+    tertiary: "cbVXVI4tp",
+    grouped: "crTlI9bBW",
+    spinner: "ckdoDUfTw",
+    letter: "cMXj7lhsF",
+    "spinner-letter": "cVwqPIwn5",
+    sweepLeft: "c2fg5ZWnu",
+    sweepRight: "cMjI5DoDP",
+    "spinner-sweep-left": "cdE3gg4aU",
+    "spinner-sweep-right": "cryxDFUEB"
+  };
+  var u3 = () => {
+    let e5 = (0, import_react4.useId)().replace(/:/g, "");
+    return /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("svg", {
+      "aria-hidden": "true",
+      className: l3.spinner,
+      fill: "currentColor",
+      focusable: "false",
+      viewBox: "0 0 38 24",
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("defs", { children: [/* @__PURE__ */ (0, import_jsx_runtime4.jsx)("mask", {
+          id: `${e5}-left`,
+          maskUnits: "userSpaceOnUse",
+          x: -10,
+          y: -10,
+          width: 58,
+          height: 44,
+          children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("rect", {
+            className: l3.sweepLeft,
+            x: 19,
+            y: -40,
+            width: 60,
+            height: 104,
+            fill: "white"
+          })
+        }), /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("mask", {
+          id: `${e5}-right`,
+          maskUnits: "userSpaceOnUse",
+          x: -10,
+          y: -10,
+          width: 58,
+          height: 44,
+          children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("rect", {
+            className: l3.sweepRight,
+            x: -41,
+            y: -40,
+            width: 60,
+            height: 104,
+            fill: "white"
+          })
+        })] }),
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("path", {
+          className: l3.letter,
+          d: "M13.05 8.52h4.4v9.4h3.4v-9.4h4.4v-2.7h-12.2z"
+        }),
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("path", {
+          mask: `url(#${e5}-left)`,
+          d: "M15.09 22.52c.55.08 1.12.15 1.69.19-.57-.05-1.15-.1-1.69-.19M4.75 14a7 7 0 0 1 3.3-5.6V3.12c-4.2 2-6.9 5.1-6.9 8.7C1.15 17 7.08 21.36 15 22.51 9 21.4 4.75 18 4.75 14"
+        }),
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("path", {
+          mask: `url(#${e5}-right)`,
+          d: "M23.06 1.29l.63.1-.34-.07ZM23.69 1.39c5.72 1.07 9.86 4.41 9.86 8.33 0 .53 0 3.23-3.37 5.73v5.3c6.8-3.18 7-7.75 7-8.73-.03-5.13-5.78-9.4-13.49-10.63"
+        })
+      ]
+    });
+  };
+  var d2 = cva(l3.root, {
+    variants: {
+      variant: {
+        primary: l3.primary,
+        secondary: l3.secondary,
+        tertiary: l3.tertiary
+      },
+      intent: {
+        positive: l3.positive,
+        danger: l3.danger,
+        neutral: l3.neutral,
+        automation: l3.automation
+      },
+      size: {
+        sm: l3.sm,
+        md: l3.md
+      },
+      width: {
+        auto: null,
+        full: l3.full
+      },
+      grouped: {
+        true: l3.grouped,
+        false: null
+      }
+    },
+    defaultVariants: {
+      variant: "primary",
+      intent: "positive",
+      size: "md",
+      width: "auto"
+    }
+  });
+  var f = (0, import_react4.forwardRef)(({ variant: e5, intent: t6, size: r7, width: o5, loading: l6 = false, children: f3, onClick: p2, ...m2 }, h2) => {
+    let g = (0, import_react4.useContext)(c3) !== null;
+    return /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(Button, {
+      className: d2({
+        variant: e5,
+        intent: t6,
+        size: r7,
+        width: o5,
+        grouped: g
+      }),
+      ...m2,
+      "aria-busy": l6 || void 0,
+      "data-loading": l6 ? "" : void 0,
+      onClick: (e6) => {
+        l6 || p2?.(e6);
+      },
+      ref: h2,
+      children: [f3, l6 && /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(u3, {})]
+    });
+  });
+  f.displayName = "Button";
+
+  // .design-sync/.cache/shadow/@mini-ui/base/dist/checkbox.js
+  init_define_import_meta_env();
+  var import_react5 = __toESM(require_react_shim(), 1);
+  var import_jsx_runtime6 = __toESM(require_react_shim(), 1);
+
+  // node_modules/@base-ui/react/checkbox/index.mjs
+  init_define_import_meta_env();
+
+  // node_modules/@base-ui/react/checkbox/index.parts.mjs
+  var index_parts_exports2 = {};
+  __export(index_parts_exports2, {
+    Indicator: () => CheckboxIndicator,
+    Root: () => CheckboxRoot
+  });
+  init_define_import_meta_env();
+
+  // node_modules/@base-ui/react/checkbox/root/CheckboxRoot.mjs
+  init_define_import_meta_env();
+  var React30 = __toESM(require_react_shim(), 1);
+
+  // node_modules/@base-ui/utils/useControlled.mjs
+  init_define_import_meta_env();
+  var React19 = __toESM(require_react_shim(), 1);
+  function useControlled({
+    controlled,
+    default: defaultProp,
+    name,
+    state = "value"
+  }) {
+    const {
+      current: isControlled
+    } = React19.useRef(controlled !== void 0);
+    const [valueState, setValue] = React19.useState(defaultProp);
+    const value = isControlled && controlled !== void 0 ? controlled : valueState;
+    if (true) {
+      React19.useEffect(() => {
+        if (isControlled !== (controlled !== void 0)) {
+          error([`A component is changing the ${isControlled ? "" : "un"}controlled ${state} state of ${name} to be ${isControlled ? "un" : ""}controlled.`, "Elements should not switch from uncontrolled to controlled (or vice versa).", `Decide between using a controlled or uncontrolled ${name} element for the lifetime of the component.`, "The nature of the state is determined during the first render. It's considered controlled if the value is not `undefined`.", "More info: https://fb.me/react-controlled-components"].join("\n"));
+        }
+      }, [state, name, controlled]);
+      const {
+        current: defaultValue
+      } = React19.useRef(defaultProp);
+      React19.useEffect(() => {
+        if (!isControlled && serializeToDevModeString(defaultValue) !== serializeToDevModeString(defaultProp)) {
+          error([`A component is changing the default ${state} state of an uncontrolled ${name} after being initialized. To suppress this warning opt to use a controlled ${name}.`].join("\n"));
+        }
+      }, [defaultProp]);
+    }
+    const setValueIfUncontrolled = React19.useCallback((newValue) => {
+      if (!isControlled) {
+        setValue(newValue);
+      }
+    }, []);
+    return [value, setValueIfUncontrolled];
+  }
+  function serializeToDevModeString(input) {
+    let nextId = 0;
+    const seen = /* @__PURE__ */ new WeakMap();
+    try {
+      const result = JSON.stringify(input, function replacer(key, value) {
+        if (key === "_owner" && this != null && typeof this === "object" && "$$typeof" in this) {
+          return void 0;
+        }
+        if (typeof value === "bigint") {
+          return `__bigint__:${value}`;
+        }
+        if (value !== null && typeof value === "object") {
+          const id = seen.get(value);
+          if (id !== void 0) {
+            return `__object__:${id}`;
+          }
+          seen.set(value, nextId);
+          nextId += 1;
+        }
+        return value;
+      });
+      return result ?? `__top__:${typeof input}`;
+    } catch {
+      return "__unserializable__";
+    }
+  }
+
+  // node_modules/@base-ui/utils/visuallyHidden.mjs
+  init_define_import_meta_env();
+  var visuallyHiddenBase = {
+    clipPath: "inset(50%)",
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+    border: 0,
+    padding: 0,
+    width: 1,
+    height: 1,
+    margin: -1
+  };
+  var visuallyHidden = {
+    ...visuallyHiddenBase,
+    position: "fixed",
+    top: 0,
+    left: 0
+  };
+  var visuallyHiddenInput = {
+    ...visuallyHiddenBase,
+    position: "absolute"
+  };
+
+  // node_modules/@base-ui/utils/getDefaultFormSubmitter.mjs
+  init_define_import_meta_env();
+  function getDefaultFormSubmitter(form) {
+    if (!form) {
+      return null;
+    }
+    for (const candidate of form.elements) {
+      const tagName = candidate.tagName;
+      if (tagName === "BUTTON" || tagName === "INPUT") {
+        const button = candidate;
+        if (button.type === "submit") {
+          return button;
+        }
+      }
+    }
+    return null;
+  }
+
+  // node_modules/@base-ui/react/checkbox/utils/getCheckboxStateAttributesMapping.mjs
+  init_define_import_meta_env();
+
+  // node_modules/@base-ui/react/internals/field-constants/constants.mjs
+  init_define_import_meta_env();
+
+  // node_modules/@base-ui/react/field/control/FieldControlDataAttributes.mjs
+  init_define_import_meta_env();
+  var valid = "data-valid";
+  var invalid = "data-invalid";
+
+  // node_modules/@base-ui/react/internals/field-constants/constants.mjs
+  var DEFAULT_VALIDITY_STATE = {
+    badInput: false,
+    customError: false,
+    patternMismatch: false,
+    rangeOverflow: false,
+    rangeUnderflow: false,
+    stepMismatch: false,
+    tooLong: false,
+    tooShort: false,
+    typeMismatch: false,
+    valid: null,
+    valueMissing: false
+  };
+  var DEFAULT_FIELD_STATE_ATTRIBUTES = {
+    valid: null,
+    touched: false,
+    dirty: false,
+    filled: false,
+    focused: false
+  };
+  var DEFAULT_FIELD_ROOT_STATE = {
+    disabled: false,
+    ...DEFAULT_FIELD_STATE_ATTRIBUTES
+  };
+  var fieldValidityMapping = {
+    valid(value) {
+      if (value === null) {
+        return null;
+      }
+      if (value) {
+        return {
+          [valid]: ""
+        };
+      }
+      return {
+        [invalid]: ""
+      };
     }
   };
 
+  // node_modules/@base-ui/react/checkbox/root/CheckboxRootDataAttributes.mjs
+  init_define_import_meta_env();
+  var checked = "data-checked";
+  var unchecked = "data-unchecked";
+
+  // node_modules/@base-ui/react/checkbox/utils/getCheckboxStateAttributesMapping.mjs
+  function getCheckboxStateAttributesMapping(state) {
+    return {
+      checked(value) {
+        if (state.indeterminate) {
+          return {};
+        }
+        if (value) {
+          return {
+            [checked]: ""
+          };
+        }
+        return {
+          [unchecked]: ""
+        };
+      },
+      ...fieldValidityMapping
+    };
+  }
+
+  // node_modules/@base-ui/react/internals/useBaseUiId.mjs
+  init_define_import_meta_env();
+
+  // node_modules/@base-ui/utils/useId.mjs
+  init_define_import_meta_env();
+  var React20 = __toESM(require_react_shim(), 1);
+  var globalId = 0;
+  function useGlobalId(idOverride, prefix = "mui") {
+    const [defaultId, setDefaultId] = React20.useState(idOverride);
+    const id = idOverride || defaultId;
+    React20.useEffect(() => {
+      if (defaultId == null) {
+        globalId += 1;
+        setDefaultId(`${prefix}-${globalId}`);
+      }
+    }, [defaultId, prefix]);
+    return id;
+  }
+  var maybeReactUseId = SafeReact.useId;
+  function useId(idOverride, prefix) {
+    if (maybeReactUseId !== void 0) {
+      const reactId = maybeReactUseId();
+      return idOverride ?? (prefix ? `${prefix}-${reactId}` : reactId);
+    }
+    return useGlobalId(idOverride, prefix);
+  }
+
+  // node_modules/@base-ui/react/internals/useBaseUiId.mjs
+  function useBaseUiId(idOverride) {
+    return useId(idOverride, "base-ui");
+  }
+
+  // node_modules/@base-ui/react/internals/field-root-context/FieldRootContext.mjs
+  init_define_import_meta_env();
+  var React21 = __toESM(require_react_shim(), 1);
+  var DEFAULT_FIELD_ROOT_CONTEXT = {
+    invalid: void 0,
+    name: void 0,
+    validityData: {
+      state: DEFAULT_VALIDITY_STATE,
+      errors: [],
+      error: "",
+      value: "",
+      initialValue: null
+    },
+    setValidityData: NOOP,
+    disabled: void 0,
+    setTouched: NOOP,
+    setDirty: NOOP,
+    setFilled: NOOP,
+    setFocused: NOOP,
+    validationMode: "onSubmit",
+    shouldValidateOnChange: () => false,
+    state: DEFAULT_FIELD_ROOT_STATE,
+    registerFieldControl: NOOP,
+    validation: {
+      getValidationProps: (_disabled, props = EMPTY_OBJECT) => props,
+      inputRef: {
+        current: null
+      },
+      registeredInputs: /* @__PURE__ */ new Map(),
+      registerInput: NOOP,
+      getInputControl: () => null,
+      commit: async () => {
+      },
+      change: NOOP
+    }
+  };
+  var FieldRootContext = /* @__PURE__ */ React21.createContext(DEFAULT_FIELD_ROOT_CONTEXT);
+  if (true) FieldRootContext.displayName = "FieldRootContext";
+  function useFieldRootContext(optional = true) {
+    const context = React21.useContext(FieldRootContext);
+    if (context.setValidityData === NOOP && !optional) {
+      throw new Error(true ? "Base UI: FieldRootContext is missing. Field parts must be placed within <Field.Root>." : formatErrorMessage_default(28));
+    }
+    return context;
+  }
+
+  // node_modules/@base-ui/react/internals/field-register-control/useRegisterFieldControl.mjs
+  init_define_import_meta_env();
+  function useRegisterFieldControl(controlRef, id, value, getFormValueOverride, enabled = true, name) {
+    const {
+      registerFieldControl
+    } = useFieldRootContext();
+    const sourceRef = useRefWithInit(() => /* @__PURE__ */ Symbol());
+    useIsoLayoutEffect(() => {
+      const source = sourceRef.current;
+      if (!enabled) {
+        registerFieldControl(source, void 0);
+        return;
+      }
+      const registration = {
+        controlRef,
+        getValue: getFormValueOverride,
+        id,
+        name,
+        value
+      };
+      registerFieldControl(source, registration);
+    }, [controlRef, enabled, getFormValueOverride, id, name, registerFieldControl, sourceRef, value]);
+    useIsoLayoutEffect(() => {
+      const source = sourceRef.current;
+      return () => {
+        registerFieldControl(source, void 0);
+      };
+    }, [registerFieldControl, sourceRef]);
+  }
+
+  // node_modules/@base-ui/react/field/item/FieldItemContext.mjs
+  init_define_import_meta_env();
+  var React22 = __toESM(require_react_shim(), 1);
+  var FieldItemContext = /* @__PURE__ */ React22.createContext({
+    disabled: false
+  });
+  if (true) FieldItemContext.displayName = "FieldItemContext";
+  function useFieldItemContext() {
+    const context = React22.useContext(FieldItemContext);
+    return context;
+  }
+
+  // node_modules/@base-ui/react/internals/form-context/FormContext.mjs
+  init_define_import_meta_env();
+  var React23 = __toESM(require_react_shim(), 1);
+  var FormContext = /* @__PURE__ */ React23.createContext({
+    elementRef: {
+      current: null
+    },
+    formRef: {
+      current: {
+        fields: /* @__PURE__ */ new Map()
+      }
+    },
+    errors: {},
+    clearErrors: NOOP,
+    validationMode: "onSubmit",
+    submitCountRef: {
+      current: 0
+    }
+  });
+  if (true) FormContext.displayName = "FormContext";
+  function useFormContext() {
+    return React23.useContext(FormContext);
+  }
+
+  // node_modules/@base-ui/react/internals/labelable-provider/LabelableContext.mjs
+  init_define_import_meta_env();
+  var React24 = __toESM(require_react_shim(), 1);
+  var LabelableContext = /* @__PURE__ */ React24.createContext({
+    controlId: void 0,
+    registerControlId: NOOP,
+    resetControlId: NOOP,
+    labelId: void 0,
+    setLabelId: NOOP,
+    messageIds: [],
+    setMessageIds: NOOP,
+    getDescriptionProps: (externalProps) => externalProps
+  });
+  if (true) LabelableContext.displayName = "LabelableContext";
+  function useLabelableContext() {
+    return React24.useContext(LabelableContext);
+  }
+
+  // node_modules/@base-ui/react/internals/labelable-provider/useAriaLabelledBy.mjs
+  init_define_import_meta_env();
+  var React25 = __toESM(require_react_shim(), 1);
+  function useAriaLabelledBy(explicitAriaLabelledBy, labelId, labelSourceRef, enableFallback = true, labelSourceId) {
+    const [fallbackAriaLabelledBy, setFallbackAriaLabelledBy] = React25.useState();
+    const generatedLabelId = useBaseUiId(labelSourceId ? `${labelSourceId}-label` : void 0);
+    const ariaLabelledBy = explicitAriaLabelledBy ?? labelId ?? fallbackAriaLabelledBy;
+    useIsoLayoutEffect(() => {
+      const nextAriaLabelledBy = explicitAriaLabelledBy || labelId || !enableFallback ? void 0 : getAriaLabelledBy(labelSourceRef.current, generatedLabelId);
+      if (fallbackAriaLabelledBy !== nextAriaLabelledBy) {
+        setFallbackAriaLabelledBy(nextAriaLabelledBy);
+      }
+    });
+    return ariaLabelledBy;
+  }
+  function getAriaLabelledBy(labelSource, generatedLabelId) {
+    const label = findAssociatedLabel(labelSource);
+    if (!label) {
+      return void 0;
+    }
+    if (!label.id && generatedLabelId) {
+      label.id = generatedLabelId;
+    }
+    return label.id || void 0;
+  }
+  function findAssociatedLabel(labelSource) {
+    if (!labelSource) {
+      return void 0;
+    }
+    const parent = labelSource.parentElement;
+    if (parent && parent.tagName === "LABEL") {
+      return parent;
+    }
+    const controlId = labelSource.id;
+    if (controlId) {
+      const nextSibling = labelSource.nextElementSibling;
+      if (nextSibling && nextSibling.htmlFor === controlId) {
+        return nextSibling;
+      }
+    }
+    const labels = labelSource.labels;
+    return labels && labels[0];
+  }
+
+  // node_modules/@base-ui/react/internals/labelable-provider/useLabelableId.mjs
+  init_define_import_meta_env();
+  var React26 = __toESM(require_react_shim(), 1);
+  function useLabelableId(params = {}) {
+    const {
+      id,
+      enabled = true
+    } = params;
+    const {
+      controlId,
+      registerControlId,
+      resetControlId
+    } = useLabelableContext();
+    const defaultId = useBaseUiId();
+    const controlSourceRef = useRefWithInit(() => /* @__PURE__ */ Symbol());
+    const hasRegisteredRef = React26.useRef(false);
+    const hadExplicitIdRef = React26.useRef(false);
+    const unregisterControlId = useStableCallback(() => {
+      if (!hasRegisteredRef.current || registerControlId === NOOP) {
+        return;
+      }
+      hasRegisteredRef.current = false;
+      registerControlId(controlSourceRef.current, void 0);
+    });
+    useIsoLayoutEffect(() => {
+      if (!enabled || registerControlId === NOOP) {
+        unregisterControlId();
+        return void 0;
+      }
+      let nextId;
+      if (id !== void 0) {
+        hadExplicitIdRef.current = true;
+        nextId = id;
+      } else if (hadExplicitIdRef.current) {
+        nextId = defaultId;
+      } else {
+        resetControlId();
+        return void 0;
+      }
+      if (nextId === void 0) {
+        unregisterControlId();
+        return void 0;
+      }
+      hasRegisteredRef.current = true;
+      registerControlId(controlSourceRef.current, nextId);
+      return void 0;
+    }, [id, enabled, registerControlId, resetControlId, defaultId, controlSourceRef, unregisterControlId]);
+    useIsoLayoutEffect(() => {
+      return unregisterControlId;
+    }, [unregisterControlId]);
+    return (enabled ? controlId : void 0) ?? id ?? defaultId;
+  }
+
+  // node_modules/@base-ui/react/checkbox-group/CheckboxGroupContext.mjs
+  init_define_import_meta_env();
+  var React27 = __toESM(require_react_shim(), 1);
+  var CheckboxGroupContext = /* @__PURE__ */ React27.createContext(void 0);
+  if (true) CheckboxGroupContext.displayName = "CheckboxGroupContext";
+  function useCheckboxGroupContext() {
+    return React27.useContext(CheckboxGroupContext);
+  }
+
+  // node_modules/@base-ui/react/checkbox/root/CheckboxRootContext.mjs
+  init_define_import_meta_env();
+  var React28 = __toESM(require_react_shim(), 1);
+  var CheckboxRootContext = /* @__PURE__ */ React28.createContext(void 0);
+  if (true) CheckboxRootContext.displayName = "CheckboxRootContext";
+  function useCheckboxRootContext() {
+    const context = React28.useContext(CheckboxRootContext);
+    if (context === void 0) {
+      throw new Error(true ? "Base UI: CheckboxRootContext is missing. Checkbox parts must be placed within <Checkbox.Root>." : formatErrorMessage_default(14));
+    }
+    return context;
+  }
+
+  // node_modules/@base-ui/react/internals/createBaseUIEventDetails.mjs
+  init_define_import_meta_env();
+
+  // node_modules/@base-ui/react/internals/reasons.mjs
+  init_define_import_meta_env();
+
+  // node_modules/@base-ui/react/internals/reason-parts.mjs
+  var reason_parts_exports = {};
+  __export(reason_parts_exports, {
+    cancelOpen: () => cancelOpen,
+    chipRemovePress: () => chipRemovePress,
+    clearPress: () => clearPress,
+    closePress: () => closePress,
+    closeWatcher: () => closeWatcher,
+    decrementPress: () => decrementPress,
+    disabled: () => disabled,
+    drag: () => drag,
+    escapeKey: () => escapeKey,
+    focusOut: () => focusOut,
+    imperativeAction: () => imperativeAction,
+    incrementPress: () => incrementPress,
+    initial: () => initial,
+    inputBlur: () => inputBlur,
+    inputChange: () => inputChange,
+    inputClear: () => inputClear,
+    inputPaste: () => inputPaste,
+    inputPress: () => inputPress,
+    itemPress: () => itemPress,
+    keyboard: () => keyboard,
+    linkPress: () => linkPress,
+    listNavigation: () => listNavigation,
+    missing: () => missing,
+    none: () => none,
+    outsidePress: () => outsidePress,
+    pointer: () => pointer,
+    scrub: () => scrub,
+    siblingOpen: () => siblingOpen,
+    swipe: () => swipe,
+    trackPress: () => trackPress,
+    triggerFocus: () => triggerFocus,
+    triggerHover: () => triggerHover,
+    triggerPress: () => triggerPress,
+    wheel: () => wheel,
+    windowResize: () => windowResize
+  });
+  init_define_import_meta_env();
+  var none = "none";
+  var triggerPress = "trigger-press";
+  var triggerHover = "trigger-hover";
+  var triggerFocus = "trigger-focus";
+  var outsidePress = "outside-press";
+  var itemPress = "item-press";
+  var closePress = "close-press";
+  var linkPress = "link-press";
+  var clearPress = "clear-press";
+  var chipRemovePress = "chip-remove-press";
+  var trackPress = "track-press";
+  var incrementPress = "increment-press";
+  var decrementPress = "decrement-press";
+  var inputChange = "input-change";
+  var inputClear = "input-clear";
+  var inputBlur = "input-blur";
+  var inputPaste = "input-paste";
+  var inputPress = "input-press";
+  var focusOut = "focus-out";
+  var escapeKey = "escape-key";
+  var closeWatcher = "close-watcher";
+  var listNavigation = "list-navigation";
+  var keyboard = "keyboard";
+  var pointer = "pointer";
+  var drag = "drag";
+  var wheel = "wheel";
+  var scrub = "scrub";
+  var cancelOpen = "cancel-open";
+  var siblingOpen = "sibling-open";
+  var disabled = "disabled";
+  var missing = "missing";
+  var initial = "initial";
+  var imperativeAction = "imperative-action";
+  var swipe = "swipe";
+  var windowResize = "window-resize";
+
+  // node_modules/@base-ui/react/internals/createBaseUIEventDetails.mjs
+  function createChangeEventDetails(reason, event, trigger, customProperties) {
+    let canceled = false;
+    let allowPropagation = false;
+    const custom = customProperties ?? EMPTY_OBJECT;
+    const details = {
+      reason,
+      event: event ?? new Event("base-ui"),
+      cancel() {
+        canceled = true;
+      },
+      allowPropagation() {
+        allowPropagation = true;
+      },
+      get isCanceled() {
+        return canceled;
+      },
+      get isPropagationAllowed() {
+        return allowPropagation;
+      },
+      trigger,
+      ...custom
+    };
+    return details;
+  }
+
+  // node_modules/@base-ui/react/internals/useValueChanged.mjs
+  init_define_import_meta_env();
+  var React29 = __toESM(require_react_shim(), 1);
+  function useValueChanged(value, onChange) {
+    const valueRef = React29.useRef(value);
+    const onChangeCallback = useStableCallback(onChange);
+    useIsoLayoutEffect(() => {
+      if (valueRef.current !== value) {
+        onChangeCallback(valueRef.current);
+      }
+      valueRef.current = value;
+    }, [value, onChangeCallback]);
+  }
+
+  // node_modules/@base-ui/react/checkbox/root/CheckboxRoot.mjs
+  var import_jsx_runtime5 = __toESM(require_react_shim(), 1);
+  var PARENT_CHECKBOX = "data-parent";
+  var CheckboxRoot = /* @__PURE__ */ React30.forwardRef(function CheckboxRoot2(componentProps, forwardedRef) {
+    const {
+      checked: checkedProp,
+      className,
+      defaultChecked = false,
+      "aria-labelledby": ariaLabelledByProp,
+      disabled: disabledProp = false,
+      form,
+      id: idProp,
+      indeterminate = false,
+      inputRef: inputRefProp,
+      name: nameProp,
+      onCheckedChange,
+      parent = false,
+      readOnly = false,
+      render,
+      required = false,
+      uncheckedValue,
+      value: valueProp,
+      nativeButton = false,
+      style,
+      ...elementProps
+    } = componentProps;
+    const {
+      clearErrors
+    } = useFormContext();
+    const {
+      disabled: rootDisabled,
+      name: fieldName,
+      setDirty,
+      setFilled,
+      setFocused,
+      setTouched,
+      state: fieldState,
+      validationMode,
+      validityData,
+      validation: localValidation
+    } = useFieldRootContext();
+    const fieldItemContext = useFieldItemContext();
+    const {
+      labelId,
+      registerControlId,
+      getDescriptionProps
+    } = useLabelableContext();
+    const groupContext = useCheckboxGroupContext();
+    const parentContext = groupContext?.allValues === void 0 ? void 0 : groupContext.parent;
+    const isGroupedWithParent = parentContext !== void 0;
+    const disabled2 = rootDisabled || fieldItemContext.disabled || groupContext?.disabled || disabledProp;
+    const name = fieldName ?? nameProp;
+    const value = valueProp ?? name;
+    const id = useBaseUiId();
+    const ownsControlId = groupContext?.registerControlId !== registerControlId;
+    const controlId = useLabelableId({
+      id: idProp || void 0,
+      enabled: ownsControlId
+    });
+    const rootId = nativeButton ? controlId : id;
+    let groupProps = {};
+    if (isGroupedWithParent) {
+      if (parent) {
+        groupProps = parentContext.getParentProps();
+      } else if (value !== void 0) {
+        groupProps = parentContext.getChildProps(value);
+      }
+    }
+    const {
+      checked: groupChecked = checkedProp,
+      indeterminate: groupIndeterminate = indeterminate,
+      onCheckedChange: groupOnChange,
+      ...otherGroupProps
+    } = groupProps;
+    const groupValue = groupContext?.value;
+    const controlRef = React30.useRef(null);
+    const {
+      getButtonProps,
+      buttonRef
+    } = useButton({
+      disabled: disabled2,
+      native: nativeButton
+    });
+    const validation = groupContext?.validation ?? localValidation;
+    const [checked2, setCheckedState] = useControlled({
+      controlled: value !== void 0 && groupValue !== void 0 && !parent ? groupValue.includes(value) : groupChecked,
+      default: defaultChecked,
+      name: "Checkbox",
+      state: "checked"
+    });
+    const computedChecked = isGroupedWithParent ? Boolean(groupChecked) : checked2;
+    const computedIndeterminate = isGroupedWithParent ? groupIndeterminate || indeterminate : indeterminate;
+    useRegisterFieldControl(controlRef, id, checked2, void 0, !groupContext && !disabled2, nameProp);
+    const registerChildId = parentContext?.registerChildId;
+    const inputRef = React30.useRef(null);
+    const registerFieldInput = validation.registerInput;
+    const registeredInputValue = groupContext ? value : void 0;
+    const registerInput = React30.useCallback((element2) => registerFieldInput(element2, {
+      controlRef,
+      value: registeredInputValue
+    }), [registerFieldInput, registeredInputValue]);
+    const mergedInputRef = useMergedRefs(inputRefProp, inputRef, parent ? void 0 : registerInput);
+    const ariaLabelledBy = useAriaLabelledBy(ariaLabelledByProp, labelId, inputRef, !nativeButton, controlId);
+    useIsoLayoutEffect(() => {
+      if (inputRef.current) {
+        inputRef.current.indeterminate = computedIndeterminate;
+      }
+      if (!groupContext) {
+        setFilled(checked2);
+      }
+    }, [checked2, computedIndeterminate, groupContext, setFilled]);
+    useValueChanged(checked2, () => {
+      if (groupContext) {
+        return;
+      }
+      clearErrors(name);
+      setDirty(checked2 !== validityData.initialValue);
+      validation.change(checked2);
+    });
+    const inputProps = mergeProps(
+      {
+        checked: checked2,
+        disabled: disabled2,
+        form,
+        // parent checkboxes unset `name` to be excluded from form submission
+        name: parent ? void 0 : name,
+        // Set `id` to stop Chrome warning about an unassociated input.
+        // When using a native button, the `id` is applied to the button instead.
+        id: nativeButton ? void 0 : controlId,
+        required,
+        ref: mergedInputRef,
+        style: name ? visuallyHiddenInput : visuallyHidden,
+        tabIndex: -1,
+        type: "checkbox",
+        "aria-hidden": true,
+        onChange(event) {
+          if (event.nativeEvent.defaultPrevented) {
+            return;
+          }
+          if (readOnly) {
+            event.preventDefault();
+            return;
+          }
+          const nextChecked = event.currentTarget.checked;
+          const details = createChangeEventDetails(reason_parts_exports.none, event.nativeEvent);
+          onCheckedChange?.(nextChecked, details);
+          if (details.isCanceled) {
+            return;
+          }
+          groupOnChange?.(nextChecked, details);
+          if (details.isCanceled) {
+            return;
+          }
+          setCheckedState(nextChecked);
+          if (value !== void 0 && groupContext !== void 0 && !parent && !isGroupedWithParent) {
+            const nextGroupValue = nextChecked ? [...groupContext.value, value] : groupContext.value.filter((item) => item !== value);
+            groupContext.setValue(nextGroupValue, details);
+          }
+        },
+        onClick(event) {
+          event.stopPropagation();
+        },
+        onFocus() {
+          controlRef.current?.focus();
+        }
+      },
+      // React <19 sets an empty value if `undefined` is passed explicitly
+      // To avoid this, we only set the value if it's defined
+      valueProp !== void 0 ? {
+        value: (groupContext ? checked2 && valueProp : valueProp) || ""
+      } : EMPTY_OBJECT,
+      getDescriptionProps,
+      (props) => validation.getValidationProps(disabled2, props)
+    );
+    React30.useEffect(() => {
+      if (!parentContext || value === void 0) {
+        return void 0;
+      }
+      const disabledStates = parentContext.disabledStatesRef.current;
+      disabledStates.set(value, disabled2);
+      return () => {
+        disabledStates.delete(value);
+      };
+    }, [parentContext, disabled2, value]);
+    const state = React30.useMemo(() => ({
+      ...fieldState,
+      checked: computedChecked,
+      disabled: disabled2,
+      readOnly,
+      required,
+      indeterminate: computedIndeterminate
+    }), [fieldState, computedChecked, disabled2, readOnly, required, computedIndeterminate]);
+    const stateAttributesMapping3 = getCheckboxStateAttributesMapping(state);
+    const element = useRenderElement("span", componentProps, {
+      state,
+      ref: [buttonRef, controlRef, forwardedRef],
+      props: [{
+        id: rootId,
+        role: "checkbox",
+        "aria-checked": computedIndeterminate ? "mixed" : computedChecked,
+        "aria-readonly": readOnly || void 0,
+        "aria-required": required || void 0,
+        "aria-labelledby": ariaLabelledBy,
+        [PARENT_CHECKBOX]: parent ? "" : void 0,
+        onFocus() {
+          if (!disabled2) {
+            setFocused(true);
+          }
+        },
+        onBlur() {
+          const inputEl = inputRef.current;
+          if (!inputEl) {
+            return;
+          }
+          setTouched(true);
+          setFocused(false);
+          if (validationMode === "onBlur") {
+            validation.commit(groupContext ? groupValue : inputEl.checked);
+          }
+        },
+        onKeyDown(event) {
+          if (event.key !== "Enter") {
+            return;
+          }
+          event.preventBaseUIHandler();
+          if (event.defaultPrevented) {
+            return;
+          }
+          const formToSubmit = inputRef.current?.form ?? null;
+          const currentTarget = event.currentTarget;
+          const nativeEvent = event.nativeEvent;
+          const originalPreventDefault = event.preventDefault;
+          const originalNativePreventDefault = nativeEvent.preventDefault;
+          let preventDefaultCalledAfterPropagation = false;
+          event.preventDefault = () => {
+            preventDefaultCalledAfterPropagation = true;
+            originalPreventDefault.call(event);
+          };
+          nativeEvent.preventDefault = () => {
+            preventDefaultCalledAfterPropagation = true;
+            originalNativePreventDefault.call(nativeEvent);
+          };
+          originalNativePreventDefault.call(nativeEvent);
+          getWindow(currentTarget).queueMicrotask(() => {
+            event.preventDefault = originalPreventDefault;
+            nativeEvent.preventDefault = originalNativePreventDefault;
+            if (!preventDefaultCalledAfterPropagation) {
+              getDefaultFormSubmitter(formToSubmit)?.click();
+            }
+          });
+        },
+        onClick(event) {
+          if (readOnly || disabled2) {
+            return;
+          }
+          event.preventDefault();
+          const input = inputRef.current;
+          if (!input) {
+            return;
+          }
+          dispatchClickWithModifiers(input, event);
+        }
+      }, elementProps, otherGroupProps, getButtonProps, getDescriptionProps, (props) => validation.getValidationProps(disabled2, props)],
+      stateAttributesMapping: stateAttributesMapping3
+    });
+    const renderedId = element.props.id;
+    useIsoLayoutEffect(() => {
+      if (!registerChildId || parent || value === void 0 || renderedId === void 0) {
+        return void 0;
+      }
+      return registerChildId(value, renderedId);
+    }, [registerChildId, parent, value, renderedId]);
+    return /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(CheckboxRootContext.Provider, {
+      value: state,
+      children: [element, !checked2 && !groupContext && name && !parent && uncheckedValue !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", {
+        type: "hidden",
+        form,
+        name,
+        value: uncheckedValue,
+        disabled: disabled2
+      }), /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", {
+        ...inputProps,
+        suppressHydrationWarning: true
+      })]
+    });
+  });
+  if (true) CheckboxRoot.displayName = "CheckboxRoot";
+
   // node_modules/@base-ui/react/checkbox/indicator/CheckboxIndicator.mjs
-  var CheckboxIndicator = /* @__PURE__ */ React26.forwardRef(function CheckboxIndicator2(componentProps, forwardedRef) {
+  init_define_import_meta_env();
+  var React31 = __toESM(require_react_shim(), 1);
+  var CheckboxIndicator = /* @__PURE__ */ React31.forwardRef(function CheckboxIndicator2(componentProps, forwardedRef) {
     const {
       render,
       className,
@@ -2380,7 +2791,7 @@ var MiniUiBase = (() => {
       transitionStatus,
       setMounted
     } = useTransitionStatus(rendered);
-    const indicatorRef = React26.useRef(null);
+    const indicatorRef = React31.useRef(null);
     const state = {
       ...rootState,
       transitionStatus
@@ -2397,7 +2808,7 @@ var MiniUiBase = (() => {
       }
     });
     const baseStateAttributesMapping = getCheckboxStateAttributesMapping(rootState);
-    const stateAttributesMapping2 = {
+    const stateAttributesMapping3 = {
       ...baseStateAttributesMapping,
       ...transitionStatusMapping
     };
@@ -2405,7 +2816,7 @@ var MiniUiBase = (() => {
     const element = useRenderElement("span", componentProps, {
       ref: [forwardedRef, indicatorRef],
       state,
-      stateAttributesMapping: stateAttributesMapping2,
+      stateAttributesMapping: stateAttributesMapping3,
       props: elementProps
     });
     if (!shouldRender) {
@@ -2416,7 +2827,7 @@ var MiniUiBase = (() => {
   if (true) CheckboxIndicator.displayName = "CheckboxIndicator";
 
   // .design-sync/.cache/shadow/@mini-ui/base/dist/checkbox.js
-  var o = {
+  var o3 = {
     root: "ciRA68X3w c2caINmtb",
     selection: "crvq7PJLh c1fAD8AXB",
     automation: "ctfAPKPIA cVkGUZ5Kr",
@@ -2425,12 +2836,12 @@ var MiniUiBase = (() => {
     indicator: "cB2c4zMdU",
     icon: "cbac7epuF cQGQHnYGR"
   };
-  var s = /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("svg", {
+  var s3 = /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("svg", {
     "aria-hidden": true,
-    className: o.icon,
+    className: o3.icon,
     fill: "none",
     viewBox: "0 0 16 16",
-    children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("path", {
+    children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("path", {
       d: "M3.5 8.5 6.5 11.5 12.5 4.5",
       stroke: "currentColor",
       strokeLinecap: "round",
@@ -2438,79 +2849,79 @@ var MiniUiBase = (() => {
       strokeWidth: "2"
     })
   });
-  var c2 = /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("svg", {
+  var c4 = /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("svg", {
     "aria-hidden": true,
-    className: o.icon,
+    className: o3.icon,
     fill: "none",
     viewBox: "0 0 16 16",
-    children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("path", {
+    children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("path", {
       d: "M4 8h8",
       stroke: "currentColor",
       strokeLinecap: "round",
       strokeWidth: "2"
     })
   });
-  var l2 = (e5, t5) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", {
+  var l4 = (e5, t6) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", {
     ...e5,
-    children: t5.indeterminate ? c2 : s
+    children: t6.indeterminate ? c4 : s3
   });
-  var u2 = (0, import_react3.forwardRef)((e5, t5) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(index_parts_exports.Indicator, {
-    className: o.indicator,
+  var u4 = (0, import_react5.forwardRef)((e5, t6) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(index_parts_exports2.Indicator, {
+    className: o3.indicator,
     ...e5,
-    ref: t5,
-    render: l2
+    ref: t6,
+    render: l4
   }));
-  u2.displayName = "CheckboxIndicator";
-  var d2 = (0, import_react3.createContext)(null);
-  var f2 = (e5, t5) => {
-    let r6 = (0, import_react3.useContext)(d2);
+  u4.displayName = "CheckboxIndicator";
+  var d3 = (0, import_react5.createContext)(null);
+  var f2 = (e5, t6) => {
+    let r7 = (0, import_react5.useContext)(d3);
     return {
-      accent: e5 ?? r6?.accent ?? "selection",
-      size: t5 ?? r6?.size ?? "md"
+      accent: e5 ?? r7?.accent ?? "selection",
+      size: t6 ?? r7?.size ?? "md"
     };
   };
-  var p = cva(o.root, { variants: {
+  var p = cva(o3.root, { variants: {
     size: {
-      sm: o.sm,
-      md: o.md
+      sm: o3.sm,
+      md: o3.md
     },
     accent: {
-      selection: o.selection,
-      automation: o.automation
+      selection: o3.selection,
+      automation: o3.automation
     }
   } });
-  var m = (0, import_react3.forwardRef)(({ size: e5, accent: t5, ...n5 }, i3) => {
-    let o4 = f2(t5, e5);
-    return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(index_parts_exports.Root, {
-      className: p(o4),
-      ...n5,
+  var m = (0, import_react5.forwardRef)(({ size: e5, accent: t6, ...n6 }, i3) => {
+    let o5 = f2(t6, e5);
+    return /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(index_parts_exports2.Root, {
+      className: p(o5),
+      ...n6,
       ref: i3
     });
   });
   m.displayName = "CheckboxRoot";
   var h = {
     Root: m,
-    Indicator: u2
+    Indicator: u4
   };
 
   // .design-sync/.cache/shadow/@mini-ui/base/dist/input.js
   init_define_import_meta_env();
-  var import_react4 = __toESM(require_react_shim(), 1);
-  var import_jsx_runtime10 = __toESM(require_react_shim(), 1);
+  var import_react6 = __toESM(require_react_shim(), 1);
+  var import_jsx_runtime13 = __toESM(require_react_shim(), 1);
 
   // node_modules/@base-ui/react/input/index.mjs
   init_define_import_meta_env();
 
   // node_modules/@base-ui/react/input/Input.mjs
   init_define_import_meta_env();
-  var React38 = __toESM(require_react_shim(), 1);
+  var React43 = __toESM(require_react_shim(), 1);
 
   // node_modules/@base-ui/react/field/index.mjs
   init_define_import_meta_env();
 
   // node_modules/@base-ui/react/field/index.parts.mjs
-  var index_parts_exports2 = {};
-  __export(index_parts_exports2, {
+  var index_parts_exports3 = {};
+  __export(index_parts_exports3, {
     Control: () => FieldControl,
     Description: () => FieldDescription,
     Error: () => FieldError,
@@ -2523,15 +2934,15 @@ var MiniUiBase = (() => {
 
   // node_modules/@base-ui/react/field/root/FieldRoot.mjs
   init_define_import_meta_env();
-  var React31 = __toESM(require_react_shim(), 1);
+  var React36 = __toESM(require_react_shim(), 1);
 
   // node_modules/@base-ui/react/fieldset/root/FieldsetRootContext.mjs
   init_define_import_meta_env();
-  var React27 = __toESM(require_react_shim(), 1);
-  var FieldsetRootContext = /* @__PURE__ */ React27.createContext(void 0);
+  var React32 = __toESM(require_react_shim(), 1);
+  var FieldsetRootContext = /* @__PURE__ */ React32.createContext(void 0);
   if (true) FieldsetRootContext.displayName = "FieldsetRootContext";
   function useFieldsetRootContext(optional = false) {
-    const context = React27.useContext(FieldsetRootContext);
+    const context = React32.useContext(FieldsetRootContext);
     if (!context && !optional) {
       throw new Error(true ? "Base UI: FieldsetRootContext is missing. Fieldset parts must be placed within <Fieldset.Root>." : formatErrorMessage_default(86));
     }
@@ -2540,13 +2951,13 @@ var MiniUiBase = (() => {
 
   // node_modules/@base-ui/react/internals/labelable-provider/LabelableProvider.mjs
   init_define_import_meta_env();
-  var React28 = __toESM(require_react_shim(), 1);
-  var import_jsx_runtime4 = __toESM(require_react_shim(), 1);
+  var React33 = __toESM(require_react_shim(), 1);
+  var import_jsx_runtime7 = __toESM(require_react_shim(), 1);
   var LabelableProvider = function LabelableProvider2(props) {
     const defaultId = useBaseUiId();
-    const [controlIdState, setControlIdState] = React28.useState(defaultId);
-    const [labelId, setLabelId] = React28.useState();
-    const [messageIds, setMessageIds] = React28.useState([]);
+    const [controlIdState, setControlIdState] = React33.useState(defaultId);
+    const [labelId, setLabelId] = React33.useState();
+    const [messageIds, setMessageIds] = React33.useState([]);
     const controlId = controlIdState === void 0 ? defaultId : controlIdState;
     const registrationsRef = useRefWithInit(() => /* @__PURE__ */ new Map());
     const {
@@ -2580,7 +2991,7 @@ var MiniUiBase = (() => {
         setControlIdState(defaultId);
       }
     });
-    const getDescriptionProps = React28.useCallback((externalProps) => {
+    const getDescriptionProps = React33.useCallback((externalProps) => {
       const ids = externalProps["aria-describedby"] ? externalProps["aria-describedby"].split(" ") : [];
       ids.push(...parentMessageIds, ...messageIds);
       return {
@@ -2588,7 +2999,7 @@ var MiniUiBase = (() => {
         "aria-describedby": Array.from(new Set(ids)).join(" ") || void 0
       };
     }, [parentMessageIds, messageIds]);
-    const contextValue = React28.useMemo(() => ({
+    const contextValue = React33.useMemo(() => ({
       controlId,
       registerControlId,
       resetControlId,
@@ -2598,7 +3009,7 @@ var MiniUiBase = (() => {
       setMessageIds,
       getDescriptionProps
     }), [controlId, registerControlId, resetControlId, labelId, setLabelId, messageIds, setMessageIds, getDescriptionProps]);
-    return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(LabelableContext.Provider, {
+    return /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(LabelableContext.Provider, {
       value: contextValue,
       children: props.children
     });
@@ -2707,46 +3118,7 @@ var MiniUiBase = (() => {
 
   // node_modules/@base-ui/react/field/root/useFieldValidation.mjs
   init_define_import_meta_env();
-  var React29 = __toESM(require_react_shim(), 1);
-
-  // node_modules/@base-ui/utils/useTimeout.mjs
-  init_define_import_meta_env();
-  var EMPTY2 = 0;
-  var Timeout = class _Timeout {
-    constructor() {
-      __publicField(this, "currentId", EMPTY2);
-      __publicField(this, "clear", () => {
-        if (this.currentId !== EMPTY2) {
-          clearTimeout(this.currentId);
-          this.currentId = EMPTY2;
-        }
-      });
-      __publicField(this, "disposeEffect", () => {
-        return this.clear;
-      });
-    }
-    static create() {
-      return new _Timeout();
-    }
-    /**
-     * Executes `fn` after `delay`, clearing any previously scheduled call.
-     */
-    start(delay, fn) {
-      this.clear();
-      this.currentId = setTimeout(() => {
-        this.currentId = EMPTY2;
-        fn();
-      }, delay);
-    }
-    isStarted() {
-      return this.currentId !== EMPTY2;
-    }
-  };
-  function useTimeout() {
-    const timeout = useRefWithInit(Timeout.create).current;
-    useOnMount(timeout.disposeEffect);
-    return timeout;
-  }
+  var React34 = __toESM(require_react_shim(), 1);
 
   // node_modules/@base-ui/react/field/utils/getCombinedFieldValidityData.mjs
   init_define_import_meta_env();
@@ -2816,11 +3188,11 @@ var MiniUiBase = (() => {
       getDescriptionProps
     } = useLabelableContext();
     const timeout = useTimeout();
-    const inputRef = React29.useRef(null);
+    const inputRef = React34.useRef(null);
     const registeredInputs = useRefWithInit(() => /* @__PURE__ */ new Map()).current;
-    const validationCommitIdRef = React29.useRef(0);
-    const customValidityRef = React29.useRef(null);
-    const registerInput = React29.useCallback((element, registration) => {
+    const validationCommitIdRef = React34.useRef(0);
+    const customValidityRef = React34.useRef(null);
+    const registerInput = React34.useCallback((element, registration) => {
       registeredInputs.set(element, registration);
       return () => {
         registeredInputs.delete(element);
@@ -2980,10 +3352,10 @@ var MiniUiBase = (() => {
         commit(value, !validateOnChange);
       }
     });
-    const getValidationProps = React29.useCallback((disabled2, externalProps = {}) => mergeProps(getDescriptionProps(externalProps), state.valid === false && !state.disabled && !disabled2 ? {
+    const getValidationProps = React34.useCallback((disabled2, externalProps = {}) => mergeProps(getDescriptionProps(externalProps), state.valid === false && !state.disabled && !disabled2 ? {
       "aria-invalid": true
     } : EMPTY_OBJECT), [getDescriptionProps, state.disabled, state.valid]);
-    return React29.useMemo(() => ({
+    return React34.useMemo(() => ({
       getValidationProps,
       inputRef,
       registeredInputs,
@@ -2996,7 +3368,7 @@ var MiniUiBase = (() => {
 
   // node_modules/@base-ui/react/internals/field-register-control/useFieldControlRegistration.mjs
   init_define_import_meta_env();
-  var React30 = __toESM(require_react_shim(), 1);
+  var React35 = __toESM(require_react_shim(), 1);
   function useFieldControlRegistration(params) {
     const {
       change,
@@ -3012,9 +3384,9 @@ var MiniUiBase = (() => {
     const {
       formRef
     } = useFormContext();
-    const activeFieldControlSourceRef = React30.useRef(null);
-    const registrationRef = React30.useRef(null);
-    const initialValueCapturedRef = React30.useRef(false);
+    const activeFieldControlSourceRef = React35.useRef(null);
+    const registrationRef = React35.useRef(null);
+    const initialValueCapturedRef = React35.useRef(false);
     const getValueForForm = useStableCallback(() => {
       const registration = registrationRef.current;
       if (!registration) {
@@ -3122,8 +3494,8 @@ var MiniUiBase = (() => {
   }
 
   // node_modules/@base-ui/react/field/root/FieldRoot.mjs
-  var import_jsx_runtime5 = __toESM(require_react_shim(), 1);
-  var FieldRootInner = /* @__PURE__ */ React31.forwardRef(function FieldRootInner2(componentProps, forwardedRef) {
+  var import_jsx_runtime8 = __toESM(require_react_shim(), 1);
+  var FieldRootInner = /* @__PURE__ */ React36.forwardRef(function FieldRootInner2(componentProps, forwardedRef) {
     const {
       errors,
       validationMode: formValidationMode,
@@ -3147,15 +3519,15 @@ var MiniUiBase = (() => {
     const disabledFieldset = useFieldsetRootContext(true)?.disabled;
     const validate = useStableCallback(validateProp || (() => null));
     const disabled2 = disabledFieldset || disabledProp;
-    const [touchedState, setTouchedUnwrapped] = React31.useState(false);
-    const [dirtyState, setDirtyUnwrapped] = React31.useState(false);
-    const [filled, setFilled] = React31.useState(false);
-    const [focused, setFocused] = React31.useState(false);
+    const [touchedState, setTouchedUnwrapped] = React36.useState(false);
+    const [dirtyState, setDirtyUnwrapped] = React36.useState(false);
+    const [filled, setFilled] = React36.useState(false);
+    const [focused, setFocused] = React36.useState(false);
     const dirty = dirtyProp ?? dirtyState;
     const touched = touchedProp ?? touchedState;
-    const markedDirtyRef = React31.useRef(dirty);
-    const registeredFieldIdRef = React31.useRef(void 0);
-    const [registeredFieldName, setRegisteredFieldName] = React31.useState();
+    const markedDirtyRef = React36.useRef(dirty);
+    const registeredFieldIdRef = React36.useRef(void 0);
+    const [registeredFieldName, setRegisteredFieldName] = React36.useState();
     const effectiveName = name ?? registeredFieldName;
     useIsoLayoutEffect(() => {
       if (dirtyProp !== void 0) {
@@ -3181,7 +3553,7 @@ var MiniUiBase = (() => {
     const formError = effectiveName && Object.hasOwn(errors, effectiveName) ? errors[effectiveName] : null;
     const hasFormError = !!(Array.isArray(formError) ? formError.length : formError);
     const invalid2 = invalidProp === true || hasFormError;
-    const [validityData, setValidityData] = React31.useState({
+    const [validityData, setValidityData] = React36.useState({
       state: DEFAULT_VALIDITY_STATE,
       error: "",
       errors: [],
@@ -3189,7 +3561,7 @@ var MiniUiBase = (() => {
       initialValue: null
     });
     const valid2 = !invalid2 && (disabled2 ? null : validityData.state.valid);
-    const state = React31.useMemo(() => ({
+    const state = React36.useMemo(() => ({
       disabled: disabled2,
       touched,
       dirty,
@@ -3220,10 +3592,10 @@ var MiniUiBase = (() => {
       setValidityData,
       validityData
     });
-    React31.useImperativeHandle(actionsRef, () => ({
+    React36.useImperativeHandle(actionsRef, () => ({
       validate: validateFieldControl
     }), [validateFieldControl]);
-    const contextValue = React31.useMemo(() => ({
+    const contextValue = React36.useMemo(() => ({
       invalid: invalid2,
       name: effectiveName,
       validityData,
@@ -3245,15 +3617,15 @@ var MiniUiBase = (() => {
       props: elementProps,
       stateAttributesMapping: fieldValidityMapping
     });
-    return /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(FieldRootContext.Provider, {
+    return /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(FieldRootContext.Provider, {
       value: contextValue,
       children: element
     });
   });
   if (true) FieldRootInner.displayName = "FieldRootInner";
-  var FieldRoot = /* @__PURE__ */ React31.forwardRef(function FieldRoot2(componentProps, forwardedRef) {
-    return /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(LabelableProvider, {
-      children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(FieldRootInner, {
+  var FieldRoot = /* @__PURE__ */ React36.forwardRef(function FieldRoot2(componentProps, forwardedRef) {
+    return /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(LabelableProvider, {
+      children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(FieldRootInner, {
         ...componentProps,
         ref: forwardedRef
       })
@@ -3263,8 +3635,8 @@ var MiniUiBase = (() => {
 
   // node_modules/@base-ui/react/field/label/FieldLabel.mjs
   init_define_import_meta_env();
-  var React32 = __toESM(require_react_shim(), 1);
-  var FieldLabel = /* @__PURE__ */ React32.forwardRef(function FieldLabel2(componentProps, forwardedRef) {
+  var React37 = __toESM(require_react_shim(), 1);
+  var FieldLabel = /* @__PURE__ */ React37.forwardRef(function FieldLabel2(componentProps, forwardedRef) {
     const {
       render,
       className,
@@ -3282,13 +3654,13 @@ var MiniUiBase = (() => {
       ...fieldRootContext.state,
       disabled: fieldRootContext.disabled || fieldItemContext.disabled
     };
-    const labelRef = React32.useRef(null);
+    const labelRef = React37.useRef(null);
     const labelProps = useLabel({
       id: labelId ?? idProp,
       native: nativeLabel
     });
     if (true) {
-      React32.useEffect(() => {
+      React37.useEffect(() => {
         if (!labelRef.current) {
           return;
         }
@@ -3318,13 +3690,13 @@ var MiniUiBase = (() => {
 
   // node_modules/@base-ui/react/field/error/FieldError.mjs
   init_define_import_meta_env();
-  var React33 = __toESM(require_react_shim(), 1);
-  var import_jsx_runtime6 = __toESM(require_react_shim(), 1);
-  var stateAttributesMapping = {
+  var React38 = __toESM(require_react_shim(), 1);
+  var import_jsx_runtime9 = __toESM(require_react_shim(), 1);
+  var stateAttributesMapping2 = {
     ...fieldValidityMapping,
     ...transitionStatusMapping
   };
-  var FieldError = /* @__PURE__ */ React33.forwardRef(function FieldError2(componentProps, forwardedRef) {
+  var FieldError = /* @__PURE__ */ React38.forwardRef(function FieldError2(componentProps, forwardedRef) {
     const {
       render,
       id: idProp,
@@ -3372,9 +3744,9 @@ var MiniUiBase = (() => {
         setMessageIds((v) => v.filter((item) => item !== id));
       };
     }, [rendered, id, setMessageIds]);
-    const errorRef = React33.useRef(null);
-    const [lastRenderedMessage, setLastRenderedMessage] = React33.useState(null);
-    const [lastRenderedMessageKey, setLastRenderedMessageKey] = React33.useState(null);
+    const errorRef = React38.useRef(null);
+    const [lastRenderedMessage, setLastRenderedMessage] = React38.useState(null);
+    const [lastRenderedMessageKey, setLastRenderedMessageKey] = React38.useState(null);
     let error2 = validityData.error;
     if (!hasSpecificMatch && hasFormError) {
       error2 = formError;
@@ -3383,8 +3755,8 @@ var MiniUiBase = (() => {
     }
     let errorMessage = error2;
     if (Array.isArray(error2)) {
-      errorMessage = error2.length > 1 ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("ul", {
-        children: error2.map((message) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("li", {
+      errorMessage = error2.length > 1 ? /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("ul", {
+        children: error2.map((message) => /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("li", {
           children: message
         }, message))
       }) : error2[0];
@@ -3414,7 +3786,7 @@ var MiniUiBase = (() => {
         id,
         children: rendered ? errorMessage : lastRenderedMessage
       }, elementProps],
-      stateAttributesMapping,
+      stateAttributesMapping: stateAttributesMapping2,
       enabled: mounted
     });
     if (!mounted) {
@@ -3426,8 +3798,8 @@ var MiniUiBase = (() => {
 
   // node_modules/@base-ui/react/field/description/FieldDescription.mjs
   init_define_import_meta_env();
-  var React34 = __toESM(require_react_shim(), 1);
-  var FieldDescription = /* @__PURE__ */ React34.forwardRef(function FieldDescription2(componentProps, forwardedRef) {
+  var React39 = __toESM(require_react_shim(), 1);
+  var FieldDescription = /* @__PURE__ */ React39.forwardRef(function FieldDescription2(componentProps, forwardedRef) {
     const {
       render,
       id: idProp,
@@ -3468,8 +3840,8 @@ var MiniUiBase = (() => {
 
   // node_modules/@base-ui/react/field/control/FieldControl.mjs
   init_define_import_meta_env();
-  var React35 = __toESM(require_react_shim(), 1);
-  var FieldControl = /* @__PURE__ */ React35.forwardRef(function FieldControl2(componentProps, forwardedRef) {
+  var React40 = __toESM(require_react_shim(), 1);
+  var FieldControl = /* @__PURE__ */ React40.forwardRef(function FieldControl2(componentProps, forwardedRef) {
     const {
       render,
       className,
@@ -3537,7 +3909,7 @@ var MiniUiBase = (() => {
       setDirty(serializedValue !== (validityData.initialValue ?? ""));
       validation.change(serializedValue);
     });
-    const inputRef = React35.useRef(null);
+    const inputRef = React40.useRef(null);
     const enterValidationTimeout = useTimeout();
     useIsoLayoutEffect(() => {
       if (autoFocus && inputRef.current === activeElement(ownerDocument(inputRef.current))) {
@@ -3619,8 +3991,8 @@ var MiniUiBase = (() => {
 
   // node_modules/@base-ui/react/field/validity/FieldValidity.mjs
   init_define_import_meta_env();
-  var React36 = __toESM(require_react_shim(), 1);
-  var import_jsx_runtime7 = __toESM(require_react_shim(), 1);
+  var React41 = __toESM(require_react_shim(), 1);
+  var import_jsx_runtime10 = __toESM(require_react_shim(), 1);
   var FieldValidity = function FieldValidity2(props) {
     const {
       children
@@ -3629,19 +4001,19 @@ var MiniUiBase = (() => {
       validityData,
       invalid: invalid2
     } = useFieldRootContext(false);
-    const combinedFieldValidityData = React36.useMemo(() => getCombinedFieldValidityData(validityData, invalid2), [validityData, invalid2]);
+    const combinedFieldValidityData = React41.useMemo(() => getCombinedFieldValidityData(validityData, invalid2), [validityData, invalid2]);
     const isInvalid = combinedFieldValidityData.state.valid === false;
     const {
       transitionStatus
     } = useTransitionStatus(isInvalid);
-    const fieldValidityState = React36.useMemo(() => {
+    const fieldValidityState = React41.useMemo(() => {
       return {
         ...combinedFieldValidityData,
         validity: combinedFieldValidityData.state,
         transitionStatus
       };
     }, [combinedFieldValidityData, transitionStatus]);
-    return /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(React36.Fragment, {
+    return /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(React41.Fragment, {
       children: children(fieldValidityState)
     });
   };
@@ -3649,9 +4021,9 @@ var MiniUiBase = (() => {
 
   // node_modules/@base-ui/react/field/item/FieldItem.mjs
   init_define_import_meta_env();
-  var React37 = __toESM(require_react_shim(), 1);
-  var import_jsx_runtime8 = __toESM(require_react_shim(), 1);
-  var FieldItem = /* @__PURE__ */ React37.forwardRef(function FieldItem2(componentProps, forwardedRef) {
+  var React42 = __toESM(require_react_shim(), 1);
+  var import_jsx_runtime11 = __toESM(require_react_shim(), 1);
+  var FieldItem = /* @__PURE__ */ React42.forwardRef(function FieldItem2(componentProps, forwardedRef) {
     const {
       render,
       className,
@@ -3668,7 +4040,7 @@ var MiniUiBase = (() => {
       ...fieldState,
       disabled: disabled2
     };
-    const fieldItemContext = React37.useMemo(() => ({
+    const fieldItemContext = React42.useMemo(() => ({
       disabled: disabled2
     }), [disabled2]);
     const element = useRenderElement("div", componentProps, {
@@ -3677,8 +4049,8 @@ var MiniUiBase = (() => {
       props: elementProps,
       stateAttributesMapping: fieldValidityMapping
     });
-    return /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(LabelableProvider, {
-      children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(FieldItemContext.Provider, {
+    return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(LabelableProvider, {
+      children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(FieldItemContext.Provider, {
         value: fieldItemContext,
         children: element
       })
@@ -3687,9 +4059,9 @@ var MiniUiBase = (() => {
   if (true) FieldItem.displayName = "FieldItem";
 
   // node_modules/@base-ui/react/input/Input.mjs
-  var import_jsx_runtime9 = __toESM(require_react_shim(), 1);
-  var Input = /* @__PURE__ */ React38.forwardRef(function Input2(props, forwardedRef) {
-    return /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(index_parts_exports2.Control, {
+  var import_jsx_runtime12 = __toESM(require_react_shim(), 1);
+  var Input = /* @__PURE__ */ React43.forwardRef(function Input2(props, forwardedRef) {
+    return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(index_parts_exports3.Control, {
       ref: forwardedRef,
       ...props
     });
@@ -3697,55 +4069,28 @@ var MiniUiBase = (() => {
   if (true) Input.displayName = "Input";
 
   // .design-sync/.cache/shadow/@mini-ui/base/dist/input.js
-  var o2 = (0, import_react4.createContext)(false);
-  var s2 = {
+  var o4 = (0, import_react6.createContext)(false);
+  var s4 = {
     root: "cW8k1OFpV cPb2uwIV5",
     inGroup: "cnxOX0yUu"
   };
-  var c3 = cva("", { variants: { inGroup: {
-    true: s2.inGroup,
-    false: s2.root
+  var c5 = cva("", { variants: { inGroup: {
+    true: s4.inGroup,
+    false: s4.root
   } } });
-  var l3 = (0, import_react4.forwardRef)((e5, t5) => {
-    let a3 = (0, import_react4.useContext)(o2);
-    return /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Input, {
-      className: c3({ inGroup: a3 }),
+  var l5 = (0, import_react6.forwardRef)((e5, t6) => {
+    let a3 = (0, import_react6.useContext)(o4);
+    return /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Input, {
+      className: c5({ inGroup: a3 }),
       ...e5,
-      ref: t5,
+      ref: t6,
       "data-frame-input": a3 || void 0
     });
   });
-  l3.displayName = "Input";
+  l5.displayName = "Input";
 
   // .design-sync/.cache/shadow/@mini-ui/base/dist/translations-context.js
   init_define_import_meta_env();
-  var import_react5 = __toESM(require_react_shim(), 1);
-  var import_jsx_runtime11 = __toESM(require_react_shim(), 1);
-  var a2 = "___@mini-ui/base";
-  var o3 = "___@mini-ui/components";
-  var s3 = ((t5, n5, r6) => {
-    let i3 = r6?.legacy ? o3 : a2, s4 = window, c5 = s4[i3] ?? /* @__PURE__ */ new Map();
-    return s4[i3] = c5, c5.has(t5) || c5.set(t5, (0, import_react5.createContext)(n5)), c5.get(t5);
-  })("translations", {});
-  var c4 = ({ translations: e5, children: t5 }) => {
-    let a3 = (0, import_react5.useContext)(s3), o4 = (0, import_react5.useMemo)(() => ({
-      ...a3,
-      ...e5
-    }), [a3, e5]);
-    return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(s3.Provider, {
-      value: o4,
-      children: t5
-    });
-  };
-  c4.displayName = "TranslationsContext";
-  var l4 = /\{\{\s*(\w+)\s*\}\}/g;
-  var u3 = () => {
-    let e5 = (0, import_react5.useContext)(s3);
-    return (0, import_react5.useCallback)((t5, n5) => {
-      let r6 = e5[t5] ?? t5;
-      return n5 === void 0 ? r6 : r6.replaceAll(l4, (e6, t6) => String(n5[t6] ?? e6));
-    }, [e5]);
-  };
   return __toCommonJS(index_exports);
 })();
 window.MiniUiBase=MiniUiBase.__dsMainNs?Object.assign({},MiniUiBase,MiniUiBase.__dsMainNs,{__dsMainNs:undefined}):MiniUiBase;

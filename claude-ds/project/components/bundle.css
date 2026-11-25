@@ -141,6 +141,52 @@
   --ds_mix-tint:20%;
 }
 
+/* .design-sync/.cache/shadow/@mini-ui/base/dist/avatar.css */
+.cBo57cSH2 {
+  --ds_base-avatar-circle-size:calc(28rem / 12);
+  block-size: var(--ds_base-avatar-circle-size);
+  aspect-ratio: 1;
+  font-family: var(--ds_font-family-base);
+  font-size: var(--ds_font-size-sm);
+  font-weight: var(--ds_font-weight-bold);
+  color: var(--ds_color-text-inverse);
+  background-color: var(--ds_color-icon);
+  border-radius: var(--ds_radius-full);
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  display: inline-flex;
+}
+.cjL2Cu5ew {
+  position: relative;
+}
+.c7YQoLYyq {
+  inline-size: var(--ds_base-avatar-circle-size);
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: var(--ds_radius-full);
+}
+.cxq7Trpmg {
+  line-height: 1;
+}
+.czUrI8iEs {
+  --ds_base-avatar-status-size:calc(10rem / 12);
+  box-sizing: border-box;
+  inline-size: var(--ds_base-avatar-status-size);
+  aspect-ratio: 1;
+  border: calc(var(--ds_border-width-default) * 2) solid var(--ds_color-surface-default);
+  border-radius: var(--ds_radius-full);
+  position: absolute;
+  inset-block-end: calc(var(--ds_base-avatar-status-size) * -.2);
+  inset-inline-end: calc(var(--ds_base-avatar-status-size) * -.2);
+}
+.c5wCrZ8wu {
+  background-color: var(--ds_color-action-positive);
+}
+.cH1KskmLM {
+  background-color: var(--ds_color-border-default);
+}
+
 /* .design-sync/.cache/shadow/@mini-ui/base/dist/button.css */
 .cCR7RV7b8 {
   gap: var(--ds_space-2);

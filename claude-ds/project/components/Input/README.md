@@ -9,10 +9,10 @@ interface InputProps {
   /** The default value of the input. Use when uncontrolled. */
   defaultValue?: string | number | readonly string[];
   ref?: React.Ref;
-  /** The value of the input. Use when controlled. */
-  value?: string | number | readonly string[];
   id?: string;
   children?: React.ReactNode;
+  /** The value of the input. Use when controlled. */
+  value?: string | number | readonly string[];
 }
 ```
 
