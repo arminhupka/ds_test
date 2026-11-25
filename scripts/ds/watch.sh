@@ -20,6 +20,11 @@ STATE="$STATE_DIR/$ORG.sha"; LOCK="$STATE_DIR/$ORG.lock"
 INTERVAL="${DS_INTERVAL:-60}"; RETRY="${DS_RETRY:-1800}"
 RUN="${DS_RUN_CMD:-$(dirname "${BASH_SOURCE[0]}")/$ROLE.sh}"
 
+# The watcher runs for days, so it restarts itself when the update of the repo changed its own code.
+SELF="${BASH_SOURCE[0]}"
+code_sum() { cat "$SELF" "$(dirname "$SELF")/lib.sh" | $SHA256 | cut -d' ' -f1; }
+CODE_SUM="$(code_sum)"
+
 cd "$ROOT"
 mkdir "$LOCK" 2>/dev/null || { log "a watcher for $ORG already runs ($LOCK)"; exit 1; }
 trap 'rmdir "$LOCK" 2>/dev/null' EXIT
@@ -33,6 +38,10 @@ while true; do
       log "change on main ($NEW): running $ROLE for $ORG"
       # Update the working copy here, before the job starts: a job that updates its own script file while it runs reads a mixed file.
       if git checkout -q main && git merge -q --ff-only origin/main; then
+        if [ "$(code_sum)" != "$CODE_SUM" ]; then
+          log "the watcher's own code changed: restarting"; rmdir "$LOCK" 2>/dev/null; trap - EXIT
+          exec "$SELF" "$@"
+        fi
         if "$RUN" "$ORG" "$NEW"; then
           echo "$NEW" > "$STATE"; FAILED_SHA=""; log "done $NEW"
         else
