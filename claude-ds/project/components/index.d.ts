@@ -15,7 +15,7 @@ export interface ButtonProps {
   /** Visual weight: filled, outlined, or a text-only link style. */
   variant?: "primary" | "secondary" | "tertiary";
   /** What the action means: a regular, a destructive, a neutral one, or one AI carries out. */
-  intent?: "positive" | "danger" | "neutral" | "automation";
+  intent?: "automation" | "positive" | "danger" | "neutral";
   /** Control height and type size. */
   size?: "sm" | "md";
   /** `full` stretches the button across its container, as for the one action closing a form or panel. */
@@ -25,6 +25,19 @@ export interface ButtonProps {
 }
 
 export declare const Button: React.ComponentType<ButtonProps>;
+
+/**
+ * Checkbox — from @mini-ui/base@0.0.0 (./packages/base/src/components/checkbox/Checkbox.stories.tsx).
+ * @replaces input[type=checkbox]
+ */
+export interface CheckboxProps {
+  [key: string]: unknown;
+}
+
+export declare const Checkbox: {
+  Root: React.ComponentType<any>;
+  Indicator: React.ComponentType<any>;
+};
 
 /**
  * Input — from @mini-ui/base@0.0.0 (./packages/base/src/components/input/Input.stories.tsx).

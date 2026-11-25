@@ -355,6 +355,85 @@
   }
 }
 
+/* .design-sync/.cache/shadow/@mini-ui/base/dist/checkbox.css */
+.c2caINmtb {
+  box-sizing: border-box;
+  block-size: var(--ds_base-checkbox-box-size);
+  aspect-ratio: 1;
+  padding: var(--ds_space-0-5);
+  vertical-align: middle;
+  color: var(--ds_color-text-on-action);
+  background-color: var(--ds_color-surface-default);
+  border: var(--ds_border-width-default) solid var(--ds_color-border-strong);
+  border-radius: var(--ds_radius-sm);
+  transition: background-color var(--ds_duration-fast) var(--ds_easing-standard), border-color var(--ds_duration-fast) var(--ds_easing-standard);
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  display: inline-flex;
+  position: relative;
+}
+.c2caINmtb[data-checked],
+.c2caINmtb[data-indeterminate] {
+  background-color: var(--ds_base-checkbox-box-accent);
+  border-color: var(--ds_base-checkbox-box-accent);
+}
+.c2caINmtb:before {
+  inset: calc((var(--ds_base-checkbox-box-size) - var(--ds_target-size-min)) / 2);
+  content: "";
+  position: absolute;
+}
+.c2caINmtb:focus-visible {
+  outline: var(--ds_focus-ring-width) solid var(--ds_color-focus-ring);
+  outline-offset: var(--ds_focus-ring-offset);
+}
+.c2caINmtb[data-invalid] {
+  border-color: var(--ds_color-action-danger);
+}
+.c2caINmtb[data-disabled] {
+  color: var(--ds_color-text-disabled);
+  background-color: var(--ds_color-surface-disabled);
+  border-color: var(--ds_color-border-disabled);
+}
+.c1fAD8AXB {
+  --ds_base-checkbox-box-accent:var(--ds_color-action-selection);
+}
+.cVkGUZ5Kr {
+  --ds_base-checkbox-box-accent:var(--ds_color-action-automation);
+}
+.cWu2LlkAm {
+  --ds_base-checkbox-box-size:calc(14rem / 12);
+}
+.cFFcNJPXU {
+  --ds_base-checkbox-box-size:calc(20rem / 12);
+}
+.cQGQHnYGR {
+  inline-size: calc(var(--ds_base-checkbox-box-size) - 2 * (var(--ds_space-0-5) + var(--ds_border-width-default)));
+  aspect-ratio: 1;
+  display: block;
+}
+@media (prefers-reduced-motion: reduce) {
+  .c2caINmtb {
+    transition: none;
+  }
+}
+.ciRA68X3w {
+  cursor: pointer;
+}
+.ciRA68X3w[data-disabled] {
+  cursor: not-allowed;
+}
+.cB2c4zMdU {
+  display: flex;
+}
+@media (hover: hover) {
+  .ciRA68X3w:hover:not([data-checked], [data-indeterminate], [data-disabled], [data-invalid], :focus-visible) {
+    outline: var(--ds_ring-width) solid var(--ds_color-text-primary);
+    outline-offset: 0;
+    border-color: var(--ds_color-text-primary);
+  }
+}
+
 /* .design-sync/.cache/shadow/@mini-ui/base/dist/input.css */
 .cPb2uwIV5 {
   --ds_base-control-frame-rest:var(--ds_color-border-default);

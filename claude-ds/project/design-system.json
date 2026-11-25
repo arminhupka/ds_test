@@ -30,8 +30,8 @@
   "editing": "code",
   "lastChange": {
     "by": "Armin Hupka",
-    "at": "2026-11-25T09:14:07.966Z",
-    "via": "Claude Code /design-sync",
-    "note": "Synced from the design system's code"
+    "at": "2026-11-25T10:38:41.419Z",
+    "via": "scripts/ds/source.sh",
+    "note": "Synced from the design system code"
   }
 }
