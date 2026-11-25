@@ -16,7 +16,7 @@ scripts/ds/watch.sh replica org2      # on the ORG2 machine
 scripts/ds/watch.sh replica org3      # on the ORG3 machine
 ```
 
-The watcher is a plain loop: `git fetch` every minute, nothing else while nothing changes. When something it depends on changed it runs `source.sh` or `replica.sh`. The SHA of the last finished change is stored in `~/.ds-sync/<org>.sha`, only after the job succeeded; a failed job is retried every 30 minutes and reported.
+The watcher is a plain loop: `git fetch` every minute, nothing else while nothing changes. When something it depends on changed it runs `source.sh` or `replica.sh`. The SHA of the last finished change is stored in `~/.ds-sync/<org>.sha`, only after the job succeeded; a failed job is retried every 30 minutes and written to the log.
 
 ## Setup
 
@@ -24,7 +24,7 @@ The watcher is a plain loop: `git fetch` every minute, nothing else while nothin
 - **ORG1:** `.ds-sync/` must exist (it is installed by running `/design-sync` once). The artifact it publishes to is the one in `.design-sync/artifact.json`.
 - **ORG2/ORG3:** create the artifact once by hand, then put its link in `~/.ds-sync/<org>.url`.
 - **Keep it running:** `tmux`, or a launchd agent that runs the command above with `KeepAlive`. A closed terminal stops the watcher.
-- **Notifications:** a macOS notification, and Slack when `DS_SLACK_WEBHOOK` is set.
+- **Notifications:** none for now, everything goes to the log (`notify` in `lib.sh` is the one place to add a channel).
 
 ## What is verified, what is not
 

@@ -11,7 +11,7 @@ URL_FILE="$STATE_DIR/$ORG.url"
 URL="$(tr -d '[:space:]' < "$URL_FILE")"
 
 git checkout -q main && git merge -q --ff-only origin/main
-(cd claude-ds && shasum -a 256 -c checksums.txt --quiet) || { notify "design-sync $ORG" "claude-ds/ does not match its checksums.txt: not published"; exit 1; }
+(cd claude-ds && $SHA256 -c checksums.txt --quiet) || { notify "design-sync $ORG" "claude-ds/ does not match its checksums.txt: not published"; exit 1; }
 
 log "publishing claude-ds/project to $URL"
 claude_run "Use the Artifact tool. Artifact: $URL.

@@ -40,7 +40,7 @@ List its files, then read every file under project/ with the paths option and ou
 if ! diff <(DS_IGNORE="^($VOLATILE)$" manifest "$PUB") <(DS_IGNORE="^($VOLATILE)$" manifest claude-ds/project) >/dev/null; then
   notify "design-sync $ORG" "published files differ from the built ones: not committed"; exit 1
 fi
-(cd claude-ds && find project -type f ! -name .DS_Store | sort | xargs shasum -a 256 > checksums.txt)
+(cd claude-ds && find project -type f ! -name .DS_Store | sort | xargs $SHA256 > checksums.txt)
 git add claude-ds
 if git diff --cached --quiet; then log "claude-ds/ unchanged after the pull"; exit 0; fi
 git commit -q -m "chore(ds): update claude-ds from the published design system" -m "Built by scripts/ds/source.sh and verified against the artifact."
