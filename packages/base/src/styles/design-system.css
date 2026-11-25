@@ -1,0 +1,188 @@
+/*
+ * Design tokens, in two tiers.
+ * Palette: raw values, never read by a component stylesheet.
+ * Semantic: the role a value plays; the only tier components consume.
+ *
+ * Lengths are rem against the Platform's 12px root font size,
+ * written as `calc(<px>rem / 12)` so the pixel intent stays readable
+ * while the value still scales with the user's font size.
+ */
+
+:root {
+    /* Palette */
+    --ds_palette-red: #b02223;
+    --ds_palette-amber: #e5a400;
+    --ds_palette-green: #068850;
+    --ds_palette-blue: #1763e8;
+    --ds_palette-violet: #8c45ef;
+    --ds_palette-steel: #4a6fa5;
+    --ds_palette-slate-900: #343c44;
+    --ds_palette-slate-500: #5e6f8e;
+    --ds_palette-slate-300: #a0aec9;
+    --ds_palette-slate-200: #c8d8e6;
+    --ds_palette-slate-50: #eff4f8;
+    --ds_palette-white: #fff;
+    --ds_palette-black: #000;
+
+    /* Derivation: strengths of a `color-mix()` */
+    --ds_mix-hover: 20%;
+
+    /* A stronger mix: a pressed state, a selected option, a border tinted with an accent. */
+    --ds_mix-strong: 40%;
+
+    /* Spacing, a 4px grid */
+    --ds_space-0-5: calc(2rem / 12);
+    --ds_space-1: calc(4rem / 12);
+    --ds_space-1-5: calc(6rem / 12);
+    --ds_space-2: calc(8rem / 12);
+    --ds_space-3: calc(12rem / 12);
+    --ds_space-4: calc(16rem / 12);
+
+    /* Radius */
+    --ds_radius-sm: calc(4rem / 12);
+    --ds_radius-md: calc(8rem / 12);
+    --ds_radius-lg: calc(16rem / 12);
+    --ds_radius-full: 9999px;
+
+    /* Typography */
+    --ds_font-family-base: inherit;
+    --ds_font-size-sm: calc(12rem / 12);
+    --ds_font-size-md: calc(14rem / 12);
+    --ds_font-size-xl: calc(20rem / 12);
+    --ds_line-height-sm: calc(16rem / 12);
+    --ds_line-height-md: calc(22rem / 12);
+    --ds_line-height-xl: calc(28rem / 12);
+    --ds_font-weight-regular: 400;
+    --ds_font-weight-semibold: 600;
+    --ds_font-weight-bold: 700;
+
+    /* Pointer target: the smallest hit area a control may have */
+    --ds_target-size-min: calc(24rem / 12);
+
+    /* Border and focus */
+    --ds_border-width-default: 1px;
+    --ds_focus-ring-width: 2px;
+    --ds_focus-ring-offset: 2px;
+
+    /*
+     * Control states: the second pixel of a hovered, focused or flagged border, and the halo a focused control adds outside it.
+     * A control holds the color of its current state in a variable of its own, and draws border, outline and halo from it.
+     */
+    --ds_ring-width: 1px;
+    --ds_halo-width: calc(4rem / 12);
+    --ds_halo-mix: 20%;
+
+    /* Elevation: shadows use the palette in both themes */
+    --ds_shadow-sm: 0 calc(1rem / 12) calc(3rem / 12) color-mix(in srgb, var(--ds_palette-slate-900) 15%, transparent);
+    --ds_shadow-md: 0 calc(2rem / 12) calc(6rem / 12) color-mix(in srgb, var(--ds_palette-slate-900) 20%, transparent);
+    --ds_shadow-lg: 0 calc(4rem / 12) calc(10rem / 12) color-mix(in srgb, var(--ds_palette-slate-900) 30%, transparent);
+
+    /* Motion */
+    --ds_duration-fast: 150ms;
+    --ds_easing-standard: ease;
+    --ds_easing-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --ds_easing-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+/*
+ * The light theme: the default, and the scope of every page or area without a theme.
+ * Every semantic color is declared here and again in the dark scope, so a dark area never inherits a light value.
+ */
+:root, [data-theme="light"] {
+    color-scheme: light;
+
+    /* Color: text */
+    --ds_color-text-primary: var(--ds_palette-slate-900);
+    --ds_color-text-secondary: var(--ds_palette-slate-500);
+    --ds_color-text-inverse: var(--ds_palette-white);
+    --ds_color-text-link: var(--ds_palette-blue);
+
+    /* Text in an intent color, readable on that color's tint. */
+    --ds_color-text-positive: color-mix(in srgb, var(--ds_palette-green), var(--ds_palette-black) 20%);
+    --ds_color-text-warning: color-mix(in srgb, var(--ds_palette-amber), var(--ds_palette-black) 40%);
+    --ds_color-text-danger: var(--ds_palette-red);
+
+    /* Text and icons on an action fill: white in both themes, so they stay readable on a saturated fill. */
+    --ds_color-text-on-action: var(--ds_palette-white);
+
+    /* Color: action */
+    --ds_color-action-positive: var(--ds_palette-green);
+    --ds_color-action-danger: var(--ds_palette-red);
+    --ds_color-action-neutral: var(--ds_palette-slate-900);
+    --ds_color-action-warning: var(--ds_palette-amber);
+
+    /* Marks anything the Agent or auto-fill does or suggests, wherever it appears. */
+    --ds_color-action-automation: var(--ds_palette-violet);
+
+    /* The fill of a checked or selected control. */
+    --ds_color-action-selection: var(--ds_palette-steel);
+
+    /* Color: gradients, a status color fading out downwards */
+    --ds_gradient-positive: linear-gradient(to bottom, color-mix(in srgb, var(--ds_color-action-positive) 30%, transparent), transparent);
+    --ds_gradient-warning: linear-gradient(to bottom, color-mix(in srgb, var(--ds_color-action-warning) 30%, transparent), transparent);
+
+    /* Color: surfaces, borders, icons */
+    --ds_color-surface-default: var(--ds_palette-white);
+    --ds_color-surface-inverse: var(--ds_palette-slate-900);
+    --ds_color-surface-subtle: var(--ds_palette-slate-50);
+    --ds_color-border-default: var(--ds_palette-slate-200);
+    --ds_color-border-strong: var(--ds_palette-slate-500);
+    --ds_color-icon: var(--ds_palette-slate-500);
+    --ds_color-focus-ring: var(--ds_palette-blue);
+
+    /* Color: a disabled control, whatever its kind. Its text and icons fade, and a framed control gets a flat fill and a light border. */
+    --ds_color-surface-disabled: var(--ds_palette-slate-50);
+    --ds_color-border-disabled: var(--ds_palette-slate-200);
+    --ds_color-text-disabled: var(--ds_palette-slate-300);
+
+    /* Color: the track of a control that is off, such as a switch. */
+    --ds_color-control-off: var(--ds_palette-slate-300);
+
+    /* Color: a selected item, such as a table row */
+    --ds_color-surface-selected: color-mix(in srgb, var(--ds_palette-blue) 4%, var(--ds_palette-white));
+    --ds_color-border-selected: color-mix(in srgb, var(--ds_palette-blue) 20%, var(--ds_palette-white));
+
+    /* Color: derivation, used as `color-mix()` operands */
+    --ds_color-mix-dark: var(--ds_palette-black);
+    --ds_mix-tint: 8%;
+}
+
+[data-theme="dark"] {
+    color-scheme: dark;
+
+    --ds_color-text-primary: var(--ds_palette-slate-50);
+    --ds_color-text-secondary: var(--ds_palette-slate-200);
+    --ds_color-text-inverse: var(--ds_palette-slate-900);
+    --ds_color-text-on-action: var(--ds_palette-white);
+    --ds_color-text-link: color-mix(in srgb, var(--ds_palette-blue), var(--ds_palette-white) 40%);
+
+    /* Text in an intent color, readable on that color's tint. */
+    --ds_color-text-positive: color-mix(in srgb, var(--ds_palette-green), var(--ds_palette-white) 50%);
+    --ds_color-text-warning: var(--ds_palette-amber);
+    --ds_color-text-danger: color-mix(in srgb, var(--ds_palette-red), var(--ds_palette-white) 50%);
+    --ds_color-action-positive: var(--ds_palette-green);
+    --ds_color-action-danger: var(--ds_palette-red);
+    --ds_color-action-neutral: var(--ds_palette-slate-500);
+    --ds_color-action-warning: var(--ds_palette-amber);
+    --ds_color-action-automation: var(--ds_palette-violet);
+    --ds_color-action-selection: var(--ds_palette-steel);
+    --ds_gradient-positive: linear-gradient(to bottom, color-mix(in srgb, var(--ds_color-action-positive) 30%, transparent), transparent);
+    --ds_gradient-warning: linear-gradient(to bottom, color-mix(in srgb, var(--ds_color-action-warning) 30%, transparent), transparent);
+    --ds_color-surface-default: var(--ds_palette-slate-900);
+    --ds_color-surface-inverse: var(--ds_palette-white);
+    --ds_color-surface-subtle: color-mix(in srgb, var(--ds_palette-slate-900), var(--ds_palette-white) 8%);
+    --ds_color-border-default: var(--ds_palette-slate-500);
+    --ds_color-border-strong: var(--ds_palette-slate-200);
+    --ds_color-icon: var(--ds_palette-slate-200);
+    --ds_color-focus-ring: color-mix(in srgb, var(--ds_palette-blue), var(--ds_palette-white) 40%);
+
+    /* The design has no dark values for these yet; they follow the dark surfaces and borders. */
+    --ds_color-surface-disabled: color-mix(in srgb, var(--ds_palette-slate-900), var(--ds_palette-white) 8%);
+    --ds_color-border-disabled: var(--ds_palette-slate-500);
+    --ds_color-text-disabled: color-mix(in srgb, var(--ds_palette-slate-500), var(--ds_palette-slate-200));
+    --ds_color-control-off: var(--ds_palette-slate-300);
+    --ds_color-surface-selected: color-mix(in srgb, var(--ds_palette-blue) 16%, var(--ds_palette-slate-900));
+    --ds_color-border-selected: color-mix(in srgb, var(--ds_palette-blue) 50%, var(--ds_palette-slate-900));
+    --ds_color-mix-dark: var(--ds_palette-black);
+    --ds_mix-tint: 20%;
+}

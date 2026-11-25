@@ -1,0 +1,52 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Storybook
+*storybook.log
+storybook-static
+dist_storybook
+
+# Coverage tests
+coverage
+junit.xml
+
+# Storybook visual tests
+**/__vis__/__results__/
+**/__vis__/__diffs__/
+
+# Nx
+.nx/cache
+.nx/workspace-data
+
+# design-sync
+.design-sync/sb-reference/
+.design-sync/learnings/
+.design-sync/.cache/
+.design-sync/node_modules
+.ds-sync/
+ds-bundle/
+
+# Pulled copy of the published design system: re-pull it after the next sync
+claude-ds/

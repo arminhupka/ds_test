@@ -1,0 +1,22 @@
+{
+  "pkg": "@mini-ui/base",
+  "globalName": "MiniUiBase",
+  "shape": "storybook",
+  "storybookConfigDir": ".storybook",
+  "storybookStatic": ".design-sync/sb-reference",
+  "buildCmd": "npx nx run @mini-ui/base:build && node .design-sync/make-shadow.mjs",
+  "entry": ".design-sync/.cache/shadow/@mini-ui/base/dist/index.js",
+  "provider": {
+    "component": "TranslationsContext",
+    "props": {
+      "translations": {}
+    }
+  },
+  "overrides": {
+    "Button": {
+      "cardMode": "column"
+    }
+  },
+  "cssEntry": "preview-base.css",
+  "readmeHeader": ".design-sync/conventions.md"
+}

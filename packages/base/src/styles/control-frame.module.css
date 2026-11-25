@@ -1,0 +1,148 @@
+/*
+ * The frame of a control that looks like an input: its border, focus, status and hover.
+ * A control's own stylesheet composes `root`, then adds layout only.
+ * The frame reads the status and the intent from the `Field.Root` around the control, and owns the text color,
+ * the weight and the resting border. The frame is dropped inside a `Field.Frame`, which draws it; a group is
+ * flagged by what it holds, so one selector serves both.
+ */
+.root {
+    --ds_base-control-frame-rest: var(--ds_color-border-default);
+    --ds_base-control-frame-ring: var(--ds_base-control-frame-rest);
+    --ds_base-control-frame-ring-width: 0;
+    --ds_base-control-frame-focus-color: var(--ds_color-focus-ring);
+    --ds_base-control-frame-radius: var(--ds_radius-md);
+    --ds_base-control-frame-text: var(--ds_color-text-primary);
+    --ds_base-control-frame-surface: var(--ds_color-surface-default);
+
+    font-weight: var(--ds_font-weight-regular);
+    color: var(--ds_base-control-frame-text);
+    outline: var(--ds_base-control-frame-ring-width) solid var(--ds_base-control-frame-ring);
+    outline-offset: 0;
+    background-color: var(--ds_base-control-frame-surface);
+    border: var(--ds_border-width-default) solid var(--ds_base-control-frame-ring);
+    border-radius: var(--ds_base-control-frame-radius);
+    transition: border-color var(--ds_duration-fast) var(--ds_easing-standard);
+
+    /*
+     * First and without weight (`:where`), so every state below overrides it. A button inside that shows
+     * its own hover marks itself, so the frame does not light up under it.
+     */
+    @media (hover: hover) {
+        &:where(:hover:not([data-disabled], :disabled, :has([data-frame-input][data-disabled], [data-frame-input]:disabled, [data-frame-hover-skip]:hover))) {
+            --ds_base-control-frame-ring: var(--ds_color-border-strong);
+            --ds_base-control-frame-ring-width: var(--ds_ring-width);
+        }
+    }
+
+    /* The field belongs to automation: drawn in its color, and focused in it. */
+    [data-intent-automation] & {
+        --ds_base-control-frame-ring: var(--ds_color-action-automation);
+        --ds_base-control-frame-ring-width: var(--ds_ring-width);
+        --ds_base-control-frame-focus-color: var(--ds_color-action-automation);
+    }
+
+    /* Filled in by automation: tinted and outlined in its color until the user changes the value; focus shows over it. */
+    [data-autofilled] & {
+        --ds_base-control-frame-ring: var(--ds_color-action-automation);
+        --ds_base-control-frame-ring-width: var(--ds_ring-width);
+
+        background-color: color-mix(in srgb, var(--ds_color-action-automation) var(--ds_mix-tint), var(--ds_color-surface-default));
+    }
+
+    /* The positive, warning and danger intents judge the value: they tint the control and bold its text. */
+    [data-intent-tinted] & {
+        --ds_base-control-frame-rest: transparent;
+
+        font-weight: var(--ds_font-weight-bold);
+    }
+
+    /* The text token is readable on the tint. */
+    [data-intent-positive] & {
+        --ds_base-control-frame-text: var(--ds_color-text-positive);
+
+        background-color: color-mix(in srgb, var(--ds_color-action-positive) var(--ds_mix-tint), var(--ds_color-surface-default));
+    }
+
+    [data-intent-warning] & {
+        --ds_base-control-frame-text: var(--ds_color-text-warning);
+
+        background-color: color-mix(in srgb, var(--ds_color-action-warning) var(--ds_mix-tint), var(--ds_color-surface-default));
+    }
+
+    [data-intent-danger] & {
+        --ds_base-control-frame-text: var(--ds_color-text-danger);
+
+        background-color: color-mix(in srgb, var(--ds_color-action-danger) var(--ds_mix-tint), var(--ds_color-surface-default));
+    }
+
+    /* After the intents, so an empty value stays grey under one. A group with a text input shows its text in the input, so it keeps its color. */
+    &[data-placeholder]:not(:has([data-frame-input])) {
+        --ds_base-control-frame-text: var(--ds_color-text-secondary);
+    }
+
+    &:is(:focus-visible, :has(:focus-visible), [data-popup-open]) {
+        --ds_base-control-frame-ring: var(--ds_base-control-frame-focus-color);
+        --ds_base-control-frame-ring-width: var(--ds_ring-width);
+
+        box-shadow: 0 0 0 var(--ds_halo-width) color-mix(in srgb, var(--ds_base-control-frame-ring) var(--ds_halo-mix), transparent);
+    }
+
+    &:is([data-warning] *, :has([data-warning])) {
+        --ds_base-control-frame-ring: var(--ds_color-action-warning);
+        --ds_base-control-frame-ring-width: var(--ds_ring-width);
+    }
+
+    &:is([data-invalid], [aria-invalid="true"], :has([data-invalid], [aria-invalid="true"])) {
+        --ds_base-control-frame-ring: var(--ds_color-action-danger);
+        --ds_base-control-frame-ring-width: var(--ds_ring-width);
+    }
+
+    /* A group is disabled through the text control marked as its input; a disabled button inside does not disable it. */
+    &:is([data-disabled], :disabled, :has([data-frame-input][data-disabled], [data-frame-input]:disabled)) {
+        --ds_base-control-frame-text: var(--ds_color-text-secondary);
+        --ds_base-control-frame-rest: var(--ds_color-border-disabled);
+
+        background-color: var(--ds_color-surface-disabled);
+    }
+
+    /* Last in the block, so it wins: in a field frame, the frame draws the border, the focus ring and the status. */
+    [data-field-frame] & {
+        outline: none;
+        border-color: transparent;
+
+        /* The cell, not the control, has the frame's shape, so a tint fills it edge to edge. */
+        border-radius: 0;
+        box-shadow: none;
+    }
+}
+
+/* Fully rounded ends, for a search input. After `root`, so it wins over the default radius. */
+.pill {
+    --ds_base-control-frame-radius: var(--ds_radius-full);
+}
+
+/*
+ * Transparent at rest, so a tinted surface shows through. Hover and focus bring back the surface color.
+ * Only the surface property changes: the status tints and the disabled fill set their own background,
+ * and they win over it, so they look the same as in the default look.
+ */
+.ghost {
+    --ds_base-control-frame-surface: transparent;
+
+    @media (hover: hover) {
+        &:hover {
+            --ds_base-control-frame-surface: var(--ds_color-surface-default);
+        }
+    }
+
+    /* `:focus-within` also covers a plain click inside the control, which `:focus-visible` does not. */
+    &:is([data-popup-open], :focus-within) {
+        --ds_base-control-frame-surface: var(--ds_color-surface-default);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .root {
+        transition: none;
+    }
+}

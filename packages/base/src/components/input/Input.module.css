@@ -1,0 +1,57 @@
+.root {
+    composes: root from '../../styles/control-frame.module.css';
+    box-sizing: border-box;
+    inline-size: 100%;
+    padding-block: var(--ds_space-1);
+    padding-inline: var(--ds_space-3);
+    font-family: var(--ds_font-family-base);
+    font-size: var(--ds_font-size-md);
+    line-height: var(--ds_line-height-md);
+
+    &::placeholder {
+        color: var(--ds_color-text-secondary);
+        opacity: 1;
+    }
+
+    &[data-disabled],
+    &:disabled {
+        cursor: not-allowed;
+    }
+
+}
+
+/* Inside an `InputGroup`, whose root draws the frame. */
+.inGroup {
+    /* Positioned, so they paint above a decorative layer the frame may hold. */
+    position: relative;
+    flex: 1;
+    min-inline-size: 0;
+    padding-block: var(--ds_space-1);
+    padding-inline: 0;
+    font-family: var(--ds_font-family-base);
+    font-size: var(--ds_font-size-md);
+    font-weight: inherit;
+    line-height: var(--ds_line-height-md);
+    color: inherit;
+    background-color: transparent;
+    border: 0;
+
+    &::placeholder {
+        color: var(--ds_color-text-secondary);
+        opacity: 1;
+    }
+
+    &:focus-visible {
+        outline: none;
+    }
+
+    /* A search input shows no clear button of its own, as each browser draws a different one. */
+    &::-webkit-search-cancel-button {
+        appearance: none;
+    }
+
+    &[data-disabled] {
+        color: var(--ds_color-text-secondary);
+        cursor: not-allowed;
+    }
+}

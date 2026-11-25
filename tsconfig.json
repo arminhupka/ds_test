@@ -1,0 +1,50 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "skipLibCheck": true,
+    "allowArbitraryExtensions": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "noEmit": true,
+    "erasableSyntaxOnly": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "target": "ESNext",
+    "lib": ["ESNext", "DOM"],
+    "moduleDetection": "force",
+    "allowImportingTsExtensions": true,
+    "jsx": "react-jsx",
+    "types": [
+      "node",
+      "vite/client",
+      "@testing-library/jest-dom/vitest"
+    ],
+    "paths": {
+      "@storybook-local/*": [
+        "./.storybook/*"
+      ],
+      "@mini-ui/base/tokens.css": [
+        "./packages/base/src/styles/design-system.css"
+      ],
+      "@mini-ui/base/*": [
+        "./packages/base/src/components/*/index.ts"
+      ]
+    }
+  },
+  "include": [
+    ".storybook/**/*.ts",
+    ".storybook/**/*.tsx",
+    "config/**/*.ts"
+  ],
+  "exclude": [
+    "**/dist",
+    "**/dist_storybook",
+    "**/node_modules"
+  ]
+}

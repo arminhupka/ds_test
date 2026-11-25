@@ -1,0 +1,20 @@
+<style>
+    /* The Platform's root size, which the tokens' `rem` values are relative to; the typeface comes from the toolbar. */
+    html {
+        font-size: 12px;
+    }
+
+    body {
+        line-height: 1.417;
+    }
+
+    /* Storybook draws each docs example on its own white frame; in dark, the frame takes the theme's surface instead.
+       The light canvas stays transparent: an opaque one switches text to subpixel anti-aliasing in the snapshots. */
+    html[data-theme="dark"] body {
+        background-color: var(--ds_color-surface-default);
+    }
+
+    html[data-theme="dark"] .docs-story {
+        background-color: var(--ds_color-surface-default);
+    }
+</style>

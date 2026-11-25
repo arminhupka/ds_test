@@ -1,0 +1,284 @@
+.root {
+    position: relative;
+    display: inline-flex;
+    gap: var(--ds_space-2);
+    align-items: center;
+    justify-content: center;
+    padding-inline: var(--ds_base-button-padding-inline);
+    font-family: var(--ds_font-family-base);
+    font-weight: var(--ds_font-weight-semibold);
+    text-align: center;
+    cursor: pointer;
+    border: var(--ds_border-width-default) solid transparent;
+    border-radius: var(--ds_radius-md);
+    transition:
+        color var(--ds_duration-fast) var(--ds_easing-standard),
+        background-color var(--ds_duration-fast) var(--ds_easing-standard),
+        border-color var(--ds_duration-fast) var(--ds_easing-standard),
+        box-shadow var(--ds_duration-fast) var(--ds_easing-standard);
+
+    &:focus-visible {
+        outline: var(--ds_focus-ring-width) solid var(--ds_color-focus-ring);
+        outline-offset: var(--ds_focus-ring-offset);
+    }
+
+    &[data-disabled] {
+        cursor: not-allowed;
+    }
+
+    /* Hides the label, not the box, so the button keeps its size while the spinner turns. */
+    &[data-loading] {
+        color: transparent;
+    }
+}
+
+/* The same padding and line as a field, so the button is as tall as the controls it sits beside. */
+.sm {
+    --ds_base-button-padding-inline: var(--ds_space-3);
+
+    padding-block: var(--ds_space-1);
+    font-size: var(--ds_font-size-sm);
+    line-height: var(--ds_line-height-md);
+}
+
+.md {
+    --ds_base-button-padding-inline: var(--ds_space-4);
+
+    padding-block: var(--ds_space-2);
+    font-size: var(--ds_font-size-md);
+    line-height: var(--ds_line-height-md);
+}
+
+.full {
+    inline-size: 100%;
+}
+
+.positive {
+    --ds_base-button-accent: var(--ds_color-action-positive);
+}
+
+.danger {
+    --ds_base-button-accent: var(--ds_color-action-danger);
+}
+
+.automation {
+    --ds_base-button-accent: var(--ds_color-action-automation);
+}
+
+.neutral {
+    --ds_base-button-accent: var(--ds_color-action-neutral);
+}
+
+/* The spinner takes the text colour of the variant, so it reads on the fill. */
+.primary {
+    --ds_base-button-spinner-color: var(--ds_color-text-on-action);
+    --ds_base-button-divider: color-mix(in srgb, var(--ds_base-button-accent), var(--ds_color-surface-default) var(--ds_mix-strong));
+
+    color: var(--ds_color-text-on-action);
+    background-color: var(--ds_base-button-accent);
+
+    &:active:not([data-disabled], [data-loading]) {
+        background-color: color-mix(in srgb, var(--ds_base-button-accent), var(--ds_color-mix-dark) var(--ds_mix-strong));
+    }
+}
+
+.secondary {
+    --ds_base-button-spinner-color: var(--ds_color-text-primary);
+    --ds_base-button-divider: var(--ds_color-text-primary);
+
+    color: var(--ds_color-text-primary);
+    background-color: var(--ds_color-surface-default);
+    border-color: var(--ds_color-text-primary);
+
+    &:active:not([data-disabled], [data-loading]) {
+        color: var(--ds_color-text-on-action);
+        background-color: color-mix(in srgb, var(--ds_base-button-accent), var(--ds_color-mix-dark) var(--ds_mix-strong));
+        border-color: color-mix(in srgb, var(--ds_base-button-accent), var(--ds_color-mix-dark) var(--ds_mix-strong));
+    }
+}
+
+.primary,
+.secondary {
+    &[data-disabled] {
+        color: var(--ds_color-text-disabled);
+        background-color: var(--ds_color-surface-disabled);
+        border-color: var(--ds_color-border-disabled);
+    }
+}
+
+.tertiary {
+    --ds_base-button-spinner-color: var(--ds_color-text-link);
+
+    padding-inline: 0;
+    color: var(--ds_color-text-link);
+    background-color: transparent;
+
+    &[data-disabled] {
+        color: var(--ds_color-text-disabled);
+    }
+}
+
+/* Segments of one split button share one frame: only the outer corners stay round. */
+.grouped {
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+
+    &:first-child {
+        border-start-start-radius: var(--ds_radius-md);
+        border-end-start-radius: var(--ds_radius-md);
+    }
+
+    &:last-child {
+        border-start-end-radius: var(--ds_radius-md);
+        border-end-end-radius: var(--ds_radius-md);
+    }
+
+    &:not(:first-child) {
+        border-inline-start-color: var(--ds_base-button-divider);
+
+        &[data-disabled] {
+            border-inline-start-color: var(--ds_color-border-disabled);
+        }
+    }
+
+    /* Drawn inside the box, so the next segment does not cover the ring. */
+    &:focus-visible {
+        outline-offset: calc(-1 * var(--ds_focus-ring-width));
+    }
+}
+
+/* The previous segment's end border is the one divider; a second border would look thicker. */
+.secondary.grouped:not(:first-child) {
+    border-inline-start-width: 0;
+}
+
+/* The logo is the only element that moves, so it is the only one with keyframes. */
+.spinner {
+    --ds_base-button-spinner-ratio: 38 / 24;
+    --ds_base-button-spinner-duration: calc(var(--ds_duration-fast) * 6);
+
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    block-size: 1em;
+    aspect-ratio: var(--ds_base-button-spinner-ratio);
+    color: var(--ds_base-button-spinner-color);
+    translate: -50% -50%;
+}
+
+.letter {
+    animation: spinner-letter var(--ds_base-button-spinner-duration) linear infinite;
+}
+
+/* Turns around the centre of the logo, so the arc behind the mask is revealed and then erased. */
+.sweepLeft,
+.sweepRight {
+    transform-origin: 19px 12px;
+    transform-box: view-box;
+}
+
+/* The GIF draws and erases the arcs one after the other, clockwise around the logo. */
+.sweepLeft {
+    animation: spinner-sweep-left var(--ds_base-button-spinner-duration) linear infinite;
+}
+
+.sweepRight {
+    animation: spinner-sweep-right var(--ds_base-button-spinner-duration) linear infinite;
+}
+
+@keyframes spinner-letter {
+    0%,
+    69.9% {
+        opacity: 1;
+    }
+
+    70%,
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes spinner-sweep-left {
+    0%,
+    8% {
+        rotate: 0deg;
+        animation-timing-function: var(--ds_easing-in-out);
+    }
+
+    35% {
+        rotate: 180deg;
+    }
+
+    68% {
+        rotate: 180deg;
+        animation-timing-function: var(--ds_easing-in-out);
+    }
+
+    90%,
+    100% {
+        rotate: 360deg;
+    }
+}
+
+@keyframes spinner-sweep-right {
+    0%,
+    15% {
+        rotate: 0deg;
+        animation-timing-function: var(--ds_easing-in-out);
+    }
+
+    30% {
+        rotate: 180deg;
+    }
+
+    60% {
+        rotate: 180deg;
+        animation-timing-function: var(--ds_easing-in-out);
+    }
+
+    73%,
+    100% {
+        rotate: 360deg;
+    }
+}
+
+@media (hover: hover) {
+    .primary:hover:not([data-disabled], [data-loading], :active) {
+        background-color: color-mix(in srgb, var(--ds_base-button-accent), var(--ds_color-mix-dark) var(--ds_mix-hover));
+    }
+
+    .secondary:hover:not([data-disabled], [data-loading], :active) {
+        color: var(--ds_color-text-on-action);
+        background-color: var(--ds_base-button-accent);
+        border-color: var(--ds_base-button-accent);
+    }
+
+    /* A lifted segment would look detached from the rest of the split button. */
+    .primary:hover:not([data-disabled], [data-loading], .grouped, :active),
+    .secondary:hover:not([data-disabled], [data-loading], .grouped, :active) {
+        box-shadow: var(--ds_shadow-md);
+    }
+
+    .tertiary:hover:not([data-disabled]) {
+        text-decoration: underline;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .root {
+        transition: none;
+    }
+
+    /* At 180deg each mask shows its whole arc, so the logo stays complete. */
+    .letter {
+        animation: none;
+    }
+
+    .sweepLeft,
+    .sweepRight {
+        rotate: 180deg;
+        animation: none;
+    }
+}

@@ -1,0 +1,50 @@
+{
+  "name": "@mini-ui/base",
+  "version": "0.0.0",
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "files": [
+    "dist"
+  ],
+  "description": "Design system: base components and design tokens",
+  "keywords": [
+    "common"
+  ],
+  "exports": {
+    "./tokens.css": "./dist/design-system.css",
+    "./*": {
+      "types": "./dist/types/components/*/index.d.ts",
+      "default": "./dist/*.js"
+    }
+  },
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "start": "storybook dev -p 6007 -c ../../.storybook",
+    "build": "vite build",
+    "lint": "eslint src",
+    "types": "tsc --noEmit",
+    "test": "vitest --project unit --run",
+    "test:coverage": "vitest --project unit --run --coverage",
+    "test:interaction": "vitest --project interaction --run",
+    "test:storybook": "vitest --project storybook --run",
+    "storybook:build": "storybook build -c ../../.storybook -o dist_storybook",
+    "prepublishOnly": "npm run build"
+  },
+  "peerDependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "dependencies": {
+    "@base-ui/react": "^1.8.0",
+    "class-variance-authority": "^0.7.1"
+  },
+  "nx": {
+    "tags": [
+      "layer:base"
+    ]
+  }
+}

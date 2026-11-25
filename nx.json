@@ -1,0 +1,66 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "namedInputs": {
+    "default": [
+      "{projectRoot}/**/*",
+      "sharedGlobals"
+    ],
+    "sharedGlobals": [
+      "{workspaceRoot}/tools/config/**/*",
+      "{workspaceRoot}/tsconfig.json",
+      "{workspaceRoot}/eslint.config.js"
+    ]
+  },
+  "release": {
+    "projectsRelationship": "independent",
+    "releaseTag": {
+      "pattern": "{projectName}@{version}"
+    },
+    "version": {
+      "specifierSource": "conventional-commits",
+      "currentVersionResolver": "git-tag",
+      "fallbackCurrentVersionResolver": "disk",
+      "updateDependents": "auto",
+      "preserveMatchingDependencyRanges": false,
+      "versionActionsOptions": {
+        "skipLockFileUpdate": true
+      },
+      "git": {
+        "commit": false,
+        "tag": true
+      }
+    },
+    "changelog": {
+      "git": {
+        "commit": false,
+        "tag": false
+      },
+      "workspaceChangelog": false,
+      "projectChangelogs": {
+        "file": false,
+        "createRelease": {
+          "provider": "gitlab",
+          "hostname": "git.example.com"
+        }
+      }
+    }
+  },
+  "targetDefaults": {
+    "build": {
+      "cache": true,
+      "outputs": [
+        "{projectRoot}/dist"
+      ]
+    },
+    "lint": {
+      "cache": true
+    },
+    "types": {
+      "cache": true
+    },
+    "test": {
+      "cache": true
+    }
+  },
+  "analytics": false
+}
