@@ -1,8 +1,9 @@
 # Two (or three) organizations on one machine, one container and one login each.
 #   docker compose up -d --build
 #   docker compose exec -it org2 claude        # sign in once with that organization's account (/login)
-# REPO_URL: the repo the watcher follows. /seed is this working copy, mounted read-only (no push needed to try it);
-# use https://github.com/arminhupka/ds_test.git for the real thing (ORG1 also needs a way to push).
+# REPO_URL_<ORG>: the repo that watcher follows. /seed is this working copy, mounted read-only (no push needed to try it).
+# ORG2 (a copy) only reads, so it follows GitHub. ORG1 (the source) must push claude-ds/ back: keep it on /seed until it has a
+# key with write access, then set REPO_URL_ORG1 to the git@github.com:... address.
 name: ds-sync
 x-org: &org
   build: .
@@ -18,7 +19,7 @@ services:
     environment:
       ORG: org1
       ROLE: source
-      REPO_URL: ${REPO_URL:-/seed}
+      REPO_URL: ${REPO_URL_ORG1:-/seed}
     volumes:
       - home-org1:/home/node
       - repo-org1:/work/repo
@@ -30,7 +31,7 @@ services:
     environment:
       ORG: org2
       ROLE: replica
-      REPO_URL: ${REPO_URL:-/seed}
+      REPO_URL: ${REPO_URL_ORG2:-https://github.com/arminhupka/ds_test.git}
       ARTIFACT_URL: ${ARTIFACT_URL_ORG2:-}
     volumes:
       - home-org2:/home/node
