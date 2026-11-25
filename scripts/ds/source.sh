@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # ORG1, the source: the sources changed on main -> build, publish to the ORG1 artifact, pull the result
 # back into claude-ds/ and commit it. Usage: source.sh <org> [sha]
+# For trying it out: DS_FORCE=1 publishes even when nothing changed, DS_NO_COMMIT=1 leaves the repo untouched.
 set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 cd "$ROOT"
@@ -13,7 +14,7 @@ npm ci --no-audit --no-fund >/dev/null 2>&1
 "$(dirname "${BASH_SOURCE[0]}")/build.sh"
 
 # Nothing to publish when everything but the two metadata files is already what claude-ds/ holds.
-if diff <(DS_IGNORE="^($VOLATILE)$" manifest ds-bundle/.artifact/project) <(DS_IGNORE="^($VOLATILE)$" manifest claude-ds/project) >/dev/null; then
+if [ -z "${DS_FORCE:-}" ] && diff <(DS_IGNORE="^($VOLATILE)$" manifest ds-bundle/.artifact/project) <(DS_IGNORE="^($VOLATILE)$" manifest claude-ds/project) >/dev/null; then
   log "design system unchanged: nothing to publish"; exit 0
 fi
 
@@ -43,6 +44,9 @@ if ! ds_wait "$TIMEOUT" same; then
   notify "design-sync $ORG" "the published files do not match the built ones: not committed"; exit 1
 fi
 rm -rf claude-ds/project && cp -R "$VERIFY/project" claude-ds/project
+if [ -n "${DS_NO_COMMIT:-}" ]; then   # for trying the job out: publish and verify, but leave the repo as it was
+  git checkout -q -- claude-ds; notify "design-sync $ORG" "published and verified (DS_NO_COMMIT: nothing committed)"; exit 0
+fi
 (cd claude-ds && find project -type f ! -name .DS_Store | sort | xargs $SHA256 > checksums.txt)
 git add claude-ds
 if git diff --cached --quiet; then log "claude-ds/ unchanged after the pull"; exit 0; fi
