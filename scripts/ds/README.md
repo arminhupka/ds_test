@@ -31,3 +31,18 @@ The watcher is a plain loop: `git fetch` every minute, nothing else while nothin
 - **Verified:** the build is deterministic. Rebuilding gives byte-identical files to what `/design-sync` published, except the two metadata files (`design-system.json`, `_ds_sync.json`). The watcher's rules (when it runs and when it stays quiet, retry, no state on failure, one watcher per org) are tested.
 - **Not verified yet:** the headless publish and read-back through `claude -p` with the Artifact tool (`source.sh`, `replica.sh`). Run `scripts/ds/replica.sh <org>` or `source.sh <org>` once by hand on each machine before you rely on the watcher.
 - **Left out on purpose:** the visual grading `/design-sync` does with an agent. The build only compares hashes, so a change that looks wrong but builds cleanly is not caught.
+
+## Run it in Docker (one machine, one container per organization)
+
+```bash
+cd docker
+docker compose up -d --build            # org1 (source) and org2 (replica)
+docker compose exec -it org1 claude     # sign in once with the ORG1 account (/login)
+docker compose exec -it org2 claude     # sign in once with the ORG2 account
+```
+
+Each container waits until it is signed in, then starts its watcher by itself. The login is kept in a volume per organization (`home-org1`, `home-org2`), so it survives restarts. `docker compose logs -f org2` shows what the watcher does.
+
+- **ORG2 artifact:** put its link in `ARTIFACT_URL_ORG2` before `up` (or write it to `~/.ds-sync/org2.url` in the container).
+- **Repo:** `REPO_URL` defaults to `/seed`, this working copy mounted read-only, so you can try it without a push. For the real thing set `REPO_URL=https://github.com/arminhupka/ds_test.git`; ORG1 also needs a way to push (a deploy key with write access).
+- **A third organization:** copy the `org2` block in `docker/compose.yml` as `org3`.

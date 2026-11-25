@@ -1,0 +1,43 @@
+# Two (or three) organizations on one machine, one container and one login each.
+#   docker compose up -d --build
+#   docker compose exec -it org2 claude        # sign in once with that organization's account (/login)
+# REPO_URL: the repo the watcher follows. /seed is this working copy, mounted read-only (no push needed to try it);
+# use https://github.com/arminhupka/ds_test.git for the real thing (ORG1 also needs a way to push).
+name: ds-sync
+x-org: &org
+  build: .
+  image: ds-sync-claude
+  init: true
+  restart: unless-stopped
+  stdin_open: true
+  tty: true
+services:
+  org1:
+    <<: *org
+    hostname: org1
+    environment:
+      ORG: org1
+      ROLE: source
+      REPO_URL: ${REPO_URL:-/seed}
+    volumes:
+      - home-org1:/home/node
+      - repo-org1:/work/repo
+      - ..:/seed:ro
+      - ../.ds-sync:/host-ds-sync:ro
+  org2:
+    <<: *org
+    hostname: org2
+    environment:
+      ORG: org2
+      ROLE: replica
+      REPO_URL: ${REPO_URL:-/seed}
+      ARTIFACT_URL: ${ARTIFACT_URL_ORG2:-}
+    volumes:
+      - home-org2:/home/node
+      - repo-org2:/work/repo
+      - ..:/seed:ro
+volumes:
+  home-org1:
+  home-org2:
+  repo-org1:
+  repo-org2:
