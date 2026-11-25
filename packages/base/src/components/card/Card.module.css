@@ -1,0 +1,67 @@
+.root {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds_space-3);
+    padding: var(--ds_space-4);
+    font-family: var(--ds_font-family-base);
+    font-size: var(--ds_font-size-md);
+    line-height: var(--ds_line-height-md);
+    color: var(--ds_color-text-primary);
+    border: var(--ds_border-width-default) solid var(--ds_color-border-default);
+    border-radius: var(--ds_radius-md);
+}
+
+.default {
+    background-color: var(--ds_color-surface-default);
+}
+
+.subtle {
+    background-color: var(--ds_color-surface-subtle);
+}
+
+.automation {
+    --ds_base-card-accent: var(--ds_color-action-automation);
+}
+
+.positive {
+    --ds_base-card-accent: var(--ds_color-action-positive);
+}
+
+.warning {
+    --ds_base-card-accent: var(--ds_color-action-warning);
+}
+
+.danger {
+    --ds_base-card-accent: var(--ds_color-action-danger);
+}
+
+/* Tinted intents come after the surfaces: a tinted card also gets the default variant class, and the tint must win. */
+.automation,
+.positive,
+.warning,
+.danger {
+    background-color: color-mix(in srgb, var(--ds_base-card-accent) var(--ds_mix-tint), var(--ds_color-surface-default));
+    border-color: color-mix(in srgb, var(--ds_base-card-accent) var(--ds_mix-strong), var(--ds_color-surface-default));
+}
+
+/* Secondary text is too faint on a tint. */
+.automation .description,
+.positive .description,
+.warning .description,
+.danger .description {
+    color: var(--ds_color-text-primary);
+}
+
+.title {
+    font-size: var(--ds_font-size-md);
+    font-weight: var(--ds_font-weight-bold);
+    line-height: var(--ds_line-height-md);
+    color: var(--ds_color-text-primary);
+}
+
+.description {
+    font-size: var(--ds_font-size-md);
+    line-height: var(--ds_line-height-md);
+    color: var(--ds_color-text-secondary);
+}
