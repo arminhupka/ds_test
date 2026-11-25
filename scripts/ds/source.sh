@@ -8,7 +8,7 @@ ORG="${1:?org}"
 URL="$(node -p "JSON.parse(require('fs').readFileSync('.design-sync/artifact.json','utf8')).url")"
 VOLATILE='design-system\.json|_ds_sync\.json'
 
-git checkout -q main && git merge -q --ff-only origin/main
+# main is brought up to date by watch.sh before this job starts.
 npm ci --no-audit --no-fund >/dev/null 2>&1
 "$(dirname "${BASH_SOURCE[0]}")/build.sh"
 

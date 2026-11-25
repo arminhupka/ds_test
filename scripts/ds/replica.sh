@@ -11,7 +11,7 @@ URL_FILE="$STATE_DIR/$ORG.url"
 URL="$(tr -d '[:space:]' < "$URL_FILE")"
 TIMEOUT="${DS_TASK_TIMEOUT:-900}"
 
-git checkout -q main && git merge -q --ff-only origin/main
+# main is brought up to date by watch.sh before this job starts.
 (cd claude-ds && $SHA256 -c checksums.txt --quiet) || { notify "design-sync $ORG" "claude-ds/ does not match its checksums.txt: not published"; exit 1; }
 
 ds_session_ensure

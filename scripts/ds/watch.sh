@@ -31,10 +31,15 @@ while true; do
     DONE="$(cat "$STATE" 2>/dev/null || true)"; NOW="$(date +%s)"
     if [ -n "$NEW" ] && [ "$NEW" != "$DONE" ] && { [ "$NEW" != "$FAILED_SHA" ] || [ $((NOW - FAILED_AT)) -ge "$RETRY" ]; }; then
       log "change on main ($NEW): running $ROLE for $ORG"
-      if "$RUN" "$ORG" "$NEW"; then
-        echo "$NEW" > "$STATE"; FAILED_SHA=""; log "done $NEW"
+      # Update the working copy here, before the job starts: a job that updates its own script file while it runs reads a mixed file.
+      if git checkout -q main && git merge -q --ff-only origin/main; then
+        if "$RUN" "$ORG" "$NEW"; then
+          echo "$NEW" > "$STATE"; FAILED_SHA=""; log "done $NEW"
+        else
+          FAILED_SHA="$NEW"; FAILED_AT="$NOW"; notify "design-sync $ORG" "$ROLE job failed for ${NEW:0:7}; retry in ${RETRY}s"
+        fi
       else
-        FAILED_SHA="$NEW"; FAILED_AT="$NOW"; notify "design-sync $ORG" "$ROLE job failed for ${NEW:0:7}; retry in ${RETRY}s"
+        FAILED_SHA="$NEW"; FAILED_AT="$NOW"; notify "design-sync $ORG" "cannot fast-forward main; retry in ${RETRY}s"
       fi
     fi
   else
