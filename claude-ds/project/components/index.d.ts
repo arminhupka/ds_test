@@ -1,0 +1,43 @@
+import * as React from 'react';
+
+/**
+ * Button — from @mini-ui/base@0.0.0 (./packages/base/src/components/button/Button.stories.tsx).
+ * @replaces button
+ */
+export interface ButtonProps {
+  ref?: React.Ref;
+  id?: string;
+  children?: React.ReactNode;
+  /** Whether the button should be focusable when disabled. */
+  focusableWhenDisabled?: boolean;
+  /** Whether the component renders a native `<button>` element when replacing it via the `render` prop. Set to `false` if the */
+  nativeButton?: boolean;
+  /** Visual weight: filled, outlined, or a text-only link style. */
+  variant?: "primary" | "secondary" | "tertiary";
+  /** What the action means: a regular, a destructive, a neutral one, or one AI carries out. */
+  intent?: "positive" | "danger" | "neutral" | "automation";
+  /** Control height and type size. */
+  size?: "sm" | "md";
+  /** `full` stretches the button across its container, as for the one action closing a form or panel. */
+  width?: "auto" | "full";
+  /** Shows a spinner over the label and ignores clicks, keeping the button's size. */
+  loading?: boolean;
+}
+
+export declare const Button: React.ComponentType<ButtonProps>;
+
+/**
+ * Input — from @mini-ui/base@0.0.0 (./packages/base/src/components/input/Input.stories.tsx).
+ * @replaces input
+ */
+export interface InputProps {
+  /** The default value of the input. Use when uncontrolled. */
+  defaultValue?: string | number | readonly string[];
+  ref?: React.Ref;
+  /** The value of the input. Use when controlled. */
+  value?: string | number | readonly string[];
+  id?: string;
+  children?: React.ReactNode;
+}
+
+export declare const Input: React.ComponentType<InputProps>;

@@ -1,0 +1,37 @@
+{
+  "v": 3,
+  "assetGroups": {},
+  "blobs": {},
+  "createdOnFiles": {
+    "at": "2026-11-25T08:06:51.408Z",
+    "v": 1
+  },
+  "docs": {
+    "readme": "project/README.md",
+    "sections": []
+  },
+  "groups": [],
+  "layout": "files",
+  "libraries": [
+    {
+      "name": "react",
+      "version": "18",
+      "global": "React"
+    },
+    {
+      "name": "react-dom",
+      "version": "18",
+      "global": "ReactDOM"
+    }
+  ],
+  "namespace": "MiniUiBase",
+  "sections": {},
+  "title": "mini-ds",
+  "editing": "code",
+  "lastChange": {
+    "by": "Armin Hupka",
+    "at": "2026-11-25T09:14:07.966Z",
+    "via": "Claude Code /design-sync",
+    "note": "Synced from the design system's code"
+  }
+}

@@ -48,5 +48,3 @@ junit.xml
 .ds-sync/
 ds-bundle/
 
-# Pulled copy of the published design system: re-pull it after the next sync
-claude-ds/
