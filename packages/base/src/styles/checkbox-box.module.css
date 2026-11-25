@@ -1,0 +1,88 @@
+/*
+ * The box of a checkbox, shared by every control that draws one, so they all look the same.
+ * A composing class sets only what is about its own control.
+ */
+.box {
+    position: relative;
+    box-sizing: border-box;
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    block-size: var(--ds_base-checkbox-box-size);
+    aspect-ratio: 1;
+    padding: var(--ds_space-0-5);
+
+    /* An inline box takes its baseline from its content, so the box would shift as the indicator mounts. */
+    vertical-align: middle;
+    color: var(--ds_color-text-on-action);
+    background-color: var(--ds_color-surface-default);
+    border: var(--ds_border-width-default) solid var(--ds_color-border-strong);
+    border-radius: var(--ds_radius-sm);
+    transition:
+        background-color var(--ds_duration-fast) var(--ds_easing-standard),
+        border-color var(--ds_duration-fast) var(--ds_easing-standard);
+
+    &[data-checked],
+    &[data-indeterminate] {
+        background-color: var(--ds_base-checkbox-box-accent);
+        border-color: var(--ds_base-checkbox-box-accent);
+    }
+
+    /* Widens the pointer target to the minimum without growing the box. */
+    &::before {
+        position: absolute;
+        inset: calc((var(--ds_base-checkbox-box-size) - var(--ds_target-size-min)) / 2);
+        content: "";
+    }
+
+    /* The ring sits apart from the box, so it stays visible on a checked fill. */
+    &:focus-visible {
+        outline: var(--ds_focus-ring-width) solid var(--ds_color-focus-ring);
+        outline-offset: var(--ds_focus-ring-offset);
+    }
+
+    /* After the focus state, so a flagged control keeps its color while focused. */
+    &[data-invalid] {
+        border-color: var(--ds_color-action-danger);
+    }
+
+    &[data-disabled] {
+        color: var(--ds_color-text-disabled);
+        background-color: var(--ds_color-surface-disabled);
+        border-color: var(--ds_color-border-disabled);
+    }
+}
+
+.selection {
+    --ds_base-checkbox-box-accent: var(--ds_color-action-selection);
+}
+
+.automation {
+    --ds_base-checkbox-box-accent: var(--ds_color-action-automation);
+}
+
+/* Each box fits inside the line-height of the text size it sits beside. */
+.sm {
+    --ds_base-checkbox-box-size: calc(14rem / 12);
+}
+
+.md {
+    --ds_base-checkbox-box-size: calc(20rem / 12);
+}
+
+/*
+ * Sized in rem from the box, not in percent: an SVG with no width of its own counts as 300px wide
+ * (the default object size) when Safari measures the box around it.
+ */
+.icon {
+    display: block;
+    inline-size: calc(var(--ds_base-checkbox-box-size) - 2 * (var(--ds_space-0-5) + var(--ds_border-width-default)));
+    aspect-ratio: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .box {
+        transition: none;
+    }
+}

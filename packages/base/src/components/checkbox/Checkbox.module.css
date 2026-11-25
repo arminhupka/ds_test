@@ -1,0 +1,40 @@
+.root {
+    composes: box from '../../styles/checkbox-box.module.css';
+    cursor: pointer;
+
+    &[data-disabled] {
+        cursor: not-allowed;
+    }
+}
+
+.selection {
+    composes: selection from '../../styles/checkbox-box.module.css';
+}
+
+.automation {
+    composes: automation from '../../styles/checkbox-box.module.css';
+}
+
+.sm {
+    composes: sm from '../../styles/checkbox-box.module.css';
+}
+
+.md {
+    composes: md from '../../styles/checkbox-box.module.css';
+}
+
+.indicator {
+    display: flex;
+}
+
+.icon {
+    composes: icon from '../../styles/checkbox-box.module.css';
+}
+
+@media (hover: hover) {
+    .root:hover:not([data-checked], [data-indeterminate], [data-disabled], [data-invalid], :focus-visible) {
+        outline: var(--ds_ring-width) solid var(--ds_color-text-primary);
+        outline-offset: 0;
+        border-color: var(--ds_color-text-primary);
+    }
+}
