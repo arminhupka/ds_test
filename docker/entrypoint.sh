@@ -28,5 +28,9 @@ if [ "${1:-}" = "shell" ]; then exec bash; fi
 until claude auth status >/dev/null 2>&1; do
   echo "[$ORG] not signed in. Run: docker compose exec -it $ORG claude   (then /login)"; sleep 30
 done
-echo "[$ORG] signed in; starting the $ROLE watcher"
+echo "[$ORG] signed in"
+# The interactive session the jobs run in. A person approves the folder trust once; it is kept in the home volume.
+source scripts/ds/lib.sh
+ds_session_ensure || true
+echo "[$ORG] starting the $ROLE watcher"
 exec scripts/ds/watch.sh "$ROLE" "$ORG"

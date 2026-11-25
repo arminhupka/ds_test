@@ -49,3 +49,4 @@ junit.xml
 ds-bundle/
 
 .ds-verify/
+.ds-task/

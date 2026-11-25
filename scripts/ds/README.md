@@ -29,7 +29,7 @@ The watcher is a plain loop: `git fetch` every minute, nothing else while nothin
 ## What is verified, what is not
 
 - **Verified:** the build is deterministic. Rebuilding gives byte-identical files to what `/design-sync` published, except the two metadata files (`design-system.json`, `_ds_sync.json`). The watcher's rules (when it runs and when it stays quiet, retry, no state on failure, one watcher per org) are tested.
-- **Not verified yet:** the headless publish and read-back through `claude -p` with the Artifact tool (`source.sh`, `replica.sh`). Run `scripts/ds/replica.sh <org>` or `source.sh <org>` once by hand on each machine before you rely on the watcher.
+- **Not verified yet:** the headless publish and read-back through the interactive session in tmux (`source.sh`, `replica.sh`). Run `scripts/ds/replica.sh <org>` or `source.sh <org>` once by hand on each machine before you rely on the watcher.
 - **Left out on purpose:** the visual grading `/design-sync` does with an agent. The build only compares hashes, so a change that looks wrong but builds cleanly is not caught.
 
 ## Run it in Docker (one machine, one container per organization)
@@ -46,3 +46,13 @@ Each container waits until it is signed in, then starts its watcher by itself. T
 - **ORG2 artifact:** put its link in `ARTIFACT_URL_ORG2` before `up` (or write it to `~/.ds-sync/org2.url` in the container).
 - **Repo:** `REPO_URL` defaults to `/seed`, this working copy mounted read-only, so you can try it without a push. For the real thing set `REPO_URL=https://github.com/arminhupka/ds_test.git`; ORG1 also needs a way to push (a deploy key with write access).
 - **A third organization:** copy the `org2` block in `docker/compose.yml` as `org3`.
+
+## Why an interactive session
+
+`claude -p` has no Artifact tool, only an interactive `claude` has. So each container keeps one interactive Claude in `tmux` (started with `--allowedTools Artifact`). A job writes its task to `.ds-task/`, tells the session to do it, and then waits until the files read back from the artifact (`.ds-verify/<org>/`) match what should be there. If they do not match in `DS_TASK_TIMEOUT` seconds (default 900), or the session stops to ask for a permission, the job fails, shows what the session displays, and is retried 30 minutes later.
+
+The session asks once whether it may trust the folder. A person must answer it, once per container:
+
+```bash
+docker compose exec -it org2 tmux attach -t claude    # choose "Yes, I trust this folder", detach with Ctrl+b d
+```

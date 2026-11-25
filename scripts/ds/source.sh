@@ -26,20 +26,23 @@ d.createdOnFiles=old.createdOnFiles; d.editing=old.editing||"code";
 d.lastChange={by:old.lastChange?.by||"automation",at:new Date().toISOString(),via:"scripts/ds/source.sh",note:"Synced from the design system code"};
 fs.writeFileSync(process.argv[1],JSON.stringify(d,null,2)+"\n");' "$PUB/design-system.json"
 
+ds_session_ensure
+VERIFY=".ds-verify/$ORG"; rm -rf "$VERIFY"
+TIMEOUT="${DS_TASK_TIMEOUT:-900}"
 log "publishing to $URL"
-claude_run "Use the Artifact tool. Artifact: $URL.
+ds_send "source-$ORG" "Use the Artifact tool. Artifact: $URL
+
 1. Action list with scope files, so the files are known to this session.
 2. Publish to that url with the files option: every file under ./ds-bundle/.artifact/publish/ goes to project/<same relative path>, content unchanged. Publish nothing else. Do not touch SKILL.md, index.html or artifact-type/. Do not generate, rewrite or reformat any content.
-3. Print one line: published N files." >/dev/null
+3. Then read every file under project/ of that artifact with the paths option and out_dir ./$VERIFY, so they are saved as ./$VERIFY/project/...
+4. Stop. Do nothing else."
 
-log "pulling the published files back into claude-ds/"
-claude_run "Use the Artifact tool. Artifact: $URL.
-List its files, then read every file under project/ with the paths option and out_dir ./claude-ds. Do not read or save anything else. Print the saved paths." >/dev/null
-
-# Verify: what is in the artifact now must equal what was built (metadata files aside).
-if ! diff <(DS_IGNORE="^($VOLATILE)$" manifest "$PUB") <(DS_IGNORE="^($VOLATILE)$" manifest claude-ds/project) >/dev/null; then
-  notify "design-sync $ORG" "published files differ from the built ones: not committed"; exit 1
+# What the artifact holds now must equal what was built (the two metadata files aside).
+same() { diff <(DS_IGNORE="^($VOLATILE)$" manifest "$PUB") <(DS_IGNORE="^($VOLATILE)$" manifest "$VERIFY/project"); }
+if ! ds_wait "$TIMEOUT" same; then
+  notify "design-sync $ORG" "the published files do not match the built ones: not committed"; exit 1
 fi
+rm -rf claude-ds/project && cp -R "$VERIFY/project" claude-ds/project
 (cd claude-ds && find project -type f ! -name .DS_Store | sort | xargs $SHA256 > checksums.txt)
 git add claude-ds
 if git diff --cached --quiet; then log "claude-ds/ unchanged after the pull"; exit 0; fi
