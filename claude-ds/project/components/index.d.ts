@@ -22,7 +22,7 @@ export declare const Avatar: React.ComponentType<AvatarProps>;
 export interface BadgeProps {
   id?: string;
   children?: React.ReactNode;
-  intent?: "positive" | "neutral";
+  intent?: "neutral" | "positive";
 }
 
 export declare const Badge: React.ComponentType<BadgeProps>;
@@ -42,7 +42,7 @@ export interface ButtonProps {
   /** Visual weight: filled, outlined, or a text-only link style. */
   variant?: "primary" | "secondary" | "tertiary";
   /** What the action means: a regular, a destructive, a neutral one, or one AI carries out. */
-  intent?: "positive" | "neutral" | "automation" | "danger";
+  intent?: "neutral" | "positive" | "automation" | "danger";
   /** Control height and type size. */
   size?: "sm" | "md";
   /** `full` stretches the button across its container, as for the one action closing a form or panel. */
@@ -52,6 +52,19 @@ export interface ButtonProps {
 }
 
 export declare const Button: React.ComponentType<ButtonProps>;
+
+/**
+ * Card — from @mini-ui/base@0.0.0 (./packages/base/src/components/card/Card.stories.tsx).
+ */
+export interface CardProps {
+  [key: string]: unknown;
+}
+
+export declare const Card: {
+  Root: React.ComponentType<any>;
+  Title: React.ComponentType<any>;
+  Description: React.ComponentType<any>;
+};
 
 /**
  * Checkbox — from @mini-ui/base@0.0.0 (./packages/base/src/components/checkbox/Checkbox.stories.tsx).

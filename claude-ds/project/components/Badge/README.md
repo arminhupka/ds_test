@@ -8,7 +8,7 @@ Variants (see `preview.html`): Default, Intents.
 interface BadgeProps {
   id?: string;
   children?: React.ReactNode;
-  intent?: "positive" | "neutral";
+  intent?: "neutral" | "positive";
 }
 ```
 

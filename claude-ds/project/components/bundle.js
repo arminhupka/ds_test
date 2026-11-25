@@ -1,4 +1,4 @@
-/* @ds-bundle: {"format":4,"namespace":"MiniUiBase","components":[{"name":"Avatar"},{"name":"Badge"},{"name":"Button"},{"name":"Checkbox"},{"name":"Input"}]} */
+/* @ds-bundle: {"format":4,"namespace":"MiniUiBase","components":[{"name":"Avatar"},{"name":"Badge"},{"name":"Button"},{"name":"Card"},{"name":"Checkbox"},{"name":"Input"}]} */
 "use strict";
 var MiniUiBase = (() => {
   var __create = Object.create;
@@ -12,15 +12,15 @@ var MiniUiBase = (() => {
     if (err) throw err[0];
     try {
       return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
-    } catch (e6) {
-      throw err = [e6], e6;
+    } catch (e7) {
+      throw err = [e7], e7;
     }
   };
   var __commonJS = (cb, mod) => function __require() {
     try {
       return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
-    } catch (e6) {
-      throw mod = 0, e6;
+    } catch (e7) {
+      throw mod = 0, e7;
     }
   };
   var __export = (target, all) => {
@@ -58,23 +58,23 @@ var MiniUiBase = (() => {
       init_define_import_meta_env();
       var R = window.React;
       function np(p2, k) {
-        var o5 = {};
-        for (var x in p2) if (x !== "children") o5[x] = p2[x];
-        if (k !== void 0) o5.key = k;
-        return o5;
+        var o6 = {};
+        for (var x in p2) if (x !== "children") o6[x] = p2[x];
+        if (k !== void 0) o6.key = k;
+        return o6;
       }
-      function jsx(t7, p2, k) {
-        var c6 = p2 && p2.children;
-        return c6 === void 0 ? R.createElement(t7, np(p2, k)) : R.createElement(t7, np(p2, k), c6);
+      function jsx(t8, p2, k) {
+        var c7 = p2 && p2.children;
+        return c7 === void 0 ? R.createElement(t8, np(p2, k)) : R.createElement(t8, np(p2, k), c7);
       }
-      function jsxs(t7, p2, k) {
-        return R.createElement.apply(R, [t7, np(p2, k)].concat(p2.children));
+      function jsxs(t8, p2, k) {
+        return R.createElement.apply(R, [t8, np(p2, k)].concat(p2.children));
       }
       module.exports = R;
       module.exports.jsx = jsx;
       module.exports.jsxs = jsxs;
-      module.exports.jsxDEV = function(t7, p2, k, s5) {
-        return (s5 ? jsxs : jsx)(t7, p2, k);
+      module.exports.jsxDEV = function(t8, p2, k, s6) {
+        return (s6 ? jsxs : jsx)(t8, p2, k);
       };
       module.exports.Fragment = R.Fragment;
     }
@@ -97,6 +97,7 @@ var MiniUiBase = (() => {
     Avatar: () => d,
     Badge: () => a2,
     Button: () => f,
+    Card: () => c4,
     Checkbox: () => h,
     Input: () => l5,
     TranslationsContext: () => c,
@@ -113,28 +114,28 @@ var MiniUiBase = (() => {
   var import_jsx_runtime = __toESM(require_react_shim(), 1);
   var a = "___@mini-ui/base";
   var o = "___@mini-ui/components";
-  var s = ((t7, n6, r8) => {
-    let i4 = r8?.legacy ? o : a, s5 = window, c6 = s5[i4] ?? /* @__PURE__ */ new Map();
-    return s5[i4] = c6, c6.has(t7) || c6.set(t7, (0, import_react.createContext)(n6)), c6.get(t7);
+  var s = ((t8, n6, r9) => {
+    let i5 = r9?.legacy ? o : a, s6 = window, c7 = s6[i5] ?? /* @__PURE__ */ new Map();
+    return s6[i5] = c7, c7.has(t8) || c7.set(t8, (0, import_react.createContext)(n6)), c7.get(t8);
   })("translations", {});
-  var c = ({ translations: e6, children: t7 }) => {
-    let a4 = (0, import_react.useContext)(s), o5 = (0, import_react.useMemo)(() => ({
-      ...a4,
-      ...e6
-    }), [a4, e6]);
+  var c = ({ translations: e7, children: t8 }) => {
+    let a5 = (0, import_react.useContext)(s), o6 = (0, import_react.useMemo)(() => ({
+      ...a5,
+      ...e7
+    }), [a5, e7]);
     return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(s.Provider, {
-      value: o5,
-      children: t7
+      value: o6,
+      children: t8
     });
   };
   c.displayName = "TranslationsContext";
   var l = /\{\{\s*(\w+)\s*\}\}/g;
   var u = () => {
-    let e6 = (0, import_react.useContext)(s);
-    return (0, import_react.useCallback)((t7, n6) => {
-      let r8 = e6[t7] ?? t7;
-      return n6 === void 0 ? r8 : r8.replaceAll(l, (e7, t8) => String(n6[t8] ?? e7));
-    }, [e6]);
+    let e7 = (0, import_react.useContext)(s);
+    return (0, import_react.useCallback)((t8, n6) => {
+      let r9 = e7[t8] ?? t8;
+      return n6 === void 0 ? r9 : r9.replaceAll(l, (e8, t9) => String(n6[t9] ?? e8));
+    }, [e7]);
   };
 
   // .design-sync/.cache/shadow/@mini-ui/base/dist/avatar.js
@@ -146,17 +147,17 @@ var MiniUiBase = (() => {
 
   // node_modules/clsx/dist/clsx.mjs
   init_define_import_meta_env();
-  function r2(e6) {
-    var t7, f3, n6 = "";
-    if ("string" == typeof e6 || "number" == typeof e6) n6 += e6;
-    else if ("object" == typeof e6) if (Array.isArray(e6)) {
-      var o5 = e6.length;
-      for (t7 = 0; t7 < o5; t7++) e6[t7] && (f3 = r2(e6[t7])) && (n6 && (n6 += " "), n6 += f3);
-    } else for (f3 in e6) e6[f3] && (n6 && (n6 += " "), n6 += f3);
+  function r2(e7) {
+    var t8, f3, n6 = "";
+    if ("string" == typeof e7 || "number" == typeof e7) n6 += e7;
+    else if ("object" == typeof e7) if (Array.isArray(e7)) {
+      var o6 = e7.length;
+      for (t8 = 0; t8 < o6; t8++) e7[t8] && (f3 = r2(e7[t8])) && (n6 && (n6 += " "), n6 += f3);
+    } else for (f3 in e7) e7[f3] && (n6 && (n6 += " "), n6 += f3);
     return n6;
   }
   function clsx() {
-    for (var e6, t7, f3 = 0, n6 = "", o5 = arguments.length; f3 < o5; f3++) (e6 = arguments[f3]) && (t7 = r2(e6)) && (n6 && (n6 += " "), n6 += t7);
+    for (var e7, t8, f3 = 0, n6 = "", o6 = arguments.length; f3 < o6; f3++) (e7 = arguments[f3]) && (t8 = r2(e7)) && (n6 && (n6 += " "), n6 += t8);
     return n6;
   }
 
@@ -238,10 +239,10 @@ var MiniUiBase = (() => {
   }
 
   // node_modules/@base-ui/utils/useMergedRefs.mjs
-  function useMergedRefs(a4, b, c6, d4) {
+  function useMergedRefs(a5, b, c7, d4) {
     const forkRef = useRefWithInit(createForkRef).current;
-    if (didChange(forkRef, a4, b, c6, d4)) {
-      update(forkRef, [a4, b, c6, d4]);
+    if (didChange(forkRef, a5, b, c7, d4)) {
+      update(forkRef, [a5, b, c7, d4]);
     }
     return forkRef.callback;
   }
@@ -259,8 +260,8 @@ var MiniUiBase = (() => {
       refs: []
     };
   }
-  function didChange(forkRef, a4, b, c6, d4) {
-    return forkRef.refs[0] !== a4 || forkRef.refs[1] !== b || forkRef.refs[2] !== c6 || forkRef.refs[3] !== d4;
+  function didChange(forkRef, a5, b, c7, d4) {
+    return forkRef.refs[0] !== a5 || forkRef.refs[1] !== b || forkRef.refs[2] !== c7 || forkRef.refs[3] !== d4;
   }
   function didChangeN(forkRef, newRefs) {
     return forkRef.refs.length !== newRefs.length || forkRef.refs.some((ref, index) => ref !== newRefs[index]);
@@ -278,8 +279,8 @@ var MiniUiBase = (() => {
       }
       if (instance != null) {
         const cleanupCallbacks = Array(refs.length).fill(null);
-        for (let i4 = 0; i4 < refs.length; i4 += 1) {
-          const ref = refs[i4];
+        for (let i5 = 0; i5 < refs.length; i5 += 1) {
+          const ref = refs[i5];
           if (ref == null) {
             continue;
           }
@@ -287,7 +288,7 @@ var MiniUiBase = (() => {
             case "function": {
               const refCleanup = ref(instance);
               if (typeof refCleanup === "function") {
-                cleanupCallbacks[i4] = refCleanup;
+                cleanupCallbacks[i5] = refCleanup;
               }
               break;
             }
@@ -299,14 +300,14 @@ var MiniUiBase = (() => {
           }
         }
         forkRef.cleanup = () => {
-          for (let i4 = 0; i4 < refs.length; i4 += 1) {
-            const ref = refs[i4];
+          for (let i5 = 0; i5 < refs.length; i5 += 1) {
+            const ref = refs[i5];
             if (ref == null) {
               continue;
             }
             switch (typeof ref) {
               case "function": {
-                const cleanupCallback = cleanupCallbacks[i4];
+                const cleanupCallback = cleanupCallbacks[i5];
                 if (typeof cleanupCallback === "function") {
                   cleanupCallback();
                 } else {
@@ -350,16 +351,16 @@ var MiniUiBase = (() => {
 
   // node_modules/@base-ui/utils/mergeObjects.mjs
   init_define_import_meta_env();
-  function mergeObjects(a4, b) {
-    if (a4 && !b) {
-      return a4;
+  function mergeObjects(a5, b) {
+    if (a5 && !b) {
+      return a5;
     }
-    if (!a4 && b) {
+    if (!a5 && b) {
       return b;
     }
-    if (a4 || b) {
+    if (a5 || b) {
       return {
-        ...a4,
+        ...a5,
         ...b
       };
     }
@@ -440,22 +441,22 @@ var MiniUiBase = (() => {
   // node_modules/@base-ui/react/merge-props/mergeProps.mjs
   init_define_import_meta_env();
   var EMPTY_PROPS = {};
-  function mergeProps(a4, b, c6, d4, e6) {
-    if (!c6 && !d4 && !e6 && !a4) {
+  function mergeProps(a5, b, c7, d4, e7) {
+    if (!c7 && !d4 && !e7 && !a5) {
       return createInitialMergedProps(b);
     }
-    let merged = createInitialMergedProps(a4);
+    let merged = createInitialMergedProps(a5);
     if (b) {
       merged = mergeInto(merged, b);
     }
-    if (c6) {
-      merged = mergeInto(merged, c6);
+    if (c7) {
+      merged = mergeInto(merged, c7);
     }
     if (d4) {
       merged = mergeInto(merged, d4);
     }
-    if (e6) {
-      merged = mergeInto(merged, e6);
+    if (e7) {
+      merged = mergeInto(merged, e7);
     }
     return merged;
   }
@@ -467,8 +468,8 @@ var MiniUiBase = (() => {
       return createInitialMergedProps(props[0]);
     }
     let merged = createInitialMergedProps(props[0]);
-    for (let i4 = 1; i4 < props.length; i4 += 1) {
-      merged = mergeInto(merged, props[i4]);
+    for (let i5 = 1; i5 < props.length; i5 += 1) {
+      merged = mergeInto(merged, props[i5]);
     }
     return merged;
   }
@@ -861,8 +862,8 @@ var MiniUiBase = (() => {
         this.callbacksCount = 0;
         this.startId = this.nextId;
         if (currentCallbacksCount > 0) {
-          for (let i4 = 0; i4 < currentCallbacks.length; i4 += 1) {
-            currentCallbacks[i4]?.(timestamp);
+          for (let i5 = 0; i5 < currentCallbacks.length; i5 += 1) {
+            currentCallbacks[i5]?.(timestamp);
           }
         }
       });
@@ -1397,9 +1398,9 @@ var MiniUiBase = (() => {
     active: "c5wCrZ8wu",
     inactive: "cH1KskmLM"
   };
-  var s2 = (e6) => {
-    let t7 = e6.trim().split(/\s+/u).filter(Boolean);
-    return `${t7.at(0)?.at(0) ?? ""}${t7.length > 1 ? t7.at(-1)?.at(0) ?? "" : ""}`.toLocaleUpperCase();
+  var s2 = (e7) => {
+    let t8 = e7.trim().split(/\s+/u).filter(Boolean);
+    return `${t8.at(0)?.at(0) ?? ""}${t8.length > 1 ? t8.at(-1)?.at(0) ?? "" : ""}`.toLocaleUpperCase();
   };
   var c2 = {
     userActive: "{{name}}, active",
@@ -1413,8 +1414,8 @@ var MiniUiBase = (() => {
     active: c2.userActive,
     inactive: c2.userInactive
   };
-  var d = (0, import_react3.forwardRef)(({ name: t7, src: i4, status: c6 = "none", ...d4 }, f3) => {
-    let p2 = u(), m2 = c6 === "none" ? t7 : p2(u2[c6], { name: t7 });
+  var d = (0, import_react3.forwardRef)(({ name: t8, src: i5, status: c7 = "none", ...d4 }, f3) => {
+    let p2 = u(), m2 = c7 === "none" ? t8 : p2(u2[c7], { name: t8 });
     return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(index_parts_exports.Root, {
       className: o2.root,
       ...d4,
@@ -1422,19 +1423,19 @@ var MiniUiBase = (() => {
       "aria-label": m2,
       role: "img",
       children: [
-        i4 !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(index_parts_exports.Image, {
+        i5 !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(index_parts_exports.Image, {
           alt: "",
           className: o2.image,
-          src: i4
+          src: i5
         }),
         /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(index_parts_exports.Fallback, {
           "aria-hidden": true,
           className: o2.fallback,
-          children: s2(t7)
+          children: s2(t8)
         }),
-        c6 !== "none" && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", {
+        c7 !== "none" && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", {
           "aria-hidden": true,
-          className: l2({ status: c6 })
+          className: l2({ status: c7 })
         })
       ]
     });
@@ -1457,10 +1458,10 @@ var MiniUiBase = (() => {
     } },
     defaultVariants: { intent: "neutral" }
   });
-  var a2 = (0, import_react4.forwardRef)(({ intent: e6, ...n6 }, r8) => /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", {
-    className: i2({ intent: e6 }),
+  var a2 = (0, import_react4.forwardRef)(({ intent: e7, ...n6 }, r9) => /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", {
+    className: i2({ intent: e7 }),
     ...n6,
-    ref: r8
+    ref: r9
   }));
   a2.displayName = "Badge";
 
@@ -1796,7 +1797,7 @@ var MiniUiBase = (() => {
     "spinner-sweep-right": "cryxDFUEB"
   };
   var u3 = () => {
-    let e6 = (0, import_react5.useId)().replace(/:/g, "");
+    let e7 = (0, import_react5.useId)().replace(/:/g, "");
     return /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("svg", {
       "aria-hidden": "true",
       className: l3.spinner,
@@ -1805,7 +1806,7 @@ var MiniUiBase = (() => {
       viewBox: "0 0 38 24",
       children: [
         /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("defs", { children: [/* @__PURE__ */ (0, import_jsx_runtime5.jsx)("mask", {
-          id: `${e6}-left`,
+          id: `${e7}-left`,
           maskUnits: "userSpaceOnUse",
           x: -10,
           y: -10,
@@ -1820,7 +1821,7 @@ var MiniUiBase = (() => {
             fill: "white"
           })
         }), /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("mask", {
-          id: `${e6}-right`,
+          id: `${e7}-right`,
           maskUnits: "userSpaceOnUse",
           x: -10,
           y: -10,
@@ -1840,11 +1841,11 @@ var MiniUiBase = (() => {
           d: "M13.05 8.52h4.4v9.4h3.4v-9.4h4.4v-2.7h-12.2z"
         }),
         /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("path", {
-          mask: `url(#${e6}-left)`,
+          mask: `url(#${e7}-left)`,
           d: "M15.09 22.52c.55.08 1.12.15 1.69.19-.57-.05-1.15-.1-1.69-.19M4.75 14a7 7 0 0 1 3.3-5.6V3.12c-4.2 2-6.9 5.1-6.9 8.7C1.15 17 7.08 21.36 15 22.51 9 21.4 4.75 18 4.75 14"
         }),
         /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("path", {
-          mask: `url(#${e6}-right)`,
+          mask: `url(#${e7}-right)`,
           d: "M23.06 1.29l.63.1-.34-.07ZM23.69 1.39c5.72 1.07 9.86 4.41 9.86 8.33 0 .53 0 3.23-3.37 5.73v5.3c6.8-3.18 7-7.75 7-8.73-.03-5.13-5.78-9.4-13.49-10.63"
         })
       ]
@@ -1883,21 +1884,21 @@ var MiniUiBase = (() => {
       width: "auto"
     }
   });
-  var f = (0, import_react5.forwardRef)(({ variant: e6, intent: t7, size: r8, width: o5, loading: l6 = false, children: f3, onClick: p2, ...m2 }, h2) => {
+  var f = (0, import_react5.forwardRef)(({ variant: e7, intent: t8, size: r9, width: o6, loading: l6 = false, children: f3, onClick: p2, ...m2 }, h2) => {
     let g = (0, import_react5.useContext)(c3) !== null;
     return /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(Button, {
       className: d2({
-        variant: e6,
-        intent: t7,
-        size: r8,
-        width: o5,
+        variant: e7,
+        intent: t8,
+        size: r9,
+        width: o6,
         grouped: g
       }),
       ...m2,
       "aria-busy": l6 || void 0,
       "data-loading": l6 ? "" : void 0,
-      onClick: (e7) => {
-        l6 || p2?.(e7);
+      onClick: (e8) => {
+        l6 || p2?.(e8);
       },
       ref: h2,
       children: [f3, l6 && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(u3, {})]
@@ -1905,10 +1906,71 @@ var MiniUiBase = (() => {
   });
   f.displayName = "Button";
 
-  // .design-sync/.cache/shadow/@mini-ui/base/dist/checkbox.js
+  // .design-sync/.cache/shadow/@mini-ui/base/dist/card.js
   init_define_import_meta_env();
   var import_react6 = __toESM(require_react_shim(), 1);
-  var import_jsx_runtime7 = __toESM(require_react_shim(), 1);
+  var import_jsx_runtime6 = __toESM(require_react_shim(), 1);
+  var r6 = {
+    root: "cFHKyCOsK",
+    default: "cmlvQVqvz",
+    subtle: "c9kA1cFsx",
+    automation: "cJcsUBmip",
+    positive: "cWbilX6us",
+    warning: "czVl2oeEZ",
+    danger: "cduJnBJIM",
+    description: "cj3ZrU7ut",
+    title: "cLcEgelCt"
+  };
+  var i4 = (0, import_react6.forwardRef)((e7, n6) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", {
+    className: r6.description,
+    ...e7,
+    ref: n6
+  }));
+  i4.displayName = "CardDescription";
+  var a4 = cva(r6.root, {
+    variants: {
+      variant: {
+        default: r6.default,
+        subtle: r6.subtle
+      },
+      intent: {
+        neutral: null,
+        automation: r6.automation,
+        positive: r6.positive,
+        warning: r6.warning,
+        danger: r6.danger
+      }
+    },
+    defaultVariants: {
+      variant: "default",
+      intent: "neutral"
+    }
+  });
+  var o3 = (0, import_react6.forwardRef)(({ variant: e7, intent: n6, ...r9 }, i5) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", {
+    className: a4({
+      variant: e7,
+      intent: n6
+    }),
+    ...r9,
+    ref: i5
+  }));
+  o3.displayName = "CardRoot";
+  var s3 = (0, import_react6.forwardRef)((e7, n6) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", {
+    className: r6.title,
+    ...e7,
+    ref: n6
+  }));
+  s3.displayName = "CardTitle";
+  var c4 = {
+    Root: o3,
+    Title: s3,
+    Description: i4
+  };
+
+  // .design-sync/.cache/shadow/@mini-ui/base/dist/checkbox.js
+  init_define_import_meta_env();
+  var import_react7 = __toESM(require_react_shim(), 1);
+  var import_jsx_runtime8 = __toESM(require_react_shim(), 1);
 
   // node_modules/@base-ui/react/checkbox/index.mjs
   init_define_import_meta_env();
@@ -2510,7 +2572,7 @@ var MiniUiBase = (() => {
   }
 
   // node_modules/@base-ui/react/checkbox/root/CheckboxRoot.mjs
-  var import_jsx_runtime6 = __toESM(require_react_shim(), 1);
+  var import_jsx_runtime7 = __toESM(require_react_shim(), 1);
   var PARENT_CHECKBOX = "data-parent";
   var CheckboxRoot = /* @__PURE__ */ React30.forwardRef(function CheckboxRoot2(componentProps, forwardedRef) {
     const {
@@ -2781,15 +2843,15 @@ var MiniUiBase = (() => {
       }
       return registerChildId(value, renderedId);
     }, [registerChildId, parent, value, renderedId]);
-    return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(CheckboxRootContext.Provider, {
+    return /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(CheckboxRootContext.Provider, {
       value: state,
-      children: [element, !checked2 && !groupContext && name && !parent && uncheckedValue !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("input", {
+      children: [element, !checked2 && !groupContext && name && !parent && uncheckedValue !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("input", {
         type: "hidden",
         form,
         name,
         value: uncheckedValue,
         disabled: disabled2
-      }), /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("input", {
+      }), /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("input", {
         ...inputProps,
         suppressHydrationWarning: true
       })]
@@ -2851,7 +2913,7 @@ var MiniUiBase = (() => {
   if (true) CheckboxIndicator.displayName = "CheckboxIndicator";
 
   // .design-sync/.cache/shadow/@mini-ui/base/dist/checkbox.js
-  var o3 = {
+  var o4 = {
     root: "ciRA68X3w c2caINmtb",
     selection: "crvq7PJLh c1fAD8AXB",
     automation: "ctfAPKPIA cVkGUZ5Kr",
@@ -2860,12 +2922,12 @@ var MiniUiBase = (() => {
     indicator: "cB2c4zMdU",
     icon: "cbac7epuF cQGQHnYGR"
   };
-  var s3 = /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("svg", {
+  var s4 = /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("svg", {
     "aria-hidden": true,
-    className: o3.icon,
+    className: o4.icon,
     fill: "none",
     viewBox: "0 0 16 16",
-    children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("path", {
+    children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("path", {
       d: "M3.5 8.5 6.5 11.5 12.5 4.5",
       stroke: "currentColor",
       strokeLinecap: "round",
@@ -2873,53 +2935,53 @@ var MiniUiBase = (() => {
       strokeWidth: "2"
     })
   });
-  var c4 = /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("svg", {
+  var c5 = /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("svg", {
     "aria-hidden": true,
-    className: o3.icon,
+    className: o4.icon,
     fill: "none",
     viewBox: "0 0 16 16",
-    children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("path", {
+    children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("path", {
       d: "M4 8h8",
       stroke: "currentColor",
       strokeLinecap: "round",
       strokeWidth: "2"
     })
   });
-  var l4 = (e6, t7) => /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", {
-    ...e6,
-    children: t7.indeterminate ? c4 : s3
+  var l4 = (e7, t8) => /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("span", {
+    ...e7,
+    children: t8.indeterminate ? c5 : s4
   });
-  var u4 = (0, import_react6.forwardRef)((e6, t7) => /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(index_parts_exports2.Indicator, {
-    className: o3.indicator,
-    ...e6,
-    ref: t7,
+  var u4 = (0, import_react7.forwardRef)((e7, t8) => /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(index_parts_exports2.Indicator, {
+    className: o4.indicator,
+    ...e7,
+    ref: t8,
     render: l4
   }));
   u4.displayName = "CheckboxIndicator";
-  var d3 = (0, import_react6.createContext)(null);
-  var f2 = (e6, t7) => {
-    let r8 = (0, import_react6.useContext)(d3);
+  var d3 = (0, import_react7.createContext)(null);
+  var f2 = (e7, t8) => {
+    let r9 = (0, import_react7.useContext)(d3);
     return {
-      accent: e6 ?? r8?.accent ?? "selection",
-      size: t7 ?? r8?.size ?? "md"
+      accent: e7 ?? r9?.accent ?? "selection",
+      size: t8 ?? r9?.size ?? "md"
     };
   };
-  var p = cva(o3.root, { variants: {
+  var p = cva(o4.root, { variants: {
     size: {
-      sm: o3.sm,
-      md: o3.md
+      sm: o4.sm,
+      md: o4.md
     },
     accent: {
-      selection: o3.selection,
-      automation: o3.automation
+      selection: o4.selection,
+      automation: o4.automation
     }
   } });
-  var m = (0, import_react6.forwardRef)(({ size: e6, accent: t7, ...n6 }, i4) => {
-    let o5 = f2(t7, e6);
-    return /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(index_parts_exports2.Root, {
-      className: p(o5),
+  var m = (0, import_react7.forwardRef)(({ size: e7, accent: t8, ...n6 }, i5) => {
+    let o6 = f2(t8, e7);
+    return /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(index_parts_exports2.Root, {
+      className: p(o6),
       ...n6,
-      ref: i4
+      ref: i5
     });
   });
   m.displayName = "CheckboxRoot";
@@ -2930,8 +2992,8 @@ var MiniUiBase = (() => {
 
   // .design-sync/.cache/shadow/@mini-ui/base/dist/input.js
   init_define_import_meta_env();
-  var import_react7 = __toESM(require_react_shim(), 1);
-  var import_jsx_runtime14 = __toESM(require_react_shim(), 1);
+  var import_react8 = __toESM(require_react_shim(), 1);
+  var import_jsx_runtime15 = __toESM(require_react_shim(), 1);
 
   // node_modules/@base-ui/react/input/index.mjs
   init_define_import_meta_env();
@@ -2976,7 +3038,7 @@ var MiniUiBase = (() => {
   // node_modules/@base-ui/react/internals/labelable-provider/LabelableProvider.mjs
   init_define_import_meta_env();
   var React33 = __toESM(require_react_shim(), 1);
-  var import_jsx_runtime8 = __toESM(require_react_shim(), 1);
+  var import_jsx_runtime9 = __toESM(require_react_shim(), 1);
   var LabelableProvider = function LabelableProvider2(props) {
     const defaultId = useBaseUiId();
     const [controlIdState, setControlIdState] = React33.useState(defaultId);
@@ -3033,7 +3095,7 @@ var MiniUiBase = (() => {
       setMessageIds,
       getDescriptionProps
     }), [controlId, registerControlId, resetControlId, labelId, setLabelId, messageIds, setMessageIds, getDescriptionProps]);
-    return /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(LabelableContext.Provider, {
+    return /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(LabelableContext.Provider, {
       value: contextValue,
       children: props.children
     });
@@ -3518,7 +3580,7 @@ var MiniUiBase = (() => {
   }
 
   // node_modules/@base-ui/react/field/root/FieldRoot.mjs
-  var import_jsx_runtime9 = __toESM(require_react_shim(), 1);
+  var import_jsx_runtime10 = __toESM(require_react_shim(), 1);
   var FieldRootInner = /* @__PURE__ */ React36.forwardRef(function FieldRootInner2(componentProps, forwardedRef) {
     const {
       errors,
@@ -3641,15 +3703,15 @@ var MiniUiBase = (() => {
       props: elementProps,
       stateAttributesMapping: fieldValidityMapping
     });
-    return /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(FieldRootContext.Provider, {
+    return /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(FieldRootContext.Provider, {
       value: contextValue,
       children: element
     });
   });
   if (true) FieldRootInner.displayName = "FieldRootInner";
   var FieldRoot = /* @__PURE__ */ React36.forwardRef(function FieldRoot2(componentProps, forwardedRef) {
-    return /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(LabelableProvider, {
-      children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(FieldRootInner, {
+    return /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(LabelableProvider, {
+      children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(FieldRootInner, {
         ...componentProps,
         ref: forwardedRef
       })
@@ -3715,7 +3777,7 @@ var MiniUiBase = (() => {
   // node_modules/@base-ui/react/field/error/FieldError.mjs
   init_define_import_meta_env();
   var React38 = __toESM(require_react_shim(), 1);
-  var import_jsx_runtime10 = __toESM(require_react_shim(), 1);
+  var import_jsx_runtime11 = __toESM(require_react_shim(), 1);
   var stateAttributesMapping2 = {
     ...fieldValidityMapping,
     ...transitionStatusMapping
@@ -3779,8 +3841,8 @@ var MiniUiBase = (() => {
     }
     let errorMessage = error2;
     if (Array.isArray(error2)) {
-      errorMessage = error2.length > 1 ? /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("ul", {
-        children: error2.map((message) => /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("li", {
+      errorMessage = error2.length > 1 ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("ul", {
+        children: error2.map((message) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("li", {
           children: message
         }, message))
       }) : error2[0];
@@ -4016,7 +4078,7 @@ var MiniUiBase = (() => {
   // node_modules/@base-ui/react/field/validity/FieldValidity.mjs
   init_define_import_meta_env();
   var React41 = __toESM(require_react_shim(), 1);
-  var import_jsx_runtime11 = __toESM(require_react_shim(), 1);
+  var import_jsx_runtime12 = __toESM(require_react_shim(), 1);
   var FieldValidity = function FieldValidity2(props) {
     const {
       children
@@ -4037,7 +4099,7 @@ var MiniUiBase = (() => {
         transitionStatus
       };
     }, [combinedFieldValidityData, transitionStatus]);
-    return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(React41.Fragment, {
+    return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(React41.Fragment, {
       children: children(fieldValidityState)
     });
   };
@@ -4046,7 +4108,7 @@ var MiniUiBase = (() => {
   // node_modules/@base-ui/react/field/item/FieldItem.mjs
   init_define_import_meta_env();
   var React42 = __toESM(require_react_shim(), 1);
-  var import_jsx_runtime12 = __toESM(require_react_shim(), 1);
+  var import_jsx_runtime13 = __toESM(require_react_shim(), 1);
   var FieldItem = /* @__PURE__ */ React42.forwardRef(function FieldItem2(componentProps, forwardedRef) {
     const {
       render,
@@ -4073,8 +4135,8 @@ var MiniUiBase = (() => {
       props: elementProps,
       stateAttributesMapping: fieldValidityMapping
     });
-    return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(LabelableProvider, {
-      children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(FieldItemContext.Provider, {
+    return /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(LabelableProvider, {
+      children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(FieldItemContext.Provider, {
         value: fieldItemContext,
         children: element
       })
@@ -4083,9 +4145,9 @@ var MiniUiBase = (() => {
   if (true) FieldItem.displayName = "FieldItem";
 
   // node_modules/@base-ui/react/input/Input.mjs
-  var import_jsx_runtime13 = __toESM(require_react_shim(), 1);
+  var import_jsx_runtime14 = __toESM(require_react_shim(), 1);
   var Input = /* @__PURE__ */ React43.forwardRef(function Input2(props, forwardedRef) {
-    return /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(index_parts_exports3.Control, {
+    return /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(index_parts_exports3.Control, {
       ref: forwardedRef,
       ...props
     });
@@ -4093,22 +4155,22 @@ var MiniUiBase = (() => {
   if (true) Input.displayName = "Input";
 
   // .design-sync/.cache/shadow/@mini-ui/base/dist/input.js
-  var o4 = (0, import_react7.createContext)(false);
-  var s4 = {
+  var o5 = (0, import_react8.createContext)(false);
+  var s5 = {
     root: "cW8k1OFpV cPb2uwIV5",
     inGroup: "cnxOX0yUu"
   };
-  var c5 = cva("", { variants: { inGroup: {
-    true: s4.inGroup,
-    false: s4.root
+  var c6 = cva("", { variants: { inGroup: {
+    true: s5.inGroup,
+    false: s5.root
   } } });
-  var l5 = (0, import_react7.forwardRef)((e6, t7) => {
-    let a4 = (0, import_react7.useContext)(o4);
-    return /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Input, {
-      className: c5({ inGroup: a4 }),
-      ...e6,
-      ref: t7,
-      "data-frame-input": a4 || void 0
+  var l5 = (0, import_react8.forwardRef)((e7, t8) => {
+    let a5 = (0, import_react8.useContext)(o5);
+    return /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Input, {
+      className: c6({ inGroup: a5 }),
+      ...e7,
+      ref: t8,
+      "data-frame-input": a5 || void 0
     });
   });
   l5.displayName = "Input";
