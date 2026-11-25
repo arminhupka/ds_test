@@ -1,0 +1,29 @@
+.root {
+    --ds_base-badge-min-size: calc(20rem / 12);
+
+    box-sizing: border-box;
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    min-inline-size: var(--ds_base-badge-min-size);
+    padding-block: var(--ds_space-0-5);
+    padding-inline: var(--ds_space-1-5);
+    font-family: var(--ds_font-family-base);
+    font-size: var(--ds_font-size-sm);
+    font-weight: var(--ds_font-weight-bold);
+    font-variant-numeric: tabular-nums;
+    line-height: var(--ds_line-height-sm);
+    white-space: nowrap;
+    border-radius: var(--ds_radius-full);
+}
+
+.positive {
+    color: var(--ds_color-text-on-action);
+    background-color: var(--ds_color-action-positive);
+}
+
+.neutral {
+    color: var(--ds_color-text-primary);
+    background-color: var(--ds_color-border-default);
+}
