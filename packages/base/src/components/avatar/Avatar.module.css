@@ -1,0 +1,41 @@
+.root {
+    composes: root from '../../styles/avatar-circle.module.css';
+    position: relative;
+}
+
+/* Sized in rem like the circle, not in percent: Safari would measure an image sized in percent at its natural width. */
+.image {
+    inline-size: var(--ds_base-avatar-circle-size);
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: var(--ds_radius-full);
+}
+
+.fallback {
+    line-height: 1;
+}
+
+/*
+ * The ring keeps the dot apart from the circle. The insets are negative so the dot sits on the circle's
+ * bottom-end edge rather than inside its corner; the root has no overflow clip, so the part outside the box shows.
+ */
+.status {
+    --ds_base-avatar-status-size: calc(10rem / 12);
+
+    position: absolute;
+    inset-block-end: calc(var(--ds_base-avatar-status-size) * -0.2);
+    inset-inline-end: calc(var(--ds_base-avatar-status-size) * -0.2);
+    box-sizing: border-box;
+    inline-size: var(--ds_base-avatar-status-size);
+    aspect-ratio: 1;
+    border: calc(var(--ds_border-width-default) * 2) solid var(--ds_color-surface-default);
+    border-radius: var(--ds_radius-full);
+}
+
+.active {
+    background-color: var(--ds_color-action-positive);
+}
+
+.inactive {
+    background-color: var(--ds_color-border-default);
+}

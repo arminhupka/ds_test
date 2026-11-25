@@ -1,0 +1,20 @@
+/*
+ * The circle of an avatar: its size, gray disc and centred content.
+ * An avatar's own stylesheet composes `root`, then adds what it shows.
+ */
+.root {
+    --ds_base-avatar-circle-size: calc(28rem / 12);
+
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    block-size: var(--ds_base-avatar-circle-size);
+    aspect-ratio: 1;
+    font-family: var(--ds_font-family-base);
+    font-size: var(--ds_font-size-sm);
+    font-weight: var(--ds_font-weight-bold);
+    color: var(--ds_color-text-inverse);
+    background-color: var(--ds_color-icon);
+    border-radius: var(--ds_radius-full);
+}
