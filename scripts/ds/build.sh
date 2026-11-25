@@ -10,6 +10,8 @@ TITLE="$(node -p "JSON.parse(require('fs').readFileSync('claude-ds/project/desig
 
 npm run -s build -- --output-style=static >/dev/null
 node .design-sync/make-shadow.mjs >/dev/null
+# The converter reads the list of components and stories from a static Storybook, so it is rebuilt every time.
+npx --no-install storybook build -c .storybook -o "$ROOT/.design-sync/sb-reference" >/dev/null 2>&1
 node .ds-sync/package-build.mjs --config .design-sync/config.json --node-modules node_modules \
   --entry .design-sync/.cache/shadow/@mini-ui/base/dist/index.js --out ./ds-bundle >/dev/null
 node .ds-sync/artifact-layout.mjs ds-bundle --title "$TITLE" >/dev/null

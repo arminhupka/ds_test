@@ -51,5 +51,9 @@ fi
 git add claude-ds
 if git diff --cached --quiet; then log "claude-ds/ unchanged after the pull"; exit 0; fi
 git commit -q -m "chore(ds): update claude-ds from the published design system" -m "Built by scripts/ds/source.sh and verified against the artifact."
-git push -q origin main
+if ! git push -q origin main; then
+  # Keep the clone able to fast-forward: drop the local commit. The artifact is already published; claude-ds/ in the repo is not.
+  git reset -q --hard origin/main
+  notify "design-sync $ORG" "published, but claude-ds/ could not be pushed (does this clone have write access?)"; exit 1
+fi
 notify "design-sync $ORG" "published and committed claude-ds ($(git rev-parse --short HEAD))"
