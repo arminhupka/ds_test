@@ -50,3 +50,4 @@ ds-bundle/
 
 .ds-verify/
 .ds-task/
+docker/.env
