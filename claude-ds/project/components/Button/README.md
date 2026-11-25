@@ -16,7 +16,7 @@ interface ButtonProps {
   /** Visual weight: filled, outlined, or a text-only link style. */
   variant?: "primary" | "secondary" | "tertiary";
   /** What the action means: a regular, a destructive, a neutral one, or one AI carries out. */
-  intent?: "automation" | "positive" | "danger" | "neutral";
+  intent?: "positive" | "neutral" | "automation" | "danger";
   /** Control height and type size. */
   size?: "sm" | "md";
   /** `full` stretches the button across its container, as for the one action closing a form or panel. */

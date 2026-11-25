@@ -38,7 +38,7 @@ function SignInForm() {
 # MiniUiBase (@mini-ui/base@0.0.0)
 
 This design system is the published @mini-ui/base React library, bundled as a single
-browser global. All 4 components are the real upstream code.
+browser global. All 5 components are the real upstream code.
 
 ## Where things are
 
@@ -68,7 +68,7 @@ Wrap the tree in the provider — most components read theme/i18n from context:
 
 ## Tokens
 
-99 CSS custom properties from @mini-ui/base. Names are
+100 CSS custom properties from @mini-ui/base. Names are
 preserved verbatim from upstream. They are declared inside `components/bundle.css`.
 
 - **color** (31): `--ds_color-text-primary`, `--ds_color-text-secondary`, `--ds_color-text-inverse`, …
@@ -76,12 +76,13 @@ preserved verbatim from upstream. They are declared inside `components/bundle.cs
 - **typography** (10): `--ds_font-family-base`, `--ds_font-size-sm`, `--ds_font-size-md`, …
 - **radius** (5): `--ds_radius-sm`, `--ds_radius-md`, `--ds_radius-lg`, …
 - **shadow** (3): `--ds_shadow-sm`, `--ds_shadow-md`, `--ds_shadow-lg`
-- **other** (43): `--ds_palette-red`, `--ds_palette-amber`, `--ds_palette-green`, …
+- **other** (44): `--ds_palette-red`, `--ds_palette-amber`, `--ds_palette-green`, …
 
 ## Components
 
 ### base
 - `Avatar` — A gray circle showing a person's picture or, in its place, their initials. The initials always come from name,
+- `Badge` — A small pill with a count or a short status, such as the number of selected options.
 - `Button`
 - `Checkbox` — A control that turns one option on or off, with an indeterminate state for partial selections. (compound: `Checkbox.Root`, `Checkbox.Indicator`)
 - `Input` — A single-line text control. Inside an InputGroup it drops its own frame, as the group draws it.
@@ -92,7 +93,7 @@ preserved verbatim from upstream. They are declared inside `components/bundle.cs
 
 Every path named in this file is under `project/` in this design system (the two jsDelivr addresses below are web addresses, not paths): read `project/components/bundle.js`, not `components/bundle.js`.
 
-`components/bundle.js` defines `window.MiniUiBase` (4 components). `components/bundle.css` is its stylesheet, with the library's own custom properties in it. `tokens.css` holds the tokens the pages of this system show. The bundle reads `window.React` and `window.ReactDOM`. This system includes no copy of React: the artifact's own page loads React 18.3.1 from jsDelivr, and any other page needs React 18 too, as below.
+`components/bundle.js` defines `window.MiniUiBase` (5 components). `components/bundle.css` is its stylesheet, with the library's own custom properties in it. `tokens.css` holds the tokens the pages of this system show. The bundle reads `window.React` and `window.ReactDOM`. This system includes no copy of React: the artifact's own page loads React 18.3.1 from jsDelivr, and any other page needs React 18 too, as below.
 Build any UI by mounting these components. Never hand-build a control the system provides.
 
 - **Any page:** load, in this order, `tokens.css`, `components/bundle.css`, `https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js`, `https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js` and `components/bundle.js`. A script here is a classic script, not a module. A page that already has React 18 as `window.React` and `window.ReactDOM` skips the two web addresses.
