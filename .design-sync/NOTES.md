@@ -23,3 +23,4 @@ Package: `@mini-ui/base` (Button, Input). Shape: storybook. Target: see `.design
 - `preview-base.css` copies values from `.storybook/preview-head.html` (12px root) and `.storybook/font/fonts.ts` (Lexend, Tahoma fallback). Update it if those change.
 - Every story of both components was graded `match` from the raw images. No story has a cap or a skip.
 - The provider has no translations. Add them if a component starts to show translated text.
+- The package was renamed. The global is now `window.MiniUiBase`, and `config.json`, `make-shadow.mjs` and the previews use the new name. A rename moves the global, so check `conventions.md` and the previews after one. Rebuild `.design-sync/sb-reference` after it, as the source moves too.
