@@ -78,3 +78,17 @@ Each job logs in with a token instead of a login in a volume, and starts with a 
 ### Not verified yet
 - That the token from `claude setup-token` gives the session the Artifact tool. The preflight tells you in the first job.
 - The folder-trust file, the image build with kaniko, the runner's access to claude.ai, and the push with `DS_PUSH_TOKEN`. None of these has run on GitLab yet. The jobs were tried in a throwaway container, with the login of a volume instead of a token.
+
+### Trying the pipeline on a local GitLab
+`docker/gitlab/` runs GitLab CE and a runner in Docker, so the pipeline can be tried without touching a production GitLab.
+
+```bash
+cd docker/gitlab
+./setup.sh      # starts GitLab (the first start takes 5 to 10 minutes), makes the project, the runner and the variables, pushes HEAD as main
+```
+
+- **Web UI:** http://localhost:8929, user `root`, the password is `GITLAB_ROOT_PASSWORD` in `docker/gitlab/.env` (not in git). The pipelines are at `/root/design-sync/-/pipelines`.
+- **Dry run:** the project variables `DS_DRY_RUN=1` and `DS_FORCE=1` make the jobs build for real but skip the login and the publish, so no token is needed. The source job reports a change, the copies download `claude-ds/` from it and check its sums. Remove `DS_DRY_RUN` (and add the tokens) to publish for real.
+- **Image:** the runner uses the local image `ds-sync-claude` (build it with `docker compose build` in `docker/`), so `build-image` is skipped (`DS_SKIP_IMAGE_BUILD=1`). The source job takes `.ds-sync` from the host folder the runner mounts at `/host-ds-sync`.
+- Run `./setup.sh` again after a change: it pushes the current HEAD as `main` and starts a new pipeline.
+- **What this does not check:** a real login by token, the production runner, network and registry, and the push with `DS_PUSH_TOKEN`.
