@@ -3,7 +3,7 @@
 # where to add it. It never prints a value. DS_DRY_RUN=1 needs no tokens and no design system links.
 #   source organization  (DS_SOURCE_ORG, default org1):  CLAUDE_TOKEN_<ORG>
 #   each copy            (DS_COPY_ORGS):                  CLAUDE_TOKEN_<ORG> and ARTIFACT_URL_<ORG>
-#   always (a real run):                                  CLAUDE_JSON_FILE
+#   CLAUDE_JSON_FILE only when the folder is not trusted automatically (DS_TRUST_FOLDER=0, or not a protected branch)
 set -uo pipefail
 
 upper() { printf '%s' "$1" | tr 'a-z-' 'A-Z_'; }
@@ -20,7 +20,9 @@ if [ -z "${DS_DRY_RUN:-}" ]; then
     need "CLAUDE_TOKEN_$(upper "$ORG")" "the login of '$ORG': run \`claude setup-token\` signed in as its account (masked, protected)"
     need "ARTIFACT_URL_$(upper "$ORG")" "the link of the design system of '$ORG' (it must already exist)"
   done
-  need "CLAUDE_JSON_FILE" "first-run and folder-trust settings (type: File), see scripts/ds/README.md"
+  if [ "${DS_TRUST_FOLDER:-1}" = "0" ] || [ "${CI_COMMIT_REF_PROTECTED:-}" != "true" ]; then
+    need "CLAUDE_JSON_FILE" "first-run and folder-trust settings (type: File): the folder is not trusted automatically here (DS_TRUST_FOLDER=0 or the branch is not protected), see scripts/ds/README.md"
+  fi
 fi
 [ -n "${DS_COPY_ORGS:-}" ] || echo "note: DS_COPY_ORGS is empty, so the design system is published to '$SOURCE' only"
 [ -z "${DS_DRY_RUN:-}" ] || echo "note: DS_DRY_RUN is set: no tokens are needed and nothing is published"

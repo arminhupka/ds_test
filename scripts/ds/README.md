@@ -22,7 +22,7 @@ The Claude tokens, and every other setting, are **project variables** of the Git
 2. Add it as a variable named **`CLAUDE_TOKEN_<ORG>`**: the organization's name in capital letters. For the organizations `org1` (the source) and `org2` (a copy): `CLAUDE_TOKEN_ORG1` and `CLAUDE_TOKEN_ORG2`. Set **Masked** and **Protected**, and leave "Expand variable reference" off.
 3. A job takes the token of the organization it works for. You never name a token in a job: the name of the organization is enough.
 
-The first job, `check-variables`, tells you what is missing: it lists each variable that is not set, says what it is for, and prints the address above. It never prints a value. Add `DS_COPY_ORGS`, `ARTIFACT_URL_<ORG>` and `CLAUDE_JSON_FILE` the same way (see the tables below).
+The first job, `check-variables`, tells you what is missing: it lists each variable that is not set, says what it is for, and prints the address above. It never prints a value. Add `DS_COPY_ORGS` and `ARTIFACT_URL_<ORG>` the same way (see the tables below).
 
 ## Why a Claude session runs in each job
 
@@ -41,7 +41,6 @@ Nothing about an organization is written in `.gitlab-ci.yml`. A setting of an or
 | `CLAUDE_TOKEN_<ORG>` | the login of that organization (output of `claude setup-token`), for the source and for each copy. Masked, protected. |
 | `ARTIFACT_URL_<ORG>` | the link of that organization's design system. Needed for each copy. The source's may stay in `.design-sync/artifact.json`. |
 | `DS_COPY_ORGS` | the organizations that copy it, separated by commas: `org2,org3` |
-| `CLAUDE_JSON_FILE` | (type File) first-run and folder-trust settings, see below |
 
 **Optional**
 
@@ -49,6 +48,8 @@ Nothing about an organization is written in `.gitlab-ci.yml`. A setting of an or
 |---|---|---|
 | `DS_TITLE` | the name of the design system | the one in `.design-sync/artifact.json` |
 | `DS_SOURCE_ORG` | the organization that builds and publishes | `org1` |
+| `DS_TRUST_FOLDER` | `0` stops the job from trusting the project folder by itself (see below) | trusts, on a protected branch |
+| `CLAUDE_JSON_FILE` | (type File) your own first-run and folder-trust settings, used instead of the generated ones | none |
 | `DS_FORCE` | publish even without a change; set it for one manual run | off |
 | `DS_IMAGE` | the image of the jobs | `$CI_REGISTRY_IMAGE/ds-sync:latest` |
 | `DS_TASK_TIMEOUT` | seconds to publish and verify | 900 |
@@ -67,7 +68,7 @@ A new copy is a new name in `DS_COPY_ORGS` plus its `CLAUDE_TOKEN_<ORG>` and `AR
 1. **Runner:** Docker executor, with access to claude.ai and the npm registry. Run the `prepare-image` job once by hand (Pipelines > Run pipeline, then start it) to build the image into the project's registry.
 2. **Design systems:** each organization needs its design system to exist, because the pipeline updates it and does not create it. The source's is made by running `/design-sync` once (it writes `.design-sync/artifact.json`). A copy's is made once by hand in an interactive `claude` of that organization, and its link goes to `ARTIFACT_URL_<ORG>`.
 3. **Tokens:** for each organization, signed in as its technical account, run `claude setup-token` (it opens a browser) and store the result as the masked, protected variable `CLAUDE_TOKEN_<ORG>`. Limit it to the protected default branch. A token is a login to that organization: never print it, and rotate it when it expires.
-4. **First-run and folder-trust settings (`CLAUDE_JSON_FILE`):** a fresh container asks for the folder trust, which nobody answers in a pipeline. Take the keys `hasCompletedOnboarding` and `projects` from a `~/.claude.json` that works, keep only the entry of the project folder, and change its path to the pipeline's `CI_PROJECT_DIR` (for example `/builds/<group>/<project>`). Leave out everything about accounts. This is your decision to trust that folder; the job never makes it for you.
+4. **Folder trust (nothing to set up):** a fresh Claude Code asks for the first-run settings and whether it may trust the project folder, and nobody answers in a pipeline. So each job writes a minimal `~/.claude.json` that marks the first run done and trusts `CI_PROJECT_DIR`, **only on a protected branch** (the default branch is protected), where the code that runs is code you reviewed and merged. On any other branch the job stops at the question, and `check-variables` says so. Two ways to change this: set `DS_TRUST_FOLDER=0` to turn it off, or provide your own settings as `CLAUDE_JSON_FILE` (a File variable), which is then used as it is. This is a security decision: keep the pipeline limited to protected branches, and do not run it for merge requests from forks.
 5. **The sync tool:** the source job needs `.ds-sync/` (installed by `/design-sync`, not kept in git). Give the folder to the runner or the image at `DS_TOOL_SRC`; the job installs its dependencies for the platform of the image.
 
 ## Notes
@@ -108,6 +109,6 @@ cd docker/gitlab
 ## Not verified yet
 
 - That the token from `claude setup-token` gives the session the Artifact tool. The preflight tells you in the first job.
-- The folder-trust file, the image build with kaniko on a real registry, and the runner's access to claude.ai. None of these has run on a production GitLab.
+- The generated folder-trust settings (checked in a fresh container: the session starts without the question, but not yet with a real login), the image build with kaniko on a real registry, and the runner's access to claude.ai. None of these has run on a production GitLab.
 - Long use: a session that stops on an unexpected question, a login that expires, an update of Claude Code that changes the Artifact tool. The job has a time limit and prints the session, but nobody is told.
 - The visual grading `/design-sync` does with an agent is left out on purpose: the build compares hashes, so a change that looks wrong but builds cleanly is not caught.

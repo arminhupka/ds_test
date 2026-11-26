@@ -16,7 +16,7 @@
 #   DS_COPY_ORGS           the organizations that copy it, separated by commas, for example: org2,org3
 #   CLAUDE_TOKEN_<ORG>     the login of that organization (output of `claude setup-token`), for the source and for each copy
 #   ARTIFACT_URL_<ORG>     the link of that organization's design system (the source's may stay in .design-sync/artifact.json)
-#   CLAUDE_JSON_FILE       (type: File) first-run and folder-trust settings, see scripts/ds/README.md
+#   (optional) DS_TRUST_FOLDER=0 and CLAUDE_JSON_FILE: the folder is trusted automatically on a protected branch, see scripts/ds/README.md
 #
 # A new copy is a new name in DS_COPY_ORGS plus its two variables: no change in this file.
 # The design system is never committed: claude-ds/ is a job artifact passed from publish-source to the copy jobs.

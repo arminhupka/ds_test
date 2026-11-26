@@ -33,7 +33,7 @@ ds_session_ensure() {
     sleep 10
   fi
   if tmux capture-pane -t "$SESSION" -p | grep -q "trust this folder"; then
-    log "the session waits for the folder trust: provide CLAUDE_JSON_FILE (see scripts/ds/README.md)"
+    log "the session waits for the folder trust: run on a protected branch, or provide CLAUDE_JSON_FILE (see scripts/ds/README.md)"
     return 1
   fi
 }
@@ -65,12 +65,27 @@ ds_wait() {
 # --- pipelines (a fresh container per job) ---------------------------------------------------------
 
 # ds_ci_setup: what a fresh container needs before the session starts. The login is the token in CLAUDE_CODE_OAUTH_TOKEN
-# (this function never prints it). The first-run and folder-trust settings are not made here: they come from a file a person
-# provides, as CLAUDE_JSON_FILE (a file variable), and are copied to ~/.claude.json.
+# (this function never prints it). A fresh Claude Code asks for the first-run settings and for the trust of the folder, and in a
+# pipeline nobody answers. So ~/.claude.json is made here, from the first of these:
+#   1. CLAUDE_JSON_FILE (a file variable): your own file, used as it is;
+#   2. by default, a minimal one that marks the first run done and trusts this project folder, but only on a PROTECTED branch,
+#      because only there the code that runs is code you reviewed and merged. DS_TRUST_FOLDER=0 turns this off;
+#   3. otherwise nothing, and the session stops at the question (the job says so).
 ds_ci_setup() {
   git config --global --add safe.directory "$ROOT"
-  if [ -n "${CLAUDE_JSON_FILE:-}" ] && [ -f "$CLAUDE_JSON_FILE" ]; then cp "$CLAUDE_JSON_FILE" "$HOME/.claude.json"
-  else log "WARNING: no CLAUDE_JSON_FILE: the session will ask for the folder trust and the job will fail"; fi
+  if [ -n "${CLAUDE_JSON_FILE:-}" ] && [ -f "$CLAUDE_JSON_FILE" ]; then
+    cp "$CLAUDE_JSON_FILE" "$HOME/.claude.json"
+  elif [ "${DS_TRUST_FOLDER:-1}" != "0" ] && [ "${CI_COMMIT_REF_PROTECTED:-}" = "true" ]; then
+    ROOT="$ROOT" node -e '
+      const fs = require("fs");
+      fs.writeFileSync(process.env.HOME + "/.claude.json", JSON.stringify({
+        hasCompletedOnboarding: true,
+        projects: { [process.env.ROOT]: { hasTrustDialogAccepted: true } },
+      }, null, 2) + "\n");'
+    log "trusting the project folder $ROOT (a protected branch; set DS_TRUST_FOLDER=0 to turn this off)"
+  else
+    log "WARNING: no CLAUDE_JSON_FILE, and the folder is not trusted automatically (DS_TRUST_FOLDER=${DS_TRUST_FOLDER:-1}, protected branch: ${CI_COMMIT_REF_PROTECTED:-no}): the session will ask for the folder trust and the job will fail"
+  fi
   [ ! -f "$HOME/.claude.json" ] || chmod 600 "$HOME/.claude.json"
   [ -n "${CLAUDE_CODE_OAUTH_TOKEN:-}" ] || log "WARNING: CLAUDE_CODE_OAUTH_TOKEN is not set"
 }
