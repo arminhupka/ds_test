@@ -9,6 +9,10 @@ if command -v sha256sum >/dev/null 2>&1; then SHA256="sha256sum"; else SHA256="s
 # Every setting of an organization is a project variable named after it, so a new organization needs no change in the scripts.
 ds_org_var() { local n; n="$1_$(printf '%s' "$2" | tr 'a-z-' 'A-Z_')"; printf '%s' "${!n:-}"; }
 
+# ds_on <NAME>: is the flag NAME switched on? A flag is on when it has a value other than 0, false, no, off (any case), so a project
+# variable set to 0 is off, and an empty one is off too.
+ds_on() { case "$(printf '%s' "${!1:-}" | tr 'A-Z' 'a-z')" in ''|0|false|no|off) return 1 ;; *) return 0 ;; esac; }
+
 log() { printf '%s  %s\n' "$(date '+%F %T')" "$*"; }
 
 # notify <title> <message>: for now only the log; the one place to add Slack or any other channel later.

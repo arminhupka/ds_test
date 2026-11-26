@@ -19,12 +19,12 @@ npm ci --no-audit --no-fund >/dev/null 2>&1
 
 # Nothing to publish when everything but the two metadata files is already what the baseline claude-ds/ holds. Without a
 # baseline (no folder: a first run, an expired artifact) the design system counts as changed.
-if [ -z "${DS_FORCE:-}" ] && [ -d claude-ds/project ] && diff <(DS_IGNORE="^($VOLATILE)$" manifest ds-bundle/.artifact/project) <(DS_IGNORE="^($VOLATILE)$" manifest claude-ds/project) >/dev/null; then
+if ! ds_on DS_FORCE && [ -d claude-ds/project ] && diff <(DS_IGNORE="^($VOLATILE)$" manifest ds-bundle/.artifact/project) <(DS_IGNORE="^($VOLATILE)$" manifest claude-ds/project) >/dev/null; then
   log "design system unchanged: nothing to publish"; mark 0; exit 0
 fi
 
 # Trying a pipeline without a login: everything up to here ran for real; the publish does not.
-if [ -n "${DS_DRY_RUN:-}" ]; then
+if ds_on DS_DRY_RUN; then
   log "DS_DRY_RUN: would publish $(find ds-bundle/.artifact/project -type f | wc -l | tr -d ' ') files to $URL"
   # What a real run leaves for the copy jobs: the design system as it would be published, with its sums.
   rm -rf claude-ds/project; mkdir -p claude-ds; cp -R ds-bundle/.artifact/project claude-ds/project

@@ -13,7 +13,7 @@ TIMEOUT="${DS_TASK_TIMEOUT:-900}"
 
 (cd claude-ds && $SHA256 -c checksums.txt --quiet) || { notify "design-sync $ORG" "claude-ds/ does not match its checksums.txt: not published"; exit 1; }
 
-if [ -n "${DS_DRY_RUN:-}" ]; then log "DS_DRY_RUN: claude-ds/ matches its checksums; would publish $(find claude-ds/project -type f | wc -l | tr -d ' ') files to $URL"; exit 0; fi
+if ds_on DS_DRY_RUN; then log "DS_DRY_RUN: claude-ds/ matches its checksums; would publish $(find claude-ds/project -type f | wc -l | tr -d ' ') files to $URL"; exit 0; fi
 
 ds_session_ensure
 VERIFY=".ds-verify/$ORG"; rm -rf "$VERIFY"

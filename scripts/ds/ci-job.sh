@@ -12,7 +12,7 @@ ROLE="${1:?usage: ci-job.sh <source|replica> <org>}"; ORG="${2:?org}"
 # This organization's login: CLAUDE_TOKEN_<ORG> becomes the token the session uses.
 TOKEN="$(ds_org_var CLAUDE_TOKEN "$ORG")"
 if [ -n "$TOKEN" ]; then export CLAUDE_CODE_OAUTH_TOKEN="$TOKEN"
-elif [ -z "${DS_DRY_RUN:-}" ]; then log "CLAUDE_TOKEN_$(printf '%s' "$ORG" | tr 'a-z-' 'A-Z_') is not set: add it as a project variable"; exit 2; fi
+elif ! ds_on DS_DRY_RUN; then log "CLAUDE_TOKEN_$(printf '%s' "$ORG" | tr 'a-z-' 'A-Z_') is not set: add it as a project variable"; exit 2; fi
 
 # The build folder of a runner belongs to another user than the job, and git refuses such a folder until it is allowed.
 git config --global --add safe.directory "$ROOT"
@@ -45,7 +45,7 @@ case "$ROLE" in
     fetch_baseline ;;
   replica) JOB=replica.sh
     # DS_CHANGED comes from the source job (a dotenv report). A job started by hand with DS_FORCE=1 publishes anyway.
-    if [ "${DS_CHANGED:-1}" != "1" ] && [ -z "${DS_FORCE:-}" ]; then log "the source reported no change: nothing to do for $ORG"; exit 0; fi ;;
+    if [ "${DS_CHANGED:-1}" != "1" ] && ! ds_on DS_FORCE; then log "the source reported no change: nothing to do for $ORG"; exit 0; fi ;;
   *) echo "role must be source or replica" >&2; exit 2 ;;
 esac
 
@@ -61,7 +61,7 @@ if [ "$ROLE" = source ] && [ ! -d .ds-sync ]; then
   fi
 fi
 
-if [ -n "${DS_DRY_RUN:-}" ]; then
+if ds_on DS_DRY_RUN; then
   log "DS_DRY_RUN: no login, no session; the job checks everything up to the publish"
 else
   ds_ci_setup

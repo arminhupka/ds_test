@@ -57,6 +57,8 @@ Nothing about an organization is written in `.gitlab-ci.yml`. A setting of an or
 | `DS_BASELINE_JOB` | the job whose artifact is the baseline | `publish-source` |
 | `DS_TOOL_SRC` | where the source job takes `.ds-sync` from | `/host-ds-sync` |
 
+**Flags** (`DS_DRY_RUN`, `DS_FORCE`) are on for any value except empty, `0`, `false`, `no` and `off`, so setting `DS_DRY_RUN` to `0` turns it off. Deleting the variable does the same.
+
 **For trying it without a login:** `DS_DRY_RUN=1` builds for real but publishes nothing, and needs no tokens. `DS_SKIP_IMAGE_BUILD=1` skips `prepare-image` when an image already exists, and `DS_API_URL` sets the GitLab API address as a job container sees it. These three are for a local GitLab (below); remove them in production.
 
 **Set by the pipeline, not by you:** `DS_CHANGED`, `DS_ENV_FILE`, `PARENT_PIPELINE_ID`.
