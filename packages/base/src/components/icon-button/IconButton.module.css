@@ -1,0 +1,94 @@
+.root {
+    position: relative;
+    box-sizing: border-box;
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    color: var(--ds_color-icon);
+    cursor: pointer;
+    border: 0;
+    border-radius: var(--ds_radius-full);
+    transition:
+        color var(--ds_duration-fast) var(--ds_easing-standard),
+        background-color var(--ds_duration-fast) var(--ds_easing-standard),
+        box-shadow var(--ds_duration-fast) var(--ds_easing-standard);
+
+    &:focus-visible {
+        outline: var(--ds_focus-ring-width) solid var(--ds_color-focus-ring);
+        outline-offset: var(--ds_focus-ring-offset);
+    }
+
+    &[data-disabled] {
+        color: var(--ds_color-text-disabled);
+        cursor: not-allowed;
+    }
+}
+
+/* 32px with the 20px icon, so a row of controls keeps its height. */
+.md {
+    padding: var(--ds_space-1-5);
+}
+
+.sm {
+    padding: var(--ds_space-0-5);
+
+    /* Widens the pointer target to the minimum without growing the button. */
+    &::before {
+        position: absolute;
+        inset: calc((100% - var(--ds_target-size-min)) / 2);
+        content: "";
+    }
+}
+
+.filled {
+    background-color: color-mix(in srgb, var(--ds_color-surface-subtle), var(--ds_color-border-default) var(--ds_mix-strong));
+}
+
+.ghost {
+    background-color: transparent;
+}
+
+/* The border is inside the padding box, so the button keeps the size of the other variants. */
+.outline {
+    background-color: var(--ds_color-surface-default);
+    box-shadow: inset 0 0 0 var(--ds_border-width-default) var(--ds_color-border-default);
+}
+
+.inverse {
+    color: var(--ds_color-text-on-action);
+    background-color: transparent;
+
+    &[data-disabled] {
+        color: color-mix(in srgb, var(--ds_color-text-on-action), transparent var(--ds_mix-strong));
+    }
+}
+
+@media (hover: hover) {
+    .filled:hover:not([data-disabled]) {
+        color: var(--ds_color-text-primary);
+        background-color: var(--ds_color-border-default);
+    }
+
+    /* A translucent tint, so the hover shows on any background, a subtle panel included. */
+    .ghost:hover:not([data-disabled]) {
+        color: var(--ds_color-text-primary);
+        background-color: color-mix(in srgb, var(--ds_color-icon) var(--ds_mix-hover), transparent);
+    }
+
+    .outline:hover:not([data-disabled]) {
+        color: var(--ds_color-text-primary);
+        box-shadow: inset 0 0 0 var(--ds_border-width-default) var(--ds_color-border-strong);
+    }
+
+    /* The same translucent tint, in the icon's own color, so it shows on any solid color. */
+    .inverse:hover:not([data-disabled]) {
+        background-color: color-mix(in srgb, var(--ds_color-text-on-action) var(--ds_mix-hover), transparent);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .root {
+        transition: none;
+    }
+}
