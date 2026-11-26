@@ -107,3 +107,23 @@ ds_preflight() {
   done
   log "preflight timed out, the session shows:"; ds_pane; return 1
 }
+
+# ds_session_reset: ends the tmux server, so the next session starts with the environment of that moment. tmux keeps the
+# environment of the first session it started, so a session for another organization needs a new server (and its token).
+ds_session_reset() { tmux kill-server 2>/dev/null || true; }
+
+# ds_check_artifact <url>: can the signed-in session reach this design system? It lists the files of the artifact, which fails
+# for a wrong link and for a design system of another organization. Returns 0 when it listed files, 1 on an error or a timeout.
+ds_check_artifact() {
+  tmux send-keys -t "$SESSION" -l "/clear"; tmux send-keys -t "$SESSION" Enter; sleep 3
+  tmux send-keys -t "$SESSION" -l "Use the Artifact tool: action list with scope files, url $1. Do nothing else."
+  sleep 1; tmux send-keys -t "$SESSION" Enter
+  local pane end=$(( $(date +%s) + ${DS_PREFLIGHT_TIMEOUT:-180} ))
+  while [ "$(date +%s)" -lt "$end" ]; do
+    pane="$(tmux capture-pane -t "$SESSION" -p -S -200)"
+    if grep -qE "⎿ +listed [0-9]+ files" <<<"$pane"; then return 0; fi
+    if grep -qE "⎿ +Error" <<<"$pane"; then log "the design system cannot be reached:"; ds_pane 6; return 1; fi
+    sleep 3
+  done
+  log "no answer about the design system, the session shows:"; ds_pane; return 1
+}

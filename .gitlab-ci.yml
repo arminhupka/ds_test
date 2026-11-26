@@ -1,6 +1,7 @@
 # Design sync as a pipeline: after a merge to the default branch, the source organization builds and publishes the design
 # system, and every other organization copies the result 1:1. No machine runs all the time: a runner starts a container per job.
 #
+#   verify-tokens       the Claude login of every organization works and reaches its design system; a wrong one stops the pipeline
 #   publish-source      builds from the sources, publishes to the source organization's design system, verifies by reading it
 #                       back, passes claude-ds/ on
 #   plan-distribution   writes one distribute job for each organization in DS_COPY_ORGS
@@ -22,7 +23,7 @@
 # The design system is never committed: claude-ds/ is a job artifact passed from publish-source to the copy jobs.
 # Setup and what is not verified yet: scripts/ds/README.md ("GitLab pipeline").
 
-stages: [check, prepare, publish, plan, distribute]
+stages: [check, prepare, verify, publish, plan, distribute]
 
 variables:
   DS_IMAGE: $CI_REGISTRY_IMAGE/ds-sync:latest
@@ -60,6 +61,20 @@ prepare-image:
       printf '{"auths":{"%s":{"auth":"%s"}}}' "$CI_REGISTRY" "$(printf '%s:%s' "$CI_REGISTRY_USER" "$CI_REGISTRY_PASSWORD" | base64 | tr -d '\n')"
       > /kaniko/.docker/config.json
     - /kaniko/executor --context "$CI_PROJECT_DIR/docker" --dockerfile "$CI_PROJECT_DIR/docker/Dockerfile" --destination "$DS_IMAGE"
+
+# Before anything is published: the Claude login of every organization works, has the Artifact tool and reaches its design system.
+# One wrong token stops the pipeline here, so a half-finished run (the source published, a copy not) cannot happen.
+verify-tokens:
+  stage: verify
+  image:
+    name: $DS_IMAGE
+    entrypoint: [""]
+  interruptible: false
+  timeout: 20m
+  script:
+    - scripts/ds/ci-verify.sh
+  after_script:
+    - 'tmux capture-pane -t claude -p -S -60 2>/dev/null | grep -v "^$" | tail -25 || true'
 
 .ds-job:
   image:

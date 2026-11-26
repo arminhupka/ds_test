@@ -6,6 +6,8 @@ After a merge to the default branch, one organization builds the design system a
 merge to main
   check     check-variables      every project variable the run needs is set; names the missing ones and where to add them
   prepare   prepare-image        builds the image of the jobs (only when docker/Dockerfile changes)
+  verify    verify-tokens        the Claude login of every organization works, has the Artifact tool and reaches its design system;
+                                 one that does not stops the pipeline before anything is published
   publish   publish-source       builds the design system (no AI), publishes it to the source organization, reads it back to verify
                                  and passes claude-ds/ on as a job artifact
   plan      plan-distribution    writes one distribute job for each organization in DS_COPY_ORGS
@@ -21,6 +23,8 @@ The Claude tokens, and every other setting, are **project variables** of the Git
 1. For each organization, signed in as its technical account, run `claude setup-token` (it opens a browser) and copy the token.
 2. Add it as a variable named **`CLAUDE_TOKEN_<ORG>`**: the organization's name in capital letters. For the organizations `org1` (the source) and `org2` (a copy): `CLAUDE_TOKEN_ORG1` and `CLAUDE_TOKEN_ORG2`. Set **Masked** and **Protected**, and leave "Expand variable reference" off.
 3. A job takes the token of the organization it works for. You never name a token in a job: the name of the organization is enough.
+
+`verify-tokens` then tries each login for real, before anything is published: for the source and every organization in `DS_COPY_ORGS` it starts a session with that organization's token and checks that the login is accepted, that the session has the Artifact tool, and that the design system link (`ARTIFACT_URL_<ORG>`) can be reached with it. It prints one line per organization, and a failure names the variable to fix. One bad token stops the pipeline, so a half-finished run (the source published, a copy not) cannot happen. It is skipped in a dry run.
 
 The first job, `check-variables`, tells you what is missing: it lists each variable that is not set, says what it is for, and prints the address above. It never prints a value. Add `DS_COPY_ORGS` and `ARTIFACT_URL_<ORG>` the same way (see the tables below).
 
@@ -84,6 +88,7 @@ A new copy is a new name in `DS_COPY_ORGS` plus its `CLAUDE_TOKEN_<ORG>` and `AR
 | File | What it does |
 |---|---|
 | `ci-check.sh` | the first job: checks the project variables and names the missing ones |
+| `ci-verify.sh` | checks the login, the Artifact tool and the design system link of every organization before anything is published |
 | `ci-job.sh` | one job: sets up the login, installs `.ds-sync`, fetches the baseline, runs the preflight, then `source.sh` or `replica.sh` |
 | `source.sh` | builds, compares with the baseline, publishes, verifies by reading back, leaves `claude-ds/` |
 | `replica.sh` | checks the sums of `claude-ds/`, publishes it 1:1, verifies by reading back |
@@ -108,7 +113,7 @@ cd docker/gitlab
 
 ## Not verified yet
 
-- That the token from `claude setup-token` gives the session the Artifact tool. The preflight tells you in the first job.
+- That the token from `claude setup-token` gives the session the Artifact tool. `verify-tokens` tells you in the first pipeline (its failing path is tested with fake tokens; its success path needs real ones).
 - The generated folder-trust settings (checked in a fresh container: the session starts without the question, but not yet with a real login), the image build with kaniko on a real registry, and the runner's access to claude.ai. None of these has run on a production GitLab.
 - Long use: a session that stops on an unexpected question, a login that expires, an update of Claude Code that changes the Artifact tool. The job has a time limit and prints the session, but nobody is told.
 - The visual grading `/design-sync` does with an agent is left out on purpose: the build compares hashes, so a change that looks wrong but builds cleanly is not caught.
