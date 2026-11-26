@@ -1,0 +1,109 @@
+# Design sync as a pipeline: after a merge to the default branch, ORG1 builds and publishes the design system, and
+# every other organization copies the result 1:1. No machine runs all the time: a runner starts a container per job.
+#
+#   org1   builds from the sources, publishes to the ORG1 artifact, verifies by reading it back, passes claude-ds/ on
+#   org2   publishes claude-ds/ 1:1 to the ORG2 artifact and verifies (skipped when org1 reported no change)
+#   org3   the same for ORG3
+#
+# The jobs run one after another (one resource group): a pipeline never publishes while another one does.
+# Setup, variables and what is not verified yet: scripts/ds/README.md ("GitLab pipeline").
+#
+# CI/CD variables (Settings > CI/CD > Variables; mask and protect all of them, and limit them to the protected default branch):
+#   CLAUDE_TOKEN_ORG1, CLAUDE_TOKEN_ORG2, CLAUDE_TOKEN_ORG3   the login of each organization (output of `claude setup-token`)
+#   ARTIFACT_URL_ORG2, ARTIFACT_URL_ORG3                      the link of each copy's design system artifact
+#   CLAUDE_JSON_FILE (type: File)                             first-run and folder-trust settings, see scripts/ds/README.md
+#   DS_PUSH_TOKEN (optional)                                  a project access token with write access: org1 then commits claude-ds/
+
+stages: [image, org1, others]
+
+variables:
+  DS_IMAGE: $CI_REGISTRY_IMAGE/ds-sync:latest
+
+workflow:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    - if: '$CI_PIPELINE_SOURCE == "web"'   # started by hand from the UI; set DS_FORCE=1 to publish even without a change
+
+# The image of the jobs (Node, git, Claude Code, tmux). Built when docker/Dockerfile changes, or by hand the first time.
+build-image:
+  stage: image
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      changes: [docker/Dockerfile, docker/entrypoint.sh]
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+      when: manual
+      allow_failure: true
+  script:
+    - mkdir -p /kaniko/.docker
+    - >-
+      printf '{"auths":{"%s":{"auth":"%s"}}}' "$CI_REGISTRY" "$(printf '%s:%s' "$CI_REGISTRY_USER" "$CI_REGISTRY_PASSWORD" | base64 | tr -d '\n')"
+      > /kaniko/.docker/config.json
+    - /kaniko/executor --context "$CI_PROJECT_DIR/docker" --dockerfile "$CI_PROJECT_DIR/docker/Dockerfile" --destination "$DS_IMAGE"
+
+.ds-job:
+  image:
+    name: $DS_IMAGE
+    entrypoint: [""]
+  resource_group: design-sync
+  interruptible: false
+  timeout: 40m
+  retry:
+    max: 1
+    when: [runner_system_failure, stuck_or_timeout_failure]
+  variables:
+    DS_GIT_NAME: design-sync
+    DS_GIT_EMAIL: design-sync@localhost
+  after_script:
+    # What the session did is the first thing to read when a job fails.
+    - 'tmux capture-pane -t claude -p -S -80 2>/dev/null | grep -v "^$" | tail -40 || true'
+
+org1:
+  extends: .ds-job
+  stage: org1
+  variables:
+    CLAUDE_CODE_OAUTH_TOKEN: $CLAUDE_TOKEN_ORG1
+    DS_ENV_FILE: ds.env
+    DS_PUSH_URL: https://$CI_SERVER_HOST/$CI_PROJECT_PATH.git
+  script:
+    - scripts/ds/ci-job.sh source org1
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - claude-ds/
+      - .ds-verify/
+      - .ds-task/
+    reports:
+      dotenv: ds.env
+
+.replica:
+  extends: .ds-job
+  stage: others
+  needs:
+    - job: org1
+      artifacts: true
+  script:
+    - scripts/ds/ci-job.sh replica "$ORG"
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - .ds-verify/
+      - .ds-task/
+
+org2:
+  extends: .replica
+  variables:
+    ORG: org2
+    CLAUDE_CODE_OAUTH_TOKEN: $CLAUDE_TOKEN_ORG2
+    ARTIFACT_URL: $ARTIFACT_URL_ORG2
+
+org3:
+  extends: .replica
+  variables:
+    ORG: org3
+    CLAUDE_CODE_OAUTH_TOKEN: $CLAUDE_TOKEN_ORG3
+    ARTIFACT_URL: $ARTIFACT_URL_ORG3

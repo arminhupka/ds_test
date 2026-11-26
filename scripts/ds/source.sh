@@ -2,12 +2,17 @@
 # ORG1, the source: the sources changed on main -> build, publish to the ORG1 artifact, pull the result
 # back into claude-ds/ and commit it. Usage: source.sh <org> [sha]
 # For trying it out: DS_FORCE=1 publishes even when nothing changed, DS_NO_COMMIT=1 leaves the repo untouched.
+# In a pipeline: DS_ENV_FILE=<file> gets DS_CHANGED=0|1 for the next jobs; DS_NO_PUSH=1 updates claude-ds/ in the working
+# tree only (it is passed on as a job artifact); DS_PUSH_URL=<url> (+ DS_PUSH_TOKEN) is where claude-ds/ is pushed (main), instead of origin.
 set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 cd "$ROOT"
 ORG="${1:?org}"
 URL="$(node -p "JSON.parse(require('fs').readFileSync('.design-sync/artifact.json','utf8')).url")"
 VOLATILE='design-system\.json|_ds_sync\.json'
+START_SHA="$(git rev-parse HEAD)"
+# mark <0|1>: tells the next jobs of a pipeline whether the design system changed.
+mark() { if [ -n "${DS_ENV_FILE:-}" ]; then printf 'DS_CHANGED=%s\n' "$1" > "$DS_ENV_FILE"; fi; return 0; }
 
 # main is brought up to date by watch.sh before this job starts.
 npm ci --no-audit --no-fund >/dev/null 2>&1
@@ -15,7 +20,7 @@ npm ci --no-audit --no-fund >/dev/null 2>&1
 
 # Nothing to publish when everything but the two metadata files is already what claude-ds/ holds.
 if [ -z "${DS_FORCE:-}" ] && diff <(DS_IGNORE="^($VOLATILE)$" manifest ds-bundle/.artifact/project) <(DS_IGNORE="^($VOLATILE)$" manifest claude-ds/project) >/dev/null; then
-  log "design system unchanged: nothing to publish"; exit 0
+  log "design system unchanged: nothing to publish"; mark 0; exit 0
 fi
 
 # The files to publish: the built ones, with the metadata of the existing design-system.json updated.
@@ -44,16 +49,23 @@ if ! ds_wait "$TIMEOUT" same; then
   notify "design-sync $ORG" "the published files do not match the built ones: not committed"; exit 1
 fi
 rm -rf claude-ds/project && cp -R "$VERIFY/project" claude-ds/project
+mark 1
 if [ -n "${DS_NO_COMMIT:-}" ]; then   # for trying the job out: publish and verify, but leave the repo as it was
   git checkout -q -- claude-ds; notify "design-sync $ORG" "published and verified (DS_NO_COMMIT: nothing committed)"; exit 0
 fi
 (cd claude-ds && find project -type f ! -name .DS_Store | sort | xargs $SHA256 > checksums.txt)
+if [ -n "${DS_NO_PUSH:-}" ]; then notify "design-sync $ORG" "published and verified (DS_NO_PUSH: claude-ds/ updated here, not committed)"; exit 0; fi
 git add claude-ds
 if git diff --cached --quiet; then log "claude-ds/ unchanged after the pull"; exit 0; fi
-git commit -q -m "chore(ds): update claude-ds from the published design system" -m "Built by scripts/ds/source.sh and verified against the artifact."
-if ! git push -q origin main; then
+git commit -q -m "chore(ds): update claude-ds from the published design system [skip ci]" -m "Built by scripts/ds/source.sh and verified against the artifact."
+if [ -n "${DS_PUSH_TOKEN:-}" ]; then   # a pipeline: the token goes in a header, never in the URL, so it cannot show up in a message
+  AUTH="Authorization: Basic $(printf 'oauth2:%s' "$DS_PUSH_TOKEN" | base64 | tr -d '\n')"
+  PUSH=(git -c "http.extraHeader=$AUTH" push -q "${DS_PUSH_URL:?DS_PUSH_URL is needed with DS_PUSH_TOKEN}" HEAD:main)
+elif [ -n "${DS_PUSH_URL:-}" ]; then PUSH=(git push -q "$DS_PUSH_URL" HEAD:main)
+else PUSH=(git push -q origin main); fi
+if ! "${PUSH[@]}"; then
   # Keep the clone able to fast-forward: drop the local commit. The artifact is already published; claude-ds/ in the repo is not.
-  git reset -q --hard origin/main
+  git reset -q --hard "$START_SHA"
   notify "design-sync $ORG" "published, but claude-ds/ could not be pushed (does this clone have write access?)"; exit 1
 fi
 notify "design-sync $ORG" "published and committed claude-ds ($(git rev-parse --short HEAD))"

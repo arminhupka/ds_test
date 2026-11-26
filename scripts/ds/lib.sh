@@ -59,3 +59,37 @@ ds_wait() {
   done
   log "timeout, the session shows:"; ds_pane; return 1
 }
+
+# --- pipelines (a fresh container per job) ---------------------------------------------------------
+
+# ds_ci_setup: what a fresh container needs before the session starts. The login is the token in CLAUDE_CODE_OAUTH_TOKEN
+# (this function never prints it). The first-run and folder-trust settings are not made here: they come from a file a person
+# provides, as CLAUDE_JSON_FILE (a file variable) or CLAUDE_JSON_B64 (base64 text), and are copied to ~/.claude.json.
+ds_ci_setup() {
+  git config --global --add safe.directory "$ROOT"
+  git config --global user.name "${DS_GIT_NAME:-ds-sync}"
+  git config --global user.email "${DS_GIT_EMAIL:-ds-sync@localhost}"
+  if [ -n "${CLAUDE_JSON_FILE:-}" ] && [ -f "$CLAUDE_JSON_FILE" ]; then cp "$CLAUDE_JSON_FILE" "$HOME/.claude.json"
+  elif [ -n "${CLAUDE_JSON_B64:-}" ]; then printf '%s' "$CLAUDE_JSON_B64" | base64 -d > "$HOME/.claude.json"
+  else log "WARNING: no CLAUDE_JSON_FILE or CLAUDE_JSON_B64: the session will ask for the folder trust and the job will fail"; fi
+  [ ! -f "$HOME/.claude.json" ] || chmod 600 "$HOME/.claude.json"
+  [ -n "${CLAUDE_CODE_OAUTH_TOKEN:-}" ] || log "WARNING: CLAUDE_CODE_OAUTH_TOKEN is not set"
+}
+
+# ds_preflight: the session starts, is not waiting for a person, and has the Artifact tool. Costs one tiny call, and stops a job
+# at once, with the reason, instead of after the timeout.
+ds_preflight() {
+  ds_session_ensure || return 1
+  tmux send-keys -t "$SESSION" -l "/clear"; tmux send-keys -t "$SESSION" Enter; sleep 3
+  tmux send-keys -t "$SESSION" -l "Use the Artifact tool: action list, scope mine, limit 1. Do nothing else. If you have no Artifact tool, say exactly: NO ARTIFACT TOOL."
+  sleep 1; tmux send-keys -t "$SESSION" Enter
+  local pane end=$(( $(date +%s) + ${DS_PREFLIGHT_TIMEOUT:-180} ))
+  while [ "$(date +%s)" -lt "$end" ]; do
+    pane="$(tmux capture-pane -t "$SESSION" -p -S -200)"
+    if grep -q "Artifact(list" <<<"$pane" && ! grep -qE "^● .*(NO ARTIFACT TOOL|no tool named)" <<<"$pane"; then log "preflight ok: the session has the Artifact tool"; return 0; fi
+    if grep -qE "^● .*(NO ARTIFACT TOOL|no tool named)" <<<"$pane"; then log "preflight failed: this login has no Artifact tool (is CLAUDE_CODE_OAUTH_TOKEN a full claude.ai login?)"; ds_pane; return 3; fi
+    if grep -qiE "not logged in|please run /login|invalid (api key|token)|authentication" <<<"$pane"; then log "preflight failed: the session is not signed in"; ds_pane; return 4; fi
+    sleep 3
+  done
+  log "preflight timed out, the session shows:"; ds_pane; return 1
+}

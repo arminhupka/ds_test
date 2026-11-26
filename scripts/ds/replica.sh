@@ -6,9 +6,11 @@ set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 cd "$ROOT"
 ORG="${1:?org}"
+# The link of this organization's artifact: ARTIFACT_URL (a pipeline variable), else the file kept by the watcher setup.
 URL_FILE="$STATE_DIR/$ORG.url"
-[ -s "$URL_FILE" ] || { notify "design-sync $ORG" "missing $URL_FILE: put the link of this organization's artifact there"; exit 2; }
-URL="$(tr -d '[:space:]' < "$URL_FILE")"
+if [ -n "${ARTIFACT_URL:-}" ]; then URL="$(printf '%s' "$ARTIFACT_URL" | tr -d '[:space:]')"
+elif [ -s "$URL_FILE" ]; then URL="$(tr -d '[:space:]' < "$URL_FILE")"
+else notify "design-sync $ORG" "no artifact link: set ARTIFACT_URL or put the link in $URL_FILE"; exit 2; fi
 TIMEOUT="${DS_TASK_TIMEOUT:-900}"
 
 # main is brought up to date by watch.sh before this job starts.
