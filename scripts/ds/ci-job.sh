@@ -12,6 +12,9 @@ ROLE="${1:?usage: ci-job.sh <source|replica> <org>}"; ORG="${2:?org}"
 # The build folder of a runner belongs to another user than the job, and git refuses such a folder until it is allowed.
 git config --global --add safe.directory "$ROOT"
 
+# The job collects these folders as artifacts; a marker keeps a skipped job from ending with "No files to upload".
+mkdir -p .ds-verify .ds-task && : > .ds-verify/.keep && : > .ds-task/.keep
+
 # fetch_baseline: without a push, claude-ds/ in the repository goes stale, so "did the design system change?" is answered
 # against claude-ds/ of the last successful pipeline instead (the artifact of the job DS_BASELINE_JOB on the default branch).
 # Needs unzip. When there is no such artifact (a first run, an expired one) and no claude-ds/ is committed, there is no
