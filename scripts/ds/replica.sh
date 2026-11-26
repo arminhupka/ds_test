@@ -1,18 +1,19 @@
 #!/usr/bin/env bash
-# ORG2/ORG3, a copy: claude-ds/ changed on main -> publish its files 1:1 to this organization's artifact,
-# read them back and compare the sums. Usage: replica.sh <org> [sha]
-# The artifact is created once by hand; its link is kept in $STATE_DIR/<org>.url.
+# A copy: publish the files of claude-ds/ (made by the source job) 1:1 to this organization's design system, read them back
+# and compare the sums. Usage: replica.sh <org>
+# DS_DRY_RUN=1 checks everything but publishes nothing (no login needed).
 set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 cd "$ROOT"
 ORG="${1:?org}"
-URL_FILE="$STATE_DIR/$ORG.url"
-[ -s "$URL_FILE" ] || { notify "design-sync $ORG" "missing $URL_FILE: put the link of this organization's artifact there"; exit 2; }
-URL="$(tr -d '[:space:]' < "$URL_FILE")"
+# The link of this organization's design system: the project variable ARTIFACT_URL_<ORG>.
+URL="$(ds_org_var ARTIFACT_URL "$ORG" | tr -d '[:space:]')"
+[ -n "$URL" ] || { notify "design-sync $ORG" "no design system link: set ARTIFACT_URL_<ORG>"; exit 2; }
 TIMEOUT="${DS_TASK_TIMEOUT:-900}"
 
-# main is brought up to date by watch.sh before this job starts.
 (cd claude-ds && $SHA256 -c checksums.txt --quiet) || { notify "design-sync $ORG" "claude-ds/ does not match its checksums.txt: not published"; exit 1; }
+
+if [ -n "${DS_DRY_RUN:-}" ]; then log "DS_DRY_RUN: claude-ds/ matches its checksums; would publish $(find claude-ds/project -type f | wc -l | tr -d ' ') files to $URL"; exit 0; fi
 
 ds_session_ensure
 VERIFY=".ds-verify/$ORG"; rm -rf "$VERIFY"

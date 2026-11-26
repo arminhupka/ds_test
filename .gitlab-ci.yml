@@ -1,0 +1,125 @@
+# Design sync as a pipeline: after a merge to the default branch, the source organization builds and publishes the design
+# system, and every other organization copies the result 1:1. No machine runs all the time: a runner starts a container per job.
+#
+#   publish-source      builds from the sources, publishes to the source organization's design system, verifies by reading it
+#                       back, passes claude-ds/ on
+#   plan-distribution   writes one distribute job for each organization in DS_COPY_ORGS
+#   distribute          runs those jobs (a child pipeline): each publishes claude-ds/ 1:1 to its organization's design system and
+#                       verifies (does nothing when the build reported no change)
+#
+# Nothing about an organization is written in this file. Everything is a project variable (Settings > CI/CD > Variables; mask and
+# protect the tokens, and limit them to the protected default branch). The organization names are yours; "org1" and "org2" are
+# examples. A setting of an organization is named after it, in capital letters:
+#
+#   DS_TITLE               the name of the design system (else the one recorded in .design-sync/artifact.json)
+#   DS_SOURCE_ORG          the organization that builds and publishes (default: org1)
+#   DS_COPY_ORGS           the organizations that copy it, separated by commas, for example: org2,org3
+#   CLAUDE_TOKEN_<ORG>     the login of that organization (output of `claude setup-token`), for the source and for each copy
+#   ARTIFACT_URL_<ORG>     the link of that organization's design system (the source's may stay in .design-sync/artifact.json)
+#   (optional) DS_TRUST_FOLDER=0 and CLAUDE_JSON_FILE: the folder is trusted automatically on a protected branch, see scripts/ds/README.md
+#
+# A new copy is a new name in DS_COPY_ORGS plus its two variables: no change in this file.
+# The design system is never committed: claude-ds/ is a job artifact passed from publish-source to the copy jobs.
+# Setup and what is not verified yet: scripts/ds/README.md ("GitLab pipeline").
+
+stages: [check, prepare, publish, plan, distribute]
+
+variables:
+  DS_IMAGE: $CI_REGISTRY_IMAGE/ds-sync:latest
+
+workflow:
+  name: 'Design system sync · $CI_COMMIT_SHORT_SHA'
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    - if: '$CI_PIPELINE_SOURCE == "web"'   # started by hand from the UI; set DS_FORCE=1 to publish even without a change
+
+# The first job: every project variable the run needs is set. It names the missing ones and where to add them (it never prints a value).
+check-variables:
+  stage: check
+  image: bash:5.2
+  script:
+    - bash scripts/ds/ci-check.sh
+
+# The image of the jobs (Node, git, Claude Code, tmux). Built when docker/Dockerfile changes, or by hand the first time.
+prepare-image:
+  stage: prepare
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  rules:
+    - if: '$DS_SKIP_IMAGE_BUILD == "1"'   # an image that already exists is used (for example a local GitLab without a registry)
+      when: never
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      changes: [docker/Dockerfile]
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+      when: manual
+      allow_failure: true
+  script:
+    - mkdir -p /kaniko/.docker
+    - >-
+      printf '{"auths":{"%s":{"auth":"%s"}}}' "$CI_REGISTRY" "$(printf '%s:%s' "$CI_REGISTRY_USER" "$CI_REGISTRY_PASSWORD" | base64 | tr -d '\n')"
+      > /kaniko/.docker/config.json
+    - /kaniko/executor --context "$CI_PROJECT_DIR/docker" --dockerfile "$CI_PROJECT_DIR/docker/Dockerfile" --destination "$DS_IMAGE"
+
+.ds-job:
+  image:
+    name: $DS_IMAGE
+    entrypoint: [""]
+  resource_group: design-sync
+  interruptible: false
+  timeout: 40m
+  retry:
+    max: 1
+    when: [runner_system_failure, stuck_or_timeout_failure]
+  after_script:
+    # What the session did is the first thing to read when a job fails.
+    - 'tmux capture-pane -t claude -p -S -80 2>/dev/null | grep -v "^$" | tail -40 || true'
+
+publish-source:
+  extends: .ds-job
+  stage: publish
+  variables:
+    DS_ENV_FILE: ds.env
+  script:
+    - scripts/ds/ci-job.sh source "${DS_SOURCE_ORG:-org1}"
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - claude-ds/
+      - .ds-verify/
+      - .ds-task/
+    reports:
+      dotenv: ds.env
+
+# The copy jobs come from DS_COPY_ORGS: this job writes them as a pipeline, and `distribute` runs it.
+plan-distribution:
+  stage: plan
+  image:
+    name: $DS_IMAGE
+    entrypoint: [""]
+  needs:
+    - job: publish-source
+      artifacts: false
+  script:
+    - scripts/ds/ci-plan.sh | tee distribute.yml
+  artifacts:
+    paths:
+      - distribute.yml
+
+distribute:
+  stage: distribute
+  needs:
+    - job: publish-source
+      artifacts: true   # DS_CHANGED comes from its dotenv report
+    - job: plan-distribution
+      artifacts: true
+  variables:
+    PARENT_PIPELINE_ID: $CI_PIPELINE_ID
+    DS_CHANGED: $DS_CHANGED
+    DS_IMAGE: $DS_IMAGE
+  trigger:
+    include:
+      - artifact: distribute.yml
+        job: plan-distribution
+    strategy: depend

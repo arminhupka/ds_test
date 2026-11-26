@@ -6,7 +6,8 @@ source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 cd "$ROOT"
 
 [ -d .ds-sync ] || { echo ".ds-sync/ is missing: run /design-sync once on this machine" >&2; exit 2; }
-TITLE="$(node -p "JSON.parse(require('fs').readFileSync('claude-ds/project/design-system.json','utf8')).title")"
+# The name of the design system: the project variable DS_TITLE, else the one recorded by /design-sync.
+TITLE="${DS_TITLE:-$(node -p "JSON.parse(require('fs').readFileSync('.design-sync/artifact.json','utf8')).title")}"
 
 npm run -s build -- --output-style=static >/dev/null
 node .design-sync/make-shadow.mjs >/dev/null
