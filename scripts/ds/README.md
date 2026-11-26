@@ -71,6 +71,7 @@ Each job logs in with a token instead of a login in a volume, and starts with a 
 5. **Optional, `DS_PUSH_TOKEN`:** a project access token with write access. With it `build-and-publish` commits the new `claude-ds/` to the default branch (the commit has `[skip ci]`, so it starts no pipeline). Without it `claude-ds/` is only passed to the next jobs as a job artifact.
 
 ### Notes
+- **Baseline without a push:** when `DS_PUSH_TOKEN` is not set, nothing is committed, so "did the design system change?" is answered against `claude-ds/` of the **last successful pipeline** (the artifact of `build-and-publish` on the default branch, downloaded with the job token; the image needs `unzip`). With no such artifact (a first run, an expired one) the repository's `claude-ds/` is the baseline. Keep the artifacts of the latest pipeline (the project's "Keep artifacts from most recent successful jobs" setting, on by default), or they expire after 7 days. `DS_API_URL` changes the API address and `DS_BASELINE_JOB` the job name.
 - The copy jobs do nothing when `build-and-publish` reports that the design system did not change. A copy that failed is not retried by a later pipeline: start that job again. Run a pipeline by hand with `DS_FORCE=1` to publish even without a change.
 - The jobs keep `.ds-verify/` (what was read back from the artifact) and `.ds-task/` as job artifacts for a week, and print what the session shows when a job fails.
 - The watchers in `docker/` and this pipeline do the same work; use one of them for an organization, not both.
