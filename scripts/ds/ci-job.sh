@@ -24,7 +24,7 @@ fetch_baseline() {
   [ -n "${CI_JOB_TOKEN:-}" ] && [ -n "$api" ] || return 0
   zip="$(mktemp)"; tmp="$(mktemp -d)"
   if curl -fsS --header "JOB-TOKEN: $CI_JOB_TOKEN" -o "$zip" \
-       "$api/projects/$CI_PROJECT_ID/jobs/artifacts/${CI_DEFAULT_BRANCH:-main}/download?job=${DS_BASELINE_JOB:-build-and-publish}" 2>/dev/null \
+       "$api/projects/$CI_PROJECT_ID/jobs/artifacts/${CI_DEFAULT_BRANCH:-main}/download?job=${DS_BASELINE_JOB:-publish-source}" 2>/dev/null \
      && unzip -q "$zip" 'claude-ds/*' -d "$tmp" 2>/dev/null && [ -d "$tmp/claude-ds/project" ]; then
     rm -rf claude-ds && mv "$tmp/claude-ds" claude-ds
     log "baseline: claude-ds/ taken from the last successful pipeline"
