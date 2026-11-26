@@ -9,6 +9,9 @@ source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 cd "$ROOT"
 ROLE="${1:?usage: ci-job.sh <source|replica> <org>}"; ORG="${2:?org}"
 
+# The build folder of a runner belongs to another user than the job, and git refuses such a folder until it is allowed.
+git config --global --add safe.directory "$ROOT"
+
 case "$ROLE" in
   source) JOB=source.sh
     if [ -z "${DS_PUSH_TOKEN:-}" ]; then export DS_NO_PUSH=1; log "no DS_PUSH_TOKEN: claude-ds/ is passed on as a job artifact only, not pushed"; fi ;;
