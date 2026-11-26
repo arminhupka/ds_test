@@ -3,14 +3,13 @@
 #
 #   build-and-publish   builds from the sources, publishes to the ORG1 artifact, verifies by reading it back, passes claude-ds/ on
 #   copy-org2           publishes claude-ds/ 1:1 to the ORG2 artifact and verifies (does nothing when the build reported no change)
-#   copy-org3           the same for ORG3
 #
 # The jobs run one after another (one resource group): a pipeline never publishes while another one does.
 # Setup, variables and what is not verified yet: scripts/ds/README.md ("GitLab pipeline").
 #
 # CI/CD variables (Settings > CI/CD > Variables; mask and protect all of them, and limit them to the protected default branch):
-#   CLAUDE_TOKEN_ORG1, CLAUDE_TOKEN_ORG2, CLAUDE_TOKEN_ORG3   the login of each organization (output of `claude setup-token`)
-#   ARTIFACT_URL_ORG2, ARTIFACT_URL_ORG3                      the link of each copy's design system artifact
+#   CLAUDE_TOKEN_ORG1, CLAUDE_TOKEN_ORG2                      the login of each organization (output of `claude setup-token`)
+#   ARTIFACT_URL_ORG2                                         the link of the copy's design system artifact
 #   CLAUDE_JSON_FILE (type: File)                             first-run and folder-trust settings, see scripts/ds/README.md
 #   DS_PUSH_TOKEN (optional)                                  a project access token with write access: build-and-publish then commits claude-ds/
 
@@ -103,9 +102,10 @@ copy-org2:
     CLAUDE_CODE_OAUTH_TOKEN: $CLAUDE_TOKEN_ORG2
     ARTIFACT_URL: $ARTIFACT_URL_ORG2
 
-copy-org3:
-  extends: .copy
-  variables:
-    ORG: org3
-    CLAUDE_CODE_OAUTH_TOKEN: $CLAUDE_TOKEN_ORG3
-    ARTIFACT_URL: $ARTIFACT_URL_ORG3
+# A third organization: copy this block, rename it, and set CLAUDE_TOKEN_ORG3 and ARTIFACT_URL_ORG3.
+# copy-org3:
+#   extends: .copy
+#   variables:
+#     ORG: org3
+#     CLAUDE_CODE_OAUTH_TOKEN: $CLAUDE_TOKEN_ORG3
+#     ARTIFACT_URL: $ARTIFACT_URL_ORG3

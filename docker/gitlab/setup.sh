@@ -47,7 +47,6 @@ setvar DS_DRY_RUN "1"
 setvar DS_FORCE "1"
 setvar DS_PUSH_URL "http://gitlab:8929/$PROJECT.git"          # reachable from a job container
 setvar ARTIFACT_URL_ORG2 "https://claude.ai/artifact/PLACEHOLDER-ORG2"
-setvar ARTIFACT_URL_ORG3 "https://claude.ai/artifact/PLACEHOLDER-ORG3"
 echo "variables set"
 
 # the runner (once)

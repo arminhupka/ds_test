@@ -59,15 +59,15 @@ docker compose exec -it org2 tmux attach -t claude    # choose "Yes, I trust thi
 
 ## GitLab pipeline (no machine running all the time)
 
-`.gitlab-ci.yml` runs the same jobs as a pipeline after a merge to the default branch: `build-and-publish` builds, publishes (ORG1), verifies and passes `claude-ds/` on; `copy-org2` and `copy-org3` then publish it 1:1 and verify. A runner starts a container per job, so nothing has to run between merges and nothing polls. The jobs run one after another (one resource group).
+`.gitlab-ci.yml` runs the same jobs as a pipeline after a merge to the default branch: `build-and-publish` builds, publishes (ORG1), verifies and passes `claude-ds/` on; `copy-org2` then publishes it 1:1 and verifies. A third organization is one more block, shown commented out at the end of `.gitlab-ci.yml`. A runner starts a container per job, so nothing has to run between merges and nothing polls. The jobs run one after another (one resource group).
 
 Each job logs in with a token instead of a login in a volume, and starts with a **preflight**: it starts the interactive session and asks it for one Artifact call. A login without the Artifact tool, a session waiting for a person, or a bad token stops the job at once with the reason, not after the timeout.
 
 ### One-time setup
 1. **Runner:** Docker executor, with access to claude.ai and the npm registry. Run the `build-ci-image` job once by hand (Pipelines > Run pipeline, then start it) to build the image into the project's registry.
-2. **Tokens:** for each organization, signed in as its technical account, run `claude setup-token` (it opens a browser) and store the result as a masked, protected CI/CD variable: `CLAUDE_TOKEN_ORG1`, `CLAUDE_TOKEN_ORG2`, `CLAUDE_TOKEN_ORG3`. Limit them to the protected default branch. A token is a login to that organization: never print it, and rotate it when it expires.
+2. **Tokens:** for each organization, signed in as its technical account, run `claude setup-token` (it opens a browser) and store the result as a masked, protected CI/CD variable: `CLAUDE_TOKEN_ORG1`, `CLAUDE_TOKEN_ORG2` (and `CLAUDE_TOKEN_ORG3` when there is a third). Limit them to the protected default branch. A token is a login to that organization: never print it, and rotate it when it expires.
 3. **First-run and folder-trust settings (`CLAUDE_JSON_FILE`, a file variable):** a fresh container asks for the folder trust, which nobody answers in a pipeline. Take the keys `hasCompletedOnboarding` and `projects` from a `~/.claude.json` that works (for example `docker compose exec org2 cat ~/.claude.json`), keep only the entry of the project folder and change its path to the pipeline's `CI_PROJECT_DIR` (for example `/builds/<group>/<project>`). Leave out everything about accounts. This is your decision to trust that folder; the job never makes it for you.
-4. **Links:** `ARTIFACT_URL_ORG2` and `ARTIFACT_URL_ORG3`, the design system artifact of each copy. ORG1's is in `.design-sync/artifact.json`.
+4. **Links:** `ARTIFACT_URL_ORG2`, the design system artifact of the copy (and `ARTIFACT_URL_ORG3` for a third). ORG1's is in `.design-sync/artifact.json`.
 5. **Optional, `DS_PUSH_TOKEN`:** a project access token with write access. With it `build-and-publish` commits the new `claude-ds/` to the default branch (the commit has `[skip ci]`, so it starts no pipeline). Without it `claude-ds/` is only passed to the next jobs as a job artifact.
 
 ### Notes
