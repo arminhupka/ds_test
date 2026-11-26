@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
-# Shared helpers of the design-sync automation. Source it, do not run it.
+# Shared helpers of the design-sync jobs. Source it, do not run it.
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-STATE_DIR="${DS_STATE_DIR:-$HOME/.ds-sync}"
-mkdir -p "$STATE_DIR"
 
 # sha256 of files, in the format "<hash>  <path>": Linux has sha256sum, macOS has shasum.
 if command -v sha256sum >/dev/null 2>&1; then SHA256="sha256sum"; else SHA256="shasum -a 256"; fi
@@ -35,7 +33,7 @@ ds_session_ensure() {
     sleep 10
   fi
   if tmux capture-pane -t "$SESSION" -p | grep -q "trust this folder"; then
-    log "the session waits for the folder trust. Attach once and choose Yes: docker compose exec -it <org> tmux attach -t $SESSION (detach: Ctrl+b d)"
+    log "the session waits for the folder trust: provide CLAUDE_JSON_FILE (see scripts/ds/README.md)"
     return 1
   fi
 }
@@ -68,14 +66,11 @@ ds_wait() {
 
 # ds_ci_setup: what a fresh container needs before the session starts. The login is the token in CLAUDE_CODE_OAUTH_TOKEN
 # (this function never prints it). The first-run and folder-trust settings are not made here: they come from a file a person
-# provides, as CLAUDE_JSON_FILE (a file variable) or CLAUDE_JSON_B64 (base64 text), and are copied to ~/.claude.json.
+# provides, as CLAUDE_JSON_FILE (a file variable), and are copied to ~/.claude.json.
 ds_ci_setup() {
   git config --global --add safe.directory "$ROOT"
-  git config --global user.name "${DS_GIT_NAME:-ds-sync}"
-  git config --global user.email "${DS_GIT_EMAIL:-ds-sync@localhost}"
   if [ -n "${CLAUDE_JSON_FILE:-}" ] && [ -f "$CLAUDE_JSON_FILE" ]; then cp "$CLAUDE_JSON_FILE" "$HOME/.claude.json"
-  elif [ -n "${CLAUDE_JSON_B64:-}" ]; then printf '%s' "$CLAUDE_JSON_B64" | base64 -d > "$HOME/.claude.json"
-  else log "WARNING: no CLAUDE_JSON_FILE or CLAUDE_JSON_B64: the session will ask for the folder trust and the job will fail"; fi
+  else log "WARNING: no CLAUDE_JSON_FILE: the session will ask for the folder trust and the job will fail"; fi
   [ ! -f "$HOME/.claude.json" ] || chmod 600 "$HOME/.claude.json"
   [ -n "${CLAUDE_CODE_OAUTH_TOKEN:-}" ] || log "WARNING: CLAUDE_CODE_OAUTH_TOKEN is not set"
 }

@@ -45,7 +45,6 @@ setvar DS_IMAGE "ds-sync-claude:latest"
 setvar DS_SKIP_IMAGE_BUILD "1"                          # no registry here: the local image is used
 setvar DS_DRY_RUN "1"
 setvar DS_API_URL "http://gitlab:8929/api/v4"                  # the API as a job container reaches it
-setvar DS_PUSH_URL "http://gitlab:8929/$PROJECT.git"          # reachable from a job container
 setvar DS_TITLE "mini-ds"                                      # the name of the design system
 setvar DS_SOURCE_ORG "org1"
 setvar DS_COPY_ORGS "org2"                                      # the organizations that copy it: add a name to add a copy

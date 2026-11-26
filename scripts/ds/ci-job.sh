@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # One design-sync job of a pipeline (see .gitlab-ci.yml). Usage: ci-job.sh <source|replica> <org>
-#   source  : ORG1. Builds, publishes, verifies, and passes claude-ds/ on (and pushes it when DS_PUSH_TOKEN is set).
+#   source  : the source organization. Builds, publishes, verifies, and passes claude-ds/ on as a job artifact.
 #   replica : another organization. Publishes claude-ds/ 1:1 and verifies, unless the source reported no change.
 # Settings of an organization are project variables named after it (see ds_org_var): CLAUDE_TOKEN_<ORG> (its login),
-# ARTIFACT_URL_<ORG> (its design system). Also CLAUDE_JSON_FILE or CLAUDE_JSON_B64 (see lib.sh) and DS_TITLE (the name of the design system). DS_DRY_RUN=1 runs everything but the login and the publish (to try a pipeline without tokens).
+# ARTIFACT_URL_<ORG> (its design system). Also CLAUDE_JSON_FILE (see lib.sh) and DS_TITLE (the name of the design system). DS_DRY_RUN=1 runs everything but the login and the publish (to try a pipeline without tokens).
 set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 cd "$ROOT"
@@ -20,8 +20,8 @@ git config --global --add safe.directory "$ROOT"
 # The job collects these folders as artifacts; a marker keeps a skipped job from ending with "No files to upload".
 mkdir -p .ds-verify .ds-task && : > .ds-verify/.keep && : > .ds-task/.keep
 
-# fetch_baseline: without a push, claude-ds/ in the repository goes stale, so "did the design system change?" is answered
-# against claude-ds/ of the last successful pipeline instead (the artifact of the job DS_BASELINE_JOB on the default branch).
+# fetch_baseline: "did the design system change?" is answered against claude-ds/ of the last successful pipeline (the artifact of
+# the job DS_BASELINE_JOB on the default branch), because the design system is not kept in git.
 # Needs unzip. When there is no such artifact (a first run, an expired one) and no claude-ds/ is committed, there is no
 # baseline and the design system counts as changed.
 fetch_baseline() {
@@ -42,10 +42,7 @@ fetch_baseline() {
 
 case "$ROLE" in
   source) JOB=source.sh
-    if [ -z "${DS_PUSH_TOKEN:-}" ]; then
-      export DS_NO_PUSH=1; log "no DS_PUSH_TOKEN: claude-ds/ is passed on as a job artifact only, not pushed"
-      fetch_baseline
-    fi ;;
+    fetch_baseline ;;
   replica) JOB=replica.sh
     # DS_CHANGED comes from the source job (a dotenv report). A job started by hand with DS_FORCE=1 publishes anyway.
     if [ "${DS_CHANGED:-1}" != "1" ] && [ -z "${DS_FORCE:-}" ]; then log "the source reported no change: nothing to do for $ORG"; exit 0; fi ;;

@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
-# ORG1, the source: the sources changed on main -> build, publish to the ORG1 artifact, pull the result
-# back into claude-ds/ and commit it. Usage: source.sh <org> [sha]
-# For trying it out: DS_FORCE=1 publishes even when nothing changed, DS_NO_COMMIT=1 leaves the repo untouched.
-# In a pipeline: DS_ENV_FILE=<file> gets DS_CHANGED=0|1 for the next jobs; DS_NO_PUSH=1 updates claude-ds/ in the working
-# tree only (it is passed on as a job artifact); DS_PUSH_URL=<url> (+ DS_PUSH_TOKEN) is where claude-ds/ is pushed (main), instead of origin.
+# The source organization: build the design system, publish it to this organization's design system, read it back to verify,
+# and leave it as claude-ds/ for the copy jobs (a job artifact). Usage: source.sh <org>
+# DS_FORCE=1 publishes even when nothing changed. DS_DRY_RUN=1 builds for real but publishes nothing (no login needed).
+# DS_ENV_FILE=<file> gets DS_CHANGED=0|1 for the next jobs of the pipeline.
 set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 cd "$ROOT"
@@ -12,11 +11,9 @@ ORG="${1:?org}"
 URL="$(ds_org_var ARTIFACT_URL "$ORG")"
 [ -n "$URL" ] || URL="$(node -p "JSON.parse(require('fs').readFileSync('.design-sync/artifact.json','utf8')).url")"
 VOLATILE='design-system\.json|_ds_sync\.json'
-START_SHA="$(git rev-parse HEAD)"
 # mark <0|1>: tells the next jobs of a pipeline whether the design system changed.
 mark() { if [ -n "${DS_ENV_FILE:-}" ]; then printf 'DS_CHANGED=%s\n' "$1" > "$DS_ENV_FILE"; fi; return 0; }
 
-# main is brought up to date by watch.sh before this job starts.
 npm ci --no-audit --no-fund >/dev/null 2>&1
 "$(dirname "${BASH_SOURCE[0]}")/build.sh"
 
@@ -59,26 +56,9 @@ ds_send "source-$ORG" "Use the Artifact tool. Artifact: $URL
 # What the artifact holds now must equal what was built (the two metadata files aside).
 same() { diff <(DS_IGNORE="^($VOLATILE)$" manifest "$PUB") <(DS_IGNORE="^($VOLATILE)$" manifest "$VERIFY/project"); }
 if ! ds_wait "$TIMEOUT" same; then
-  notify "design-sync $ORG" "the published files do not match the built ones: not committed"; exit 1
+  notify "design-sync $ORG" "the published files do not match the built ones: nothing is passed on"; exit 1
 fi
 rm -rf claude-ds/project && cp -R "$VERIFY/project" claude-ds/project
-mark 1
-if [ -n "${DS_NO_COMMIT:-}" ]; then   # for trying the job out: publish and verify, but leave the repo as it was
-  git checkout -q -- claude-ds 2>/dev/null || true; notify "design-sync $ORG" "published and verified (DS_NO_COMMIT: nothing committed)"; exit 0
-fi
 (cd claude-ds && find project -type f ! -name .DS_Store | sort | xargs $SHA256 > checksums.txt)
-if [ -n "${DS_NO_PUSH:-}" ]; then notify "design-sync $ORG" "published and verified (DS_NO_PUSH: claude-ds/ updated here, not committed)"; exit 0; fi
-git add -f claude-ds   # the folder is ignored by git: committing it is the opt-in mode of DS_PUSH_TOKEN
-if git diff --cached --quiet; then log "claude-ds/ unchanged after the pull"; exit 0; fi
-git commit -q -m "chore(ds): update claude-ds from the published design system [skip ci]" -m "Built by scripts/ds/source.sh and verified against the artifact."
-if [ -n "${DS_PUSH_TOKEN:-}" ]; then   # a pipeline: the token goes in a header, never in the URL, so it cannot show up in a message
-  AUTH="Authorization: Basic $(printf 'oauth2:%s' "$DS_PUSH_TOKEN" | base64 | tr -d '\n')"
-  PUSH=(git -c "http.extraHeader=$AUTH" push -q "${DS_PUSH_URL:?DS_PUSH_URL is needed with DS_PUSH_TOKEN}" HEAD:main)
-elif [ -n "${DS_PUSH_URL:-}" ]; then PUSH=(git push -q "$DS_PUSH_URL" HEAD:main)
-else PUSH=(git push -q origin main); fi
-if ! "${PUSH[@]}"; then
-  # Keep the clone able to fast-forward: drop the local commit. The artifact is already published; claude-ds/ in the repo is not.
-  git reset -q --hard "$START_SHA"
-  notify "design-sync $ORG" "published, but claude-ds/ could not be pushed (does this clone have write access?)"; exit 1
-fi
-notify "design-sync $ORG" "published and committed claude-ds ($(git rev-parse --short HEAD))"
+mark 1
+notify "design-sync $ORG" "published and verified; claude-ds/ is passed on to the copy jobs as a job artifact"

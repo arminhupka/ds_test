@@ -1,20 +1,16 @@
 #!/usr/bin/env bash
-# ORG2/ORG3, a copy: claude-ds/ changed on main -> publish its files 1:1 to this organization's artifact,
-# read them back and compare the sums. Usage: replica.sh <org> [sha]
-# The artifact is created once by hand; its link is kept in $STATE_DIR/<org>.url.
+# A copy: publish the files of claude-ds/ (made by the source job) 1:1 to this organization's design system, read them back
+# and compare the sums. Usage: replica.sh <org>
+# DS_DRY_RUN=1 checks everything but publishes nothing (no login needed).
 set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 cd "$ROOT"
 ORG="${1:?org}"
-# The link of this organization's artifact: ARTIFACT_URL (a pipeline variable), else the file kept by the watcher setup.
-URL_FILE="$STATE_DIR/$ORG.url"
-if [ -n "$(ds_org_var ARTIFACT_URL "$ORG")" ]; then URL="$(ds_org_var ARTIFACT_URL "$ORG" | tr -d '[:space:]')"
-elif [ -n "${ARTIFACT_URL:-}" ]; then URL="$(printf '%s' "$ARTIFACT_URL" | tr -d '[:space:]')"
-elif [ -s "$URL_FILE" ]; then URL="$(tr -d '[:space:]' < "$URL_FILE")"
-else notify "design-sync $ORG" "no artifact link: set ARTIFACT_URL_<ORG> or put the link in $URL_FILE"; exit 2; fi
+# The link of this organization's design system: the project variable ARTIFACT_URL_<ORG>.
+URL="$(ds_org_var ARTIFACT_URL "$ORG" | tr -d '[:space:]')"
+[ -n "$URL" ] || { notify "design-sync $ORG" "no design system link: set ARTIFACT_URL_<ORG>"; exit 2; }
 TIMEOUT="${DS_TASK_TIMEOUT:-900}"
 
-# main is brought up to date by watch.sh before this job starts.
 (cd claude-ds && $SHA256 -c checksums.txt --quiet) || { notify "design-sync $ORG" "claude-ds/ does not match its checksums.txt: not published"; exit 1; }
 
 if [ -n "${DS_DRY_RUN:-}" ]; then log "DS_DRY_RUN: claude-ds/ matches its checksums; would publish $(find claude-ds/project -type f | wc -l | tr -d ' ') files to $URL"; exit 0; fi

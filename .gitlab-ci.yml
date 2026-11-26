@@ -19,10 +19,10 @@
 #   CLAUDE_JSON_FILE       (type: File) first-run and folder-trust settings, see scripts/ds/README.md
 #
 # A new copy is a new name in DS_COPY_ORGS plus its two variables: no change in this file.
-# The design system is never committed: claude-ds/ is a job artifact. DS_PUSH_TOKEN is only for the watcher mode (scripts/ds/README.md).
+# The design system is never committed: claude-ds/ is a job artifact passed from publish-source to the copy jobs.
 # Setup and what is not verified yet: scripts/ds/README.md ("GitLab pipeline").
 
-stages: [prepare, publish, plan, distribute]
+stages: [check, prepare, publish, plan, distribute]
 
 variables:
   DS_IMAGE: $CI_REGISTRY_IMAGE/ds-sync:latest
@@ -32,6 +32,13 @@ workflow:
   rules:
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
     - if: '$CI_PIPELINE_SOURCE == "web"'   # started by hand from the UI; set DS_FORCE=1 to publish even without a change
+
+# The first job: every project variable the run needs is set. It names the missing ones and where to add them (it never prints a value).
+check-variables:
+  stage: check
+  image: bash:5.2
+  script:
+    - bash scripts/ds/ci-check.sh
 
 # The image of the jobs (Node, git, Claude Code, tmux). Built when docker/Dockerfile changes, or by hand the first time.
 prepare-image:
@@ -43,7 +50,7 @@ prepare-image:
     - if: '$DS_SKIP_IMAGE_BUILD == "1"'   # an image that already exists is used (for example a local GitLab without a registry)
       when: never
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
-      changes: [docker/Dockerfile, docker/entrypoint.sh]
+      changes: [docker/Dockerfile]
     - if: '$CI_PIPELINE_SOURCE == "web"'
       when: manual
       allow_failure: true
@@ -64,9 +71,6 @@ prepare-image:
   retry:
     max: 1
     when: [runner_system_failure, stuck_or_timeout_failure]
-  variables:
-    DS_GIT_NAME: design-sync
-    DS_GIT_EMAIL: design-sync@localhost
   after_script:
     # What the session did is the first thing to read when a job fails.
     - 'tmux capture-pane -t claude -p -S -80 2>/dev/null | grep -v "^$" | tail -40 || true'
@@ -76,7 +80,6 @@ publish-source:
   stage: publish
   variables:
     DS_ENV_FILE: ds.env
-    DS_PUSH_URL: $CI_SERVER_URL/$CI_PROJECT_PATH.git
   script:
     - scripts/ds/ci-job.sh source "${DS_SOURCE_ORG:-org1}"
   artifacts:

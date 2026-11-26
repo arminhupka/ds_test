@@ -1,3 +1,4 @@
+# The image of the pipeline jobs: Node, git, Claude Code and tmux (the jobs run an interactive Claude session in tmux).
 FROM node:22-bookworm-slim
 
 RUN apt-get update \
@@ -6,11 +7,6 @@ RUN apt-get update \
 
 RUN npm install -g @anthropic-ai/claude-code
 
-COPY entrypoint.sh /usr/local/bin/ds-entrypoint
-RUN chmod +x /usr/local/bin/ds-entrypoint && mkdir -p /work/repo && chown -R node:node /work
-
-# The login and settings live in /home/node, a per-organization volume.
 USER node
 ENV HOME=/home/node
 WORKDIR /work
-ENTRYPOINT ["ds-entrypoint"]
