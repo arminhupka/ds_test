@@ -52,3 +52,6 @@ ds-bundle/
 .ds-task/
 docker/.env
 docker/gitlab/.env
+
+# The design system as published: made by the pipeline (a job artifact), not kept in git
+claude-ds/

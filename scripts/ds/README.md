@@ -1,5 +1,9 @@
 # Automatic design sync
 
+> **The GitLab pipeline (below) is the way to run this.** It keeps no copy of the design system in git: `claude-ds/` is made by the
+> pipeline and passed between jobs as a job artifact. The Docker watchers described first work on a `claude-ds/` that is committed to
+> the repository (`DS_PUSH_TOKEN` mode, committed with `git add -f`), so they are an alternative, not part of the pipeline.
+
 After a push to `main`, every organization updates its design system by itself. One organization builds it, the others copy it 1:1, so the results cannot drift.
 
 ```
@@ -68,10 +72,10 @@ Each job logs in with a token instead of a login in a volume, and starts with a 
 2. **Tokens:** for each organization, signed in as its technical account, run `claude setup-token` (it opens a browser) and store the result as a masked, protected CI/CD variable: `CLAUDE_TOKEN_ORG1`, `CLAUDE_TOKEN_ORG2` (and `CLAUDE_TOKEN_ORG3` when there is a third). Limit them to the protected default branch. A token is a login to that organization: never print it, and rotate it when it expires.
 3. **First-run and folder-trust settings (`CLAUDE_JSON_FILE`, a file variable):** a fresh container asks for the folder trust, which nobody answers in a pipeline. Take the keys `hasCompletedOnboarding` and `projects` from a `~/.claude.json` that works (for example `docker compose exec org2 cat ~/.claude.json`), keep only the entry of the project folder and change its path to the pipeline's `CI_PROJECT_DIR` (for example `/builds/<group>/<project>`). Leave out everything about accounts. This is your decision to trust that folder; the job never makes it for you.
 4. **Links:** `ARTIFACT_URL_ORG2`, the design system artifact of the copy (and `ARTIFACT_URL_ORG3` for a third). ORG1's is in `.design-sync/artifact.json`.
-5. **Optional, `DS_PUSH_TOKEN`:** a project access token with write access. With it `build-and-publish` commits the new `claude-ds/` to the default branch (the commit has `[skip ci]`, so it starts no pipeline). Without it `claude-ds/` is only passed to the next jobs as a job artifact.
+5. **Optional, `DS_PUSH_TOKEN`:** a project access token with write access. Only for the watcher mode or when you want the design system committed (it is committed with `git add -f`, as the folder is ignored). The pipeline does not need it.
 
 ### Notes
-- **Baseline without a push:** when `DS_PUSH_TOKEN` is not set, nothing is committed, so "did the design system change?" is answered against `claude-ds/` of the **last successful pipeline** (the artifact of `build-and-publish` on the default branch, downloaded with the job token; the image needs `unzip`). With no such artifact (a first run, an expired one) the repository's `claude-ds/` is the baseline. Keep the artifacts of the latest pipeline (the project's "Keep artifacts from most recent successful jobs" setting, on by default), or they expire after 7 days. `DS_API_URL` changes the API address and `DS_BASELINE_JOB` the job name.
+- **Baseline:** nothing is committed, so "did the design system change?" is answered against `claude-ds/` of the **last successful pipeline** (the artifact of `build-and-publish` on the default branch, downloaded with the job token; the image needs `unzip`). With no such artifact (a first run, an expired one) there is no baseline and the design system counts as changed, so the first pipeline publishes and copies. Keep the artifacts of the latest pipeline (the project's "Keep artifacts from most recent successful jobs" setting, on by default), or they expire after 7 days and the next pipeline publishes once more. `DS_API_URL` changes the API address and `DS_BASELINE_JOB` the job name.
 - The copy jobs do nothing when `build-and-publish` reports that the design system did not change. A copy that failed is not retried by a later pipeline: start that job again. Run a pipeline by hand with `DS_FORCE=1` to publish even without a change.
 - The jobs keep `.ds-verify/` (what was read back from the artifact) and `.ds-task/` as job artifacts for a week, and print what the session shows when a job fails.
 - The watchers in `docker/` and this pipeline do the same work; use one of them for an organization, not both.

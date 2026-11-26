@@ -14,7 +14,8 @@ git config --global --add safe.directory "$ROOT"
 
 # fetch_baseline: without a push, claude-ds/ in the repository goes stale, so "did the design system change?" is answered
 # against claude-ds/ of the last successful pipeline instead (the artifact of the job DS_BASELINE_JOB on the default branch).
-# Needs unzip. When there is no such artifact (a first run, an expired one), the repository's claude-ds/ stays the baseline.
+# Needs unzip. When there is no such artifact (a first run, an expired one) and no claude-ds/ is committed, there is no
+# baseline and the design system counts as changed.
 fetch_baseline() {
   local api="${DS_API_URL:-${CI_API_V4_URL:-}}" zip tmp
   [ -n "${CI_JOB_TOKEN:-}" ] && [ -n "$api" ] || return 0
@@ -25,7 +26,8 @@ fetch_baseline() {
     rm -rf claude-ds && mv "$tmp/claude-ds" claude-ds
     log "baseline: claude-ds/ taken from the last successful pipeline"
   else
-    log "baseline: no earlier pipeline artifact, using claude-ds/ from the repository"
+    if [ -d claude-ds/project ]; then log "baseline: no earlier pipeline artifact, using claude-ds/ from the repository"
+    else log "baseline: no earlier pipeline artifact and no claude-ds/ in the repository: the design system counts as changed"; fi
   fi
   rm -rf "$zip" "$tmp"
 }

@@ -11,7 +11,7 @@
 #   CLAUDE_TOKEN_ORG1, CLAUDE_TOKEN_ORG2                      the login of each organization (output of `claude setup-token`)
 #   ARTIFACT_URL_ORG2                                         the link of the copy's design system artifact
 #   CLAUDE_JSON_FILE (type: File)                             first-run and folder-trust settings, see scripts/ds/README.md
-#   DS_PUSH_TOKEN (optional)                                  a project access token with write access: build-and-publish then commits claude-ds/
+#   (the design system is never committed: claude-ds/ is a job artifact. DS_PUSH_TOKEN is only for the watcher mode, see scripts/ds/README.md)
 
 stages: [image, build, copy]
 
