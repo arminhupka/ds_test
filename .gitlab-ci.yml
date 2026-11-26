@@ -31,6 +31,8 @@ build-image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
   rules:
+    - if: '$DS_SKIP_IMAGE_BUILD == "1"'   # an image that already exists is used (for example a local GitLab without a registry)
+      when: never
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
       changes: [docker/Dockerfile, docker/entrypoint.sh]
     - if: '$CI_PIPELINE_SOURCE == "web"'
