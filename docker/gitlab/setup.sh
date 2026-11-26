@@ -61,6 +61,9 @@ if ! docker compose exec -T runner grep -q '\[\[runners\]\]' /etc/gitlab-runner/
   echo "runner registered"
 fi
 
+# the setup pushes HEAD to main with --force (it may rewind it): allow that on this local project only
+api -X PATCH "$URL/api/v4/projects/root%2Fdesign-sync/protected_branches/main?allow_force_push=true" >/dev/null 2>&1 || true
+
 # push the current HEAD as main: this starts the pipeline
 git -C "$REPO" -c "http.extraHeader=Authorization: Basic $(printf 'root:%s' "$TOKEN" | base64 | tr -d '\n')" push -q "$URL/$PROJECT.git" HEAD:refs/heads/main --force
 echo "pushed. Pipelines: $URL/$PROJECT/-/pipelines   (user root, password in docker/gitlab/.env)"
