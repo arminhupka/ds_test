@@ -12,9 +12,30 @@ ROLE="${1:?usage: ci-job.sh <source|replica> <org>}"; ORG="${2:?org}"
 # The build folder of a runner belongs to another user than the job, and git refuses such a folder until it is allowed.
 git config --global --add safe.directory "$ROOT"
 
+# fetch_baseline: without a push, claude-ds/ in the repository goes stale, so "did the design system change?" is answered
+# against claude-ds/ of the last successful pipeline instead (the artifact of the job DS_BASELINE_JOB on the default branch).
+# Needs unzip. When there is no such artifact (a first run, an expired one), the repository's claude-ds/ stays the baseline.
+fetch_baseline() {
+  local api="${DS_API_URL:-${CI_API_V4_URL:-}}" zip tmp
+  [ -n "${CI_JOB_TOKEN:-}" ] && [ -n "$api" ] || return 0
+  zip="$(mktemp)"; tmp="$(mktemp -d)"
+  if curl -fsS --header "JOB-TOKEN: $CI_JOB_TOKEN" -o "$zip" \
+       "$api/projects/$CI_PROJECT_ID/jobs/artifacts/${CI_DEFAULT_BRANCH:-main}/download?job=${DS_BASELINE_JOB:-build-and-publish}" 2>/dev/null \
+     && unzip -q "$zip" 'claude-ds/*' -d "$tmp" 2>/dev/null && [ -d "$tmp/claude-ds/project" ]; then
+    rm -rf claude-ds && mv "$tmp/claude-ds" claude-ds
+    log "baseline: claude-ds/ taken from the last successful pipeline"
+  else
+    log "baseline: no earlier pipeline artifact, using claude-ds/ from the repository"
+  fi
+  rm -rf "$zip" "$tmp"
+}
+
 case "$ROLE" in
   source) JOB=source.sh
-    if [ -z "${DS_PUSH_TOKEN:-}" ]; then export DS_NO_PUSH=1; log "no DS_PUSH_TOKEN: claude-ds/ is passed on as a job artifact only, not pushed"; fi ;;
+    if [ -z "${DS_PUSH_TOKEN:-}" ]; then
+      export DS_NO_PUSH=1; log "no DS_PUSH_TOKEN: claude-ds/ is passed on as a job artifact only, not pushed"
+      fetch_baseline
+    fi ;;
   replica) JOB=replica.sh
     # DS_CHANGED comes from the source job (a dotenv report). A job started by hand with DS_FORCE=1 publishes anyway.
     if [ "${DS_CHANGED:-1}" != "1" ] && [ -z "${DS_FORCE:-}" ]; then log "the source reported no change: nothing to do for $ORG"; exit 0; fi ;;
