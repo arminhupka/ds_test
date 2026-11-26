@@ -23,6 +23,9 @@ if [ -z "${DS_FORCE:-}" ] && diff <(DS_IGNORE="^($VOLATILE)$" manifest ds-bundle
   log "design system unchanged: nothing to publish"; mark 0; exit 0
 fi
 
+# Trying a pipeline without a login: everything up to here ran for real; the publish does not.
+if [ -n "${DS_DRY_RUN:-}" ]; then log "DS_DRY_RUN: would publish $(find ds-bundle/.artifact/project -type f | wc -l | tr -d ' ') files to $URL"; mark 1; exit 0; fi
+
 # The files to publish: the built ones, with the metadata of the existing design-system.json updated.
 PUB=ds-bundle/.artifact/publish; rm -rf "$PUB"; mkdir -p "$PUB"; cp -R ds-bundle/.artifact/project/. "$PUB/"
 node -e '
