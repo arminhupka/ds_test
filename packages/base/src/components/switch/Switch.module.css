@@ -1,0 +1,103 @@
+/* The track is a fixed-ratio element: its height comes from a token
+   and its width from the ratio, so the thumb travels height × (ratio − 1). */
+.root {
+    --ds_base-switch-track: var(--ds_color-control-off);
+
+    position: relative;
+    box-sizing: border-box;
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    block-size: var(--ds_base-switch-block-size);
+    aspect-ratio: var(--ds_base-switch-ratio);
+    padding: var(--ds_space-0-5);
+    cursor: pointer;
+
+    /* Transparent outlines are drawn in forced-colors mode, where backgrounds are dropped. */
+    outline: var(--ds_border-width-default) solid transparent;
+    outline-offset: calc(var(--ds_border-width-default) * -1);
+    background-color: var(--ds_base-switch-track);
+    border-radius: var(--ds_radius-full);
+    transition:
+        background-color var(--ds_duration-fast) var(--ds_easing-standard),
+        box-shadow var(--ds_duration-fast) var(--ds_easing-standard);
+
+    &[data-checked] {
+        --ds_base-switch-track: var(--ds_base-switch-accent);
+    }
+
+    /* Widens the pointer target to the minimum without growing the track. */
+    &::before {
+        position: absolute;
+        inset-block: calc((var(--ds_base-switch-block-size) - var(--ds_target-size-min)) / 2);
+        inset-inline: calc((var(--ds_base-switch-block-size) * var(--ds_base-switch-ratio) - var(--ds_target-size-min)) / 2);
+        content: "";
+    }
+
+    &:focus-visible {
+        outline: var(--ds_focus-ring-width) solid var(--ds_color-focus-ring);
+        outline-offset: var(--ds_focus-ring-offset);
+    }
+
+    /* Also covers a checked switch: like a disabled checkbox, the track gets a flat fill and a light border. */
+    &[data-disabled] {
+        cursor: not-allowed;
+        outline-color: var(--ds_color-border-disabled);
+        background-color: var(--ds_color-surface-disabled);
+    }
+}
+
+.selection {
+    --ds_base-switch-accent: var(--ds_color-action-selection);
+}
+
+.automation {
+    --ds_base-switch-accent: var(--ds_color-action-automation);
+}
+
+.sm {
+    --ds_base-switch-block-size: calc(12rem / 12);
+    --ds_base-switch-ratio: calc(22 / 12);
+}
+
+.md {
+    --ds_base-switch-block-size: calc(18rem / 12);
+    --ds_base-switch-ratio: calc(32 / 18);
+}
+
+.thumb {
+    block-size: 100%;
+    aspect-ratio: 1;
+    outline: var(--ds_border-width-default) solid transparent;
+    outline-offset: calc(var(--ds_border-width-default) * -1);
+    background-color: var(--ds_color-surface-default);
+    border-radius: var(--ds_radius-full);
+    transition: translate var(--ds_duration-fast) var(--ds_easing-in-out);
+
+    &[data-checked] {
+        translate: calc(var(--ds_base-switch-block-size) * (var(--ds_base-switch-ratio) - 1)) 0;
+    }
+
+    &[data-checked]:dir(rtl) {
+        translate: calc(var(--ds_base-switch-block-size) * (1 - var(--ds_base-switch-ratio))) 0;
+    }
+
+    /* A white thumb would vanish on the disabled track. */
+    &[data-disabled] {
+        background-color: var(--ds_color-text-disabled);
+    }
+}
+
+@media (hover: hover) {
+    .root:hover:not([data-disabled]) {
+        background-color: color-mix(in srgb, var(--ds_base-switch-track), var(--ds_color-mix-dark) var(--ds_mix-hover));
+        box-shadow: 0 0 0 var(--ds_halo-width) color-mix(in srgb, var(--ds_base-switch-track) var(--ds_halo-mix), transparent);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .root,
+    .thumb {
+        transition: none;
+    }
+}
