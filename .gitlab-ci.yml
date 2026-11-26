@@ -1,9 +1,9 @@
 # Design sync as a pipeline: after a merge to the default branch, ORG1 builds and publishes the design system, and
 # every other organization copies the result 1:1. No machine runs all the time: a runner starts a container per job.
 #
-#   org1   builds from the sources, publishes to the ORG1 artifact, verifies by reading it back, passes claude-ds/ on
-#   org2   publishes claude-ds/ 1:1 to the ORG2 artifact and verifies (skipped when org1 reported no change)
-#   org3   the same for ORG3
+#   build-and-publish   builds from the sources, publishes to the ORG1 artifact, verifies by reading it back, passes claude-ds/ on
+#   copy-org2           publishes claude-ds/ 1:1 to the ORG2 artifact and verifies (does nothing when the build reported no change)
+#   copy-org3           the same for ORG3
 #
 # The jobs run one after another (one resource group): a pipeline never publishes while another one does.
 # Setup, variables and what is not verified yet: scripts/ds/README.md ("GitLab pipeline").
@@ -12,9 +12,9 @@
 #   CLAUDE_TOKEN_ORG1, CLAUDE_TOKEN_ORG2, CLAUDE_TOKEN_ORG3   the login of each organization (output of `claude setup-token`)
 #   ARTIFACT_URL_ORG2, ARTIFACT_URL_ORG3                      the link of each copy's design system artifact
 #   CLAUDE_JSON_FILE (type: File)                             first-run and folder-trust settings, see scripts/ds/README.md
-#   DS_PUSH_TOKEN (optional)                                  a project access token with write access: org1 then commits claude-ds/
+#   DS_PUSH_TOKEN (optional)                                  a project access token with write access: build-and-publish then commits claude-ds/
 
-stages: [image, org1, others]
+stages: [image, build, copy]
 
 variables:
   DS_IMAGE: $CI_REGISTRY_IMAGE/ds-sync:latest
@@ -25,7 +25,7 @@ workflow:
     - if: '$CI_PIPELINE_SOURCE == "web"'   # started by hand from the UI; set DS_FORCE=1 to publish even without a change
 
 # The image of the jobs (Node, git, Claude Code, tmux). Built when docker/Dockerfile changes, or by hand the first time.
-build-image:
+build-ci-image:
   stage: image
   image:
     name: gcr.io/kaniko-project/executor:debug
@@ -62,9 +62,9 @@ build-image:
     # What the session did is the first thing to read when a job fails.
     - 'tmux capture-pane -t claude -p -S -80 2>/dev/null | grep -v "^$" | tail -40 || true'
 
-org1:
+build-and-publish:
   extends: .ds-job
-  stage: org1
+  stage: build
   variables:
     CLAUDE_CODE_OAUTH_TOKEN: $CLAUDE_TOKEN_ORG1
     DS_ENV_FILE: ds.env
@@ -81,11 +81,11 @@ org1:
     reports:
       dotenv: ds.env
 
-.replica:
+.copy:
   extends: .ds-job
-  stage: others
+  stage: copy
   needs:
-    - job: org1
+    - job: build-and-publish
       artifacts: true
   script:
     - scripts/ds/ci-job.sh replica "$ORG"
@@ -96,15 +96,15 @@ org1:
       - .ds-verify/
       - .ds-task/
 
-org2:
-  extends: .replica
+copy-org2:
+  extends: .copy
   variables:
     ORG: org2
     CLAUDE_CODE_OAUTH_TOKEN: $CLAUDE_TOKEN_ORG2
     ARTIFACT_URL: $ARTIFACT_URL_ORG2
 
-org3:
-  extends: .replica
+copy-org3:
+  extends: .copy
   variables:
     ORG: org3
     CLAUDE_CODE_OAUTH_TOKEN: $CLAUDE_TOKEN_ORG3
