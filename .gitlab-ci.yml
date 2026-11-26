@@ -1,19 +1,28 @@
-# Design sync as a pipeline: after a merge to the default branch, ORG1 builds and publishes the design system, and
-# every other organization copies the result 1:1. No machine runs all the time: a runner starts a container per job.
+# Design sync as a pipeline: after a merge to the default branch, the source organization builds and publishes the design
+# system, and every other organization copies the result 1:1. No machine runs all the time: a runner starts a container per job.
 #
-#   publish-source      builds from the sources, publishes to the ORG1 artifact, verifies by reading it back, passes claude-ds/ on
-#   distribute-org2     publishes claude-ds/ 1:1 to the ORG2 artifact and verifies (does nothing when the build reported no change)
+#   publish-source      builds from the sources, publishes to the source organization's design system, verifies by reading it
+#                       back, passes claude-ds/ on
+#   plan-distribution   writes one distribute job for each organization in DS_COPY_ORGS
+#   distribute          runs those jobs (a child pipeline): each publishes claude-ds/ 1:1 to its organization's design system and
+#                       verifies (does nothing when the build reported no change)
 #
-# The jobs run one after another (one resource group): a pipeline never publishes while another one does.
-# Setup, variables and what is not verified yet: scripts/ds/README.md ("GitLab pipeline").
+# Nothing about an organization is written in this file. Everything is a project variable (Settings > CI/CD > Variables; mask and
+# protect the tokens, and limit them to the protected default branch). The organization names are yours; "org1" and "org2" are
+# examples. A setting of an organization is named after it, in capital letters:
 #
-# CI/CD variables (Settings > CI/CD > Variables; mask and protect all of them, and limit them to the protected default branch):
-#   CLAUDE_TOKEN_ORG1, CLAUDE_TOKEN_ORG2                      the login of each organization (output of `claude setup-token`)
-#   ARTIFACT_URL_ORG2                                         the link of the copy's design system artifact
-#   CLAUDE_JSON_FILE (type: File)                             first-run and folder-trust settings, see scripts/ds/README.md
-#   (the design system is never committed: claude-ds/ is a job artifact. DS_PUSH_TOKEN is only for the watcher mode, see scripts/ds/README.md)
+#   DS_TITLE               the name of the design system (else the one recorded in .design-sync/artifact.json)
+#   DS_SOURCE_ORG          the organization that builds and publishes (default: org1)
+#   DS_COPY_ORGS           the organizations that copy it, separated by commas, for example: org2,org3
+#   CLAUDE_TOKEN_<ORG>     the login of that organization (output of `claude setup-token`), for the source and for each copy
+#   ARTIFACT_URL_<ORG>     the link of that organization's design system (the source's may stay in .design-sync/artifact.json)
+#   CLAUDE_JSON_FILE       (type: File) first-run and folder-trust settings, see scripts/ds/README.md
+#
+# A new copy is a new name in DS_COPY_ORGS plus its two variables: no change in this file.
+# The design system is never committed: claude-ds/ is a job artifact. DS_PUSH_TOKEN is only for the watcher mode (scripts/ds/README.md).
+# Setup and what is not verified yet: scripts/ds/README.md ("GitLab pipeline").
 
-stages: [prepare, publish, distribute]
+stages: [prepare, publish, plan, distribute]
 
 variables:
   DS_IMAGE: $CI_REGISTRY_IMAGE/ds-sync:latest
@@ -66,11 +75,10 @@ publish-source:
   extends: .ds-job
   stage: publish
   variables:
-    CLAUDE_CODE_OAUTH_TOKEN: $CLAUDE_TOKEN_ORG1
     DS_ENV_FILE: ds.env
     DS_PUSH_URL: $CI_SERVER_URL/$CI_PROJECT_PATH.git
   script:
-    - scripts/ds/ci-job.sh source org1
+    - scripts/ds/ci-job.sh source "${DS_SOURCE_ORG:-org1}"
   artifacts:
     when: always
     expire_in: 7 days
@@ -81,32 +89,34 @@ publish-source:
     reports:
       dotenv: ds.env
 
-.distribute:
-  extends: .ds-job
+# The copy jobs come from DS_COPY_ORGS: this job writes them as a pipeline, and `distribute` runs it.
+plan-distribution:
+  stage: plan
+  image:
+    name: $DS_IMAGE
+    entrypoint: [""]
+  needs:
+    - job: publish-source
+      artifacts: false
+  script:
+    - scripts/ds/ci-plan.sh | tee distribute.yml
+  artifacts:
+    paths:
+      - distribute.yml
+
+distribute:
   stage: distribute
   needs:
     - job: publish-source
+      artifacts: true   # DS_CHANGED comes from its dotenv report
+    - job: plan-distribution
       artifacts: true
-  script:
-    - scripts/ds/ci-job.sh replica "$ORG"
-  artifacts:
-    when: always
-    expire_in: 7 days
-    paths:
-      - .ds-verify/
-      - .ds-task/
-
-distribute-org2:
-  extends: .distribute
   variables:
-    ORG: org2
-    CLAUDE_CODE_OAUTH_TOKEN: $CLAUDE_TOKEN_ORG2
-    ARTIFACT_URL: $ARTIFACT_URL_ORG2
-
-# A third organization: copy this block, rename it, and set CLAUDE_TOKEN_ORG3 and ARTIFACT_URL_ORG3.
-# distribute-org3:
-#   extends: .distribute
-#   variables:
-#     ORG: org3
-#     CLAUDE_CODE_OAUTH_TOKEN: $CLAUDE_TOKEN_ORG3
-#     ARTIFACT_URL: $ARTIFACT_URL_ORG3
+    PARENT_PIPELINE_ID: $CI_PIPELINE_ID
+    DS_CHANGED: $DS_CHANGED
+    DS_IMAGE: $DS_IMAGE
+  trigger:
+    include:
+      - artifact: distribute.yml
+        job: plan-distribution
+    strategy: depend

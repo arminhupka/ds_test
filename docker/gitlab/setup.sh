@@ -47,6 +47,10 @@ setvar DS_DRY_RUN "1"
 setvar DS_FORCE "1"
 setvar DS_API_URL "http://gitlab:8929/api/v4"                  # the API as a job container reaches it
 setvar DS_PUSH_URL "http://gitlab:8929/$PROJECT.git"          # reachable from a job container
+setvar DS_TITLE "mini-ds"                                      # the name of the design system
+setvar DS_SOURCE_ORG "org1"
+setvar DS_COPY_ORGS "org2"                                      # the organizations that copy it: add a name to add a copy
+setvar ARTIFACT_URL_ORG1 "$(node -p "JSON.parse(require('fs').readFileSync('$REPO/.design-sync/artifact.json','utf8')).url")"
 setvar ARTIFACT_URL_ORG2 "https://claude.ai/artifact/PLACEHOLDER-ORG2"
 echo "variables set"
 

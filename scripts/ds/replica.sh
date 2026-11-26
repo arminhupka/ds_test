@@ -8,9 +8,10 @@ cd "$ROOT"
 ORG="${1:?org}"
 # The link of this organization's artifact: ARTIFACT_URL (a pipeline variable), else the file kept by the watcher setup.
 URL_FILE="$STATE_DIR/$ORG.url"
-if [ -n "${ARTIFACT_URL:-}" ]; then URL="$(printf '%s' "$ARTIFACT_URL" | tr -d '[:space:]')"
+if [ -n "$(ds_org_var ARTIFACT_URL "$ORG")" ]; then URL="$(ds_org_var ARTIFACT_URL "$ORG" | tr -d '[:space:]')"
+elif [ -n "${ARTIFACT_URL:-}" ]; then URL="$(printf '%s' "$ARTIFACT_URL" | tr -d '[:space:]')"
 elif [ -s "$URL_FILE" ]; then URL="$(tr -d '[:space:]' < "$URL_FILE")"
-else notify "design-sync $ORG" "no artifact link: set ARTIFACT_URL or put the link in $URL_FILE"; exit 2; fi
+else notify "design-sync $ORG" "no artifact link: set ARTIFACT_URL_<ORG> or put the link in $URL_FILE"; exit 2; fi
 TIMEOUT="${DS_TASK_TIMEOUT:-900}"
 
 # main is brought up to date by watch.sh before this job starts.

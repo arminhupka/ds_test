@@ -7,6 +7,10 @@ mkdir -p "$STATE_DIR"
 # sha256 of files, in the format "<hash>  <path>": Linux has sha256sum, macOS has shasum.
 if command -v sha256sum >/dev/null 2>&1; then SHA256="sha256sum"; else SHA256="shasum -a 256"; fi
 
+# ds_org_var <PREFIX> <org>: the value of PREFIX_<ORG>, for example ds_org_var CLAUDE_TOKEN org2 reads CLAUDE_TOKEN_ORG2.
+# Every setting of an organization is a project variable named after it, so a new organization needs no change in the scripts.
+ds_org_var() { local n; n="$1_$(printf '%s' "$2" | tr 'a-z-' 'A-Z_')"; printf '%s' "${!n:-}"; }
+
 log() { printf '%s  %s\n' "$(date '+%F %T')" "$*"; }
 
 # notify <title> <message>: for now only the log; the one place to add Slack or any other channel later.

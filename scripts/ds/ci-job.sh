@@ -2,12 +2,17 @@
 # One design-sync job of a pipeline (see .gitlab-ci.yml). Usage: ci-job.sh <source|replica> <org>
 #   source  : ORG1. Builds, publishes, verifies, and passes claude-ds/ on (and pushes it when DS_PUSH_TOKEN is set).
 #   replica : another organization. Publishes claude-ds/ 1:1 and verifies, unless the source reported no change.
-# Needs: CLAUDE_CODE_OAUTH_TOKEN (the login of this organization), CLAUDE_JSON_FILE or CLAUDE_JSON_B64 (see lib.sh),
-# for replica also ARTIFACT_URL. DS_DRY_RUN=1 runs everything but the login and the publish (to try a pipeline without tokens).
+# Settings of an organization are project variables named after it (see ds_org_var): CLAUDE_TOKEN_<ORG> (its login),
+# ARTIFACT_URL_<ORG> (its design system). Also CLAUDE_JSON_FILE or CLAUDE_JSON_B64 (see lib.sh) and DS_TITLE (the name of the design system). DS_DRY_RUN=1 runs everything but the login and the publish (to try a pipeline without tokens).
 set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 cd "$ROOT"
 ROLE="${1:?usage: ci-job.sh <source|replica> <org>}"; ORG="${2:?org}"
+
+# This organization's login: CLAUDE_TOKEN_<ORG> becomes the token the session uses.
+TOKEN="$(ds_org_var CLAUDE_TOKEN "$ORG")"
+if [ -n "$TOKEN" ]; then export CLAUDE_CODE_OAUTH_TOKEN="$TOKEN"
+elif [ -z "${DS_DRY_RUN:-}" ]; then log "CLAUDE_TOKEN_$(printf '%s' "$ORG" | tr 'a-z-' 'A-Z_') is not set: add it as a project variable"; exit 2; fi
 
 # The build folder of a runner belongs to another user than the job, and git refuses such a folder until it is allowed.
 git config --global --add safe.directory "$ROOT"

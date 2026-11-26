@@ -63,20 +63,34 @@ docker compose exec -it org2 tmux attach -t claude    # choose "Yes, I trust thi
 
 ## GitLab pipeline (no machine running all the time)
 
-`.gitlab-ci.yml` runs the same jobs as a pipeline after a merge to the default branch: `publish-source` builds, publishes (ORG1), verifies and passes `claude-ds/` on; `distribute-org2` then publishes it 1:1 and verifies. A third organization is one more `distribute-*` block, shown commented out at the end of `.gitlab-ci.yml`. A runner starts a container per job, so nothing has to run between merges and nothing polls. The jobs run one after another (one resource group).
+`.gitlab-ci.yml` runs the same jobs as a pipeline after a merge to the default branch: `publish-source` builds, publishes (ORG1), verifies and passes `claude-ds/` on; `distribute-org2` then publishes it 1:1 and verifies. A third organization is a new name in `DS_COPY_ORGS`. A runner starts a container per job, so nothing has to run between merges and nothing polls. The jobs run one after another (one resource group).
 
 Each job logs in with a token instead of a login in a volume, and starts with a **preflight**: it starts the interactive session and asks it for one Artifact call. A login without the Artifact tool, a session waiting for a person, or a bad token stops the job at once with the reason, not after the timeout.
 
+### Everything is a project variable
+Nothing about an organization is written in `.gitlab-ci.yml`. A setting of an organization is a project variable named after it, in capital letters. The organization names are yours.
+
+| Variable | What it is |
+|---|---|
+| `DS_TITLE` | the name of the design system (else the one in `.design-sync/artifact.json`) |
+| `DS_SOURCE_ORG` | the organization that builds and publishes (default `org1`) |
+| `DS_COPY_ORGS` | the organizations that copy it, separated by commas: `org2,org3` |
+| `CLAUDE_TOKEN_<ORG>` | the login of that organization: for the source and for each copy (masked, protected) |
+| `ARTIFACT_URL_<ORG>` | the link of that organization's design system (the source's may stay in `.design-sync/artifact.json`) |
+| `CLAUDE_JSON_FILE` | (File) first-run and folder-trust settings |
+
+A new copy is a new name in `DS_COPY_ORGS` plus its `CLAUDE_TOKEN_<ORG>` and `ARTIFACT_URL_<ORG>`. The `plan-distribution` job writes one `distribute-<org>` job for each name and `distribute` runs them as a child pipeline, so this file does not change. A name may use lowercase letters, digits, `-` and `_`.
+
 ### One-time setup
 1. **Runner:** Docker executor, with access to claude.ai and the npm registry. Run the `prepare-image` job once by hand (Pipelines > Run pipeline, then start it) to build the image into the project's registry.
-2. **Tokens:** for each organization, signed in as its technical account, run `claude setup-token` (it opens a browser) and store the result as a masked, protected CI/CD variable: `CLAUDE_TOKEN_ORG1`, `CLAUDE_TOKEN_ORG2` (and `CLAUDE_TOKEN_ORG3` when there is a third). Limit them to the protected default branch. A token is a login to that organization: never print it, and rotate it when it expires.
+2. **Tokens:** for each organization, signed in as its technical account, run `claude setup-token` (it opens a browser) and store the result as a masked, protected CI/CD variable named `CLAUDE_TOKEN_<ORG>` (for example `CLAUDE_TOKEN_ORG1`). Limit them to the protected default branch. A token is a login to that organization: never print it, and rotate it when it expires.
 3. **First-run and folder-trust settings (`CLAUDE_JSON_FILE`, a file variable):** a fresh container asks for the folder trust, which nobody answers in a pipeline. Take the keys `hasCompletedOnboarding` and `projects` from a `~/.claude.json` that works (for example `docker compose exec org2 cat ~/.claude.json`), keep only the entry of the project folder and change its path to the pipeline's `CI_PROJECT_DIR` (for example `/builds/<group>/<project>`). Leave out everything about accounts. This is your decision to trust that folder; the job never makes it for you.
-4. **Links:** `ARTIFACT_URL_ORG2`, the design system artifact of the copy (and `ARTIFACT_URL_ORG3` for a third). ORG1's is in `.design-sync/artifact.json`.
+4. **Links:** `ARTIFACT_URL_<ORG>`, the design system of each copy. The source's link may stay in `.design-sync/artifact.json`. ORG1's is in `.design-sync/artifact.json`.
 5. **Optional, `DS_PUSH_TOKEN`:** a project access token with write access. Only for the watcher mode or when you want the design system committed (it is committed with `git add -f`, as the folder is ignored). The pipeline does not need it.
 
 ### Notes
 - **Baseline:** nothing is committed, so "did the design system change?" is answered against `claude-ds/` of the **last successful pipeline** (the artifact of `publish-source` on the default branch, downloaded with the job token; the image needs `unzip`). With no such artifact (a first run, an expired one) there is no baseline and the design system counts as changed, so the first pipeline publishes and copies. Keep the artifacts of the latest pipeline (the project's "Keep artifacts from most recent successful jobs" setting, on by default), or they expire after 7 days and the next pipeline publishes once more. `DS_API_URL` changes the API address and `DS_BASELINE_JOB` the job name.
-- The `distribute-*` jobs do nothing when `publish-source` reports that the design system did not change. A copy that failed is not retried by a later pipeline: start that job again. Run a pipeline by hand with `DS_FORCE=1` to publish even without a change.
+- The `distribute-<org>` jobs do nothing when `publish-source` reports that the design system did not change. A copy that failed is not retried by a later pipeline: start that job again. Run a pipeline by hand with `DS_FORCE=1` to publish even without a change.
 - The jobs keep `.ds-verify/` (what was read back from the artifact) and `.ds-task/` as job artifacts for a week, and print what the session shows when a job fails.
 - The watchers in `docker/` and this pipeline do the same work; use one of them for an organization, not both.
 

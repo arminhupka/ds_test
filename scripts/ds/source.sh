@@ -8,7 +8,9 @@ set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 cd "$ROOT"
 ORG="${1:?org}"
-URL="$(node -p "JSON.parse(require('fs').readFileSync('.design-sync/artifact.json','utf8')).url")"
+# The link of this organization's design system: ARTIFACT_URL_<ORG>, else the one recorded by /design-sync.
+URL="$(ds_org_var ARTIFACT_URL "$ORG")"
+[ -n "$URL" ] || URL="$(node -p "JSON.parse(require('fs').readFileSync('.design-sync/artifact.json','utf8')).url")"
 VOLATILE='design-system\.json|_ds_sync\.json'
 START_SHA="$(git rev-parse HEAD)"
 # mark <0|1>: tells the next jobs of a pipeline whether the design system changed.
