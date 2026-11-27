@@ -23,16 +23,26 @@ manifest() {
 # `claude -p` has no Artifact tool; an interactive `claude` has. So the jobs run in one interactive session kept in tmux.
 # --allowedTools makes the Artifact tool run without asking; every other permission still asks (and then the job times out).
 SESSION="${DS_TMUX_SESSION:-claude}"
+# tm: tmux, on the socket DS_TMUX_SOCKET when it is set. Sessions on different sockets are separate servers, with separate environments,
+# which is how the logins of several organizations are tried at the same time.
+tm() { tmux ${DS_TMUX_SOCKET:+-L "$DS_TMUX_SOCKET"} "$@"; }
 TASK_DIR="$ROOT/.ds-task"
 
 # ds_session_ensure: the session exists and is ready (the folder trust must have been accepted once, by a person).
+# It is ready as soon as its input box shows, so a fast start is not slowed by a fixed wait.
 ds_session_ensure() {
-  if ! tmux has-session -t "$SESSION" 2>/dev/null; then
+  if ! tm has-session -t "$SESSION" 2>/dev/null; then
     log "starting the interactive Claude session ($SESSION)"
-    tmux new-session -d -s "$SESSION" -x 200 -y 50 -c "$ROOT" "claude --allowedTools Artifact"
-    sleep 10
+    tm new-session -d -s "$SESSION" -x 200 -y 50 -c "$ROOT" "claude --allowedTools Artifact"
+    local end=$(( $(date +%s) + 60 )) pane
+    while [ "$(date +%s)" -lt "$end" ]; do
+      pane="$(tm capture-pane -t "$SESSION" -p)"
+      grep -q "trust this folder" <<<"$pane" && break
+      grep -q "^❯" <<<"$pane" && break
+      sleep 1
+    done
   fi
-  if tmux capture-pane -t "$SESSION" -p | grep -q "trust this folder"; then
+  if tm capture-pane -t "$SESSION" -p | grep -q "trust this folder"; then
     log "the session waits for the folder trust: run on a protected branch, or provide CLAUDE_JSON_FILE (see scripts/ds/README.md)"
     return 1
   fi
@@ -41,20 +51,20 @@ ds_session_ensure() {
 # ds_send <task-name> <text>: writes the task to .ds-task/<name>.md and tells the session to do it, in a fresh context.
 ds_send() {
   mkdir -p "$TASK_DIR"; printf '%s\n' "$2" > "$TASK_DIR/$1.md"
-  tmux send-keys -t "$SESSION" -l "/clear"; tmux send-keys -t "$SESSION" Enter; sleep 3
-  tmux send-keys -t "$SESSION" -l "Do the task in ./.ds-task/$1.md exactly as written. Do nothing else."
-  sleep 1; tmux send-keys -t "$SESSION" Enter
+  tm send-keys -t "$SESSION" -l "/clear"; tm send-keys -t "$SESSION" Enter; sleep 3
+  tm send-keys -t "$SESSION" -l "Do the task in ./.ds-task/$1.md exactly as written. Do nothing else."
+  sleep 1; tm send-keys -t "$SESSION" Enter
 }
 
 # ds_pane: the last lines of the session, for the log when something is stuck.
-ds_pane() { tmux capture-pane -t "$SESSION" -p | grep -v '^$' | tail -"${1:-14}"; }
+ds_pane() { tm capture-pane -t "$SESSION" -p | grep -v '^$' | tail -"${1:-14}"; }
 
 # ds_wait <seconds> <command...>: until the command succeeds. Returns 2 at once when the session asks for a permission.
 ds_wait() {
   local end=$(( $(date +%s) + $1 )); shift
   while [ "$(date +%s)" -lt "$end" ]; do
     "$@" >/dev/null 2>&1 && return 0
-    if tmux capture-pane -t "$SESSION" -p | grep -qE "Do you want to|Allow this|don't ask again"; then
+    if tm capture-pane -t "$SESSION" -p | grep -qE "Do you want to|Allow this|don't ask again"; then
       log "the session asks for a permission, so the job cannot go on:"; ds_pane; return 2
     fi
     sleep 5
@@ -94,12 +104,12 @@ ds_ci_setup() {
 # at once, with the reason, instead of after the timeout.
 ds_preflight() {
   ds_session_ensure || return 1
-  tmux send-keys -t "$SESSION" -l "/clear"; tmux send-keys -t "$SESSION" Enter; sleep 3
-  tmux send-keys -t "$SESSION" -l "Use the Artifact tool: action list, scope mine, limit 1. Do nothing else. If you have no Artifact tool, say exactly: NO ARTIFACT TOOL."
-  sleep 1; tmux send-keys -t "$SESSION" Enter
+  tm send-keys -t "$SESSION" -l "/clear"; tm send-keys -t "$SESSION" Enter; sleep 3
+  tm send-keys -t "$SESSION" -l "Use the Artifact tool: action list, scope mine, limit 1. Do nothing else. If you have no Artifact tool, say exactly: NO ARTIFACT TOOL."
+  sleep 1; tm send-keys -t "$SESSION" Enter
   local pane end=$(( $(date +%s) + ${DS_PREFLIGHT_TIMEOUT:-180} ))
   while [ "$(date +%s)" -lt "$end" ]; do
-    pane="$(tmux capture-pane -t "$SESSION" -p -S -200)"
+    pane="$(tm capture-pane -t "$SESSION" -p -S -200)"
     if grep -q "Artifact(list" <<<"$pane" && ! grep -qE "^● .*(NO ARTIFACT TOOL|no tool named)" <<<"$pane"; then log "preflight ok: the session has the Artifact tool"; return 0; fi
     if grep -qE "^● .*(NO ARTIFACT TOOL|no tool named)" <<<"$pane"; then log "preflight failed: this login has no Artifact tool (is CLAUDE_CODE_OAUTH_TOKEN a full claude.ai login?)"; ds_pane; return 3; fi
     if grep -qiE "not logged in|please run /login|invalid (api key|token)|authentication" <<<"$pane"; then log "preflight failed: the session is not signed in"; ds_pane; return 4; fi
@@ -110,20 +120,26 @@ ds_preflight() {
 
 # ds_session_reset: ends the tmux server, so the next session starts with the environment of that moment. tmux keeps the
 # environment of the first session it started, so a session for another organization needs a new server (and its token).
-ds_session_reset() { tmux kill-server 2>/dev/null || true; }
+ds_session_reset() { tm kill-server 2>/dev/null || true; }
 
-# ds_check_artifact <url>: can the signed-in session reach this design system? It lists the files of the artifact, which fails
-# for a wrong link and for a design system of another organization. Returns 0 when it listed files, 1 on an error or a timeout.
-ds_check_artifact() {
-  tmux send-keys -t "$SESSION" -l "/clear"; tmux send-keys -t "$SESSION" Enter; sleep 3
-  tmux send-keys -t "$SESSION" -l "Use the Artifact tool: action list with scope files, url $1. Do nothing else."
-  sleep 1; tmux send-keys -t "$SESSION" Enter
-  local pane end=$(( $(date +%s) + ${DS_PREFLIGHT_TIMEOUT:-180} ))
+# ds_probe <url>: one question to a fresh session that answers three things at once: the login is accepted, the session has the
+# Artifact tool, and this design system can be reached with that login. The session lists the files of the design system and answers
+# with one line that cannot be mistaken for the question: FILES=<n>, NOTOOL or FAILED (the answer line starts with "● ", the question
+# does not). Returns 0 and prints the number of files; 3 no Artifact tool; 4 not signed in; 5 the design system cannot be reached;
+# 1 no clear answer. It stops as soon as the session has finished its turn, so a failure is quick too.
+ds_probe() {
+  tm send-keys -t "$SESSION" -l "Use the Artifact tool: action list with scope files, url $1. Then answer with one line and nothing else: FILES=<n>, where <n> is the number of files listed. If you have no Artifact tool, answer NOTOOL. If the call fails, answer FAILED."
+  sleep 1; tm send-keys -t "$SESSION" Enter
+  local pane n end=$(( $(date +%s) + ${DS_PROBE_TIMEOUT:-90} ))
   while [ "$(date +%s)" -lt "$end" ]; do
-    pane="$(tmux capture-pane -t "$SESSION" -p -S -200)"
-    if grep -qE "⎿ +listed [0-9]+ files" <<<"$pane"; then return 0; fi
-    if grep -qE "⎿ +Error" <<<"$pane"; then log "the design system cannot be reached:"; ds_pane 6; return 1; fi
-    sleep 3
+    pane="$(tm capture-pane -t "$SESSION" -p -S -200)"
+    if n="$(grep -oE "^● FILES=[0-9]+" <<<"$pane" | head -1 | cut -d= -f2)" && [ -n "$n" ]; then echo "$n"; return 0; fi
+    if grep -qE "^● NOTOOL" <<<"$pane"; then return 3; fi
+    if grep -qE "^● FAILED" <<<"$pane"; then return 5; fi
+    if grep -qiE "not logged in|please run /login|invalid (api key|token)|authentication (rejected|failed)|\(401\)" <<<"$pane"; then return 4; fi
+    # the turn is over and no answer line came: do not wait for it
+    if grep -qE "· done [0-9]+:[0-9]+" <<<"$pane"; then return 1; fi
+    sleep 2
   done
-  log "no answer about the design system, the session shows:"; ds_pane; return 1
+  return 1
 }

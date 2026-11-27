@@ -24,7 +24,7 @@ The Claude tokens, and every other setting, are **project variables** of the Git
 2. Add it as a variable named **`CLAUDE_TOKEN_<ORG>`**: the organization's name in capital letters. For the organizations `org1` (the source) and `org2` (a copy): `CLAUDE_TOKEN_ORG1` and `CLAUDE_TOKEN_ORG2`. Set **Masked** and **Protected**, and leave "Expand variable reference" off.
 3. A job takes the token of the organization it works for. You never name a token in a job: the name of the organization is enough.
 
-`verify-tokens` then tries each login for real, before anything is published: for the source and every organization in `DS_COPY_ORGS` it starts a session with that organization's token and checks that the login is accepted, that the session has the Artifact tool, and that the design system link (`ARTIFACT_URL_<ORG>`) can be reached with it. It prints one line per organization, and a failure names the variable to fix. One bad token stops the pipeline, so a half-finished run (the source published, a copy not) cannot happen. It is skipped in a dry run.
+`verify-tokens` then tries each login for real, before anything is published: for the source and every organization in `DS_COPY_ORGS` it starts a session with that organization's token and asks one question, which answers three things at once: the login is accepted, the session has the Artifact tool, and the design system link (`ARTIFACT_URL_<ORG>`) can be reached with it. The organizations are checked at the same time, each in a session of its own, so the check takes about as long as one organization (some seconds), not the sum. It prints one line per organization, and a failure names the variable to fix. One bad token stops the pipeline, so a half-finished run (the source published, a copy not) cannot happen. It is skipped in a dry run.
 
 The first job, `check-variables`, tells you what is missing: it lists each variable that is not set, says what it is for, and prints the address above. It never prints a value. Add `DS_COPY_ORGS` and `ARTIFACT_URL_<ORG>` the same way (see the tables below).
 
@@ -57,7 +57,8 @@ Nothing about an organization is written in `.gitlab-ci.yml`. A setting of an or
 | `DS_FORCE` | publish even without a change; set it for one manual run | off |
 | `DS_IMAGE` | the image of the jobs | `$CI_REGISTRY_IMAGE/ds-sync:latest` |
 | `DS_TASK_TIMEOUT` | seconds to publish and verify | 900 |
-| `DS_PREFLIGHT_TIMEOUT` | seconds for the preflight | 180 |
+| `DS_PREFLIGHT_TIMEOUT` | seconds for the preflight in each job | 180 |
+| `DS_PROBE_TIMEOUT` | seconds `verify-tokens` waits for the answer of one organization | 90 |
 | `DS_BASELINE_JOB` | the job whose artifact is the baseline | `publish-source` |
 | `DS_TOOL_SRC` | where the source job takes `.ds-sync` from | `/host-ds-sync` |
 
